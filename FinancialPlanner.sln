@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.Logic", "FinancialPlanner.Logic\FinancialPlanner.Logic.csproj", "{2C57BE94-55A3-42D8-9F77-8C4BFB4D5394}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlanner.WebMvc", "FinancialPlanner.WebMvc\FinancialPlanner.WebMvc.csproj", "{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C57BE94-55A3-42D8-9F77-8C4BFB4D5394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C57BE94-55A3-42D8-9F77-8C4BFB4D5394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C57BE94-55A3-42D8-9F77-8C4BFB4D5394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C57BE94-55A3-42D8-9F77-8C4BFB4D5394}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4BF3973-00BD-4B35-A881-1D29C88A0A2A}
+	EndGlobalSection
+EndGlobal
