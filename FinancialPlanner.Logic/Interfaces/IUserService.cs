@@ -4,7 +4,7 @@ namespace FinancialPlanner.Logic.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<User> GetAll();
+        Task<IEnumerable<User>> GetAll();
 
         Task Insert(User user);
 

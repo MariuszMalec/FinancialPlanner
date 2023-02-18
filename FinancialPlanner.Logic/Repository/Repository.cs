@@ -28,7 +28,7 @@ namespace FinancialPlanner.Logic.Repository
             return entities.AsQueryable();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetById(string id)
         {
             return await entities.SingleOrDefaultAsync(s => s.Id == id);
         }

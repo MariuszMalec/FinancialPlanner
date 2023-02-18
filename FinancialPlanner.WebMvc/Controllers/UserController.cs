@@ -15,9 +15,9 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: UserController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = _userService.GetAll();
+            var users = await _userService.GetAll();
             if (!users.Any())
             {
                 return View("No users!");

@@ -33,7 +33,7 @@ namespace FinancialPlanner.Logic.Models
         public string? Phone { get; set; }
         public string? Address { get; set; }
         public virtual Role Role { get; set; }
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
         public DateTime Registered { get; set; }
     }
 }
