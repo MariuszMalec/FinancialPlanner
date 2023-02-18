@@ -34,9 +34,9 @@ namespace FinancialPlanner.Logic.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> GetById(int id)
+        public async Task<User> GetById(string id)
         {
-            throw new NotImplementedException();
+            return await _repository.GetById(id);
         }
 
         public Task Insert(User user)

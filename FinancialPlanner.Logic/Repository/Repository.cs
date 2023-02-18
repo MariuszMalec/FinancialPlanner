@@ -30,7 +30,8 @@ namespace FinancialPlanner.Logic.Repository
 
         public async Task<T> GetById(string id)
         {
-            return await entities.SingleOrDefaultAsync(s => s.Id == id);
+            var entity = await entities.SingleOrDefaultAsync(s => s.Id == id);
+            return entity;
         }
         public async Task Insert(T entity)
         {

@@ -8,7 +8,7 @@ namespace FinancialPlanner.Logic.Interfaces
 
         Task Insert(User user);
 
-        Task<User> GetById(int id);
+        Task<User> GetById(string id);
 
         Task Delete(User user);
 

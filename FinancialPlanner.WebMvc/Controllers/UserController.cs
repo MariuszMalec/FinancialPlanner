@@ -40,9 +40,21 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(string id)
         {
-            return View();
+            var user = await _userService.GetById(id);
+
+            if (user == null)
+            {
+                return BadRequest($"Brak uzytkownika {id}");
+            }
+
+            var model = new UserDto()
+            {
+
+            };
+
+            return View(user);
         }
 
         // GET: UserController/Create
