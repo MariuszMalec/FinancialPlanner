@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.Logic", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlanner.WebMvc", "FinancialPlanner.WebMvc\FinancialPlanner.WebMvc.csproj", "{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlanner.XUnitIntegratedTests", "FinancialPlanner.XUnitIntegratedTests\FinancialPlanner.XUnitIntegratedTests.csproj", "{17B3ADE2-ADDB-4672-9567-87F6D32584A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
