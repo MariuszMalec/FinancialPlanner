@@ -1,5 +1,6 @@
 ﻿using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

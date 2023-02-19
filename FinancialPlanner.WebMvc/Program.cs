@@ -5,6 +5,8 @@ using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Configuration;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //dodane
-builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseInMemoryDatabase("usersDb"));
+//builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseInMemoryDatabase("usersDb"));
+IConfiguration Configuration;
+Configuration = builder.Configuration;
+//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
+
+
+
+
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -22,7 +38,8 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    SeedData.Seed(dataContext);
+    await SeedData.SeedRoles(dataContext);
+    await SeedData.SeedUsers(dataContext);  
 }   
 
 // Configure the HTTP request pipeline.

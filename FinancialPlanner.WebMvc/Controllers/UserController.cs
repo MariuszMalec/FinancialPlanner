@@ -95,18 +95,35 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var model = await _userService.GetById(id);
+            if (model == null)
+            {
+                return NotFound($"Not found user with {id}");
+            }
+            return View(model);
         }
 
         // POST: UserController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(string id, User model)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                await _userService.Update(model);
+
+                if (model.Id == null)
+                {
+                    return NotFound("No user!");
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -116,19 +133,29 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult<User>> Delete(string id)
         {
-            return View();
+            var model = await _userService.GetById(id);
+            if (model == null)
+            {
+                return NotFound($"Not found user with {id}");
+            }
+            return View(model);
         }
 
-        // POST: UserController/Delete/5
+        // POST: RoleController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, User model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                await _userService.Delete(model);
+                if (model.Id == null)
+                {
+                    return RedirectToAction("EmptyList");
+                }
+                return RedirectToAction("Index");
             }
             catch
             {

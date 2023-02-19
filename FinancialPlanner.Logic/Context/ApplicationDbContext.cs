@@ -10,6 +10,8 @@ namespace FinancialPlanner.Logic.Context
         }
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseInMemoryDatabase("usersDb");//TODO to samo w appsettings.json jest

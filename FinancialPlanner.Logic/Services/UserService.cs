@@ -1,6 +1,8 @@
-﻿using FinancialPlanner.Logic.Interfaces;
+﻿using FinancialPlanner.Logic.Context;
+using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialPlanner.Logic.Services
 {
@@ -8,19 +10,23 @@ namespace FinancialPlanner.Logic.Services
     {
         private static readonly List<User> _users = LoadDataService.ReadUserFile();
         private readonly IRepository<User> _repository;
+        private readonly ApplicationDbContext _context;
 
-        public UserService(IRepository<User> repository)
+        public UserService(IRepository<User> repository, ApplicationDbContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         public Task Delete(User user)
         {
-            throw new NotImplementedException();
+            return _repository.Delete(user);
         }
 
         public async Task<IEnumerable<User>> GetAll()
         {
+            var all = _context.Set<User>().Include(e=>e.Role);//TODO czy da sie to dodac do repository??
+
             return await _repository.GetAll();
         }
 
@@ -44,9 +50,9 @@ namespace FinancialPlanner.Logic.Services
             return _repository.Insert(user);
         }
 
-        public Task Update(User user)
+        public async Task Update(User user)
         {
-            throw new NotImplementedException();
+            await _repository.Update(user);
         }
     }
 }
