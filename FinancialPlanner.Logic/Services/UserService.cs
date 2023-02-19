@@ -41,7 +41,7 @@ namespace FinancialPlanner.Logic.Services
 
         public Task Insert(User user)
         {
-            throw new NotImplementedException();
+            return _repository.Insert(user);
         }
 
         public Task Update(User user)

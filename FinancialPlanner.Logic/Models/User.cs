@@ -32,7 +32,7 @@ namespace FinancialPlanner.Logic.Models
         public string Email { get; set; }
         public string? Phone { get; set; }
         public string? Address { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual Role Role { get; set; } = new Role() { Id = Guid.NewGuid().ToString(), Name = "User" };
         public string? PasswordHash { get; set; }
         public DateTime Registered { get; set; }
     }

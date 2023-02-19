@@ -1,5 +1,7 @@
 ﻿using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Entities;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,10 +68,24 @@ namespace FinancialPlanner.WebMvc.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(User model)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                if (model == null)
+                    return NotFound("404 Brak roli!");
+
+                await _userService.Insert(model);
+                if (model == null)
+                {
+                    return NotFound("404 user not created!");
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
