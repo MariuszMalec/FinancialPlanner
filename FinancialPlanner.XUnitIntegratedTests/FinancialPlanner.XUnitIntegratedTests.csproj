@@ -27,4 +27,13 @@
     <ProjectReference Include="..\FinancialPlanner.Logic\FinancialPlanner.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Source\transactions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Source\users.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

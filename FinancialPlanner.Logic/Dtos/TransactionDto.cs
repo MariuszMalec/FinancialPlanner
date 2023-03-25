@@ -10,12 +10,11 @@ using Newtonsoft.Json.Converters;
 
 namespace FinancialPlanner.Logic.Dtos
 {
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    //[JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class TransactionDto : Entity
     {
         public Currency Currency { get; set; }
 
-        [JsonProperty(PropertyName = "TypeOfTransaction")]
         public TypeOfTransaction Type { get; set; }
 
         [Required]
@@ -23,8 +22,6 @@ namespace FinancialPlanner.Logic.Dtos
         //public User User { get; set; }
         public string UserId { get; set; }
 
-        //[JsonProperty(PropertyName = "CategoryOfTransaction")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public CategoryOfTransaction Category { get; set; }
 
         [Required]

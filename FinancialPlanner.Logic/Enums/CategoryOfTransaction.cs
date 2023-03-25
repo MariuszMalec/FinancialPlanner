@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Xml.Linq;
 
 namespace FinancialPlanner.Logic.Enums
 {
-    [Serializable]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum CategoryOfTransaction
     {
         All = 0,
@@ -17,7 +19,7 @@ namespace FinancialPlanner.Logic.Enums
         [Display(Name = "All Incomes")]
         allIncome,
         [Display(Name = "Salary")]
-        [EnumMember]
+        //[EnumMember]
         //[EnumMember(Value = "Salary")]
         Salary,
         [Display(Name = "Prize")]

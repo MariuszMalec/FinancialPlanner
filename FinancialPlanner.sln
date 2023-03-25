@@ -5,9 +5,11 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.Logic", "FinancialPlanner.Logic\FinancialPlanner.Logic.csproj", "{2C57BE94-55A3-42D8-9F77-8C4BFB4D5394}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlanner.WebMvc", "FinancialPlanner.WebMvc\FinancialPlanner.WebMvc.csproj", "{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.WebMvc", "FinancialPlanner.WebMvc\FinancialPlanner.WebMvc.csproj", "{5446D9B5-E505-46AF-A474-A3E36CA7F3F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlanner.XUnitIntegratedTests", "FinancialPlanner.XUnitIntegratedTests\FinancialPlanner.XUnitIntegratedTests.csproj", "{17B3ADE2-ADDB-4672-9567-87F6D32584A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.XUnitIntegratedTests", "FinancialPlanner.XUnitIntegratedTests\FinancialPlanner.XUnitIntegratedTests.csproj", "{17B3ADE2-ADDB-4672-9567-87F6D32584A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.ConsoleApp", "FinancialPlanner.ConsoleApp\FinancialPlanner.ConsoleApp.csproj", "{4279574D-0F3C-42E1-934D-66A53CC37447}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17B3ADE2-ADDB-4672-9567-87F6D32584A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4279574D-0F3C-42E1-934D-66A53CC37447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4279574D-0F3C-42E1-934D-66A53CC37447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4279574D-0F3C-42E1-934D-66A53CC37447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4279574D-0F3C-42E1-934D-66A53CC37447}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

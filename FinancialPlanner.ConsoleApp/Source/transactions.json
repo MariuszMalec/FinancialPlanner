@@ -1,14 +1,24 @@
 [
-    {
-      "Id": "615b4be6281be025752c880001",
-      "UserId": "d6ecacff-2a64-4415-a45e-ed9a1a2d840a",
-      "Amount": "2,354.13",
-      "BalanceAfterTransaction": "3,354.13",
-      "Description": "",
-      "Date": "2017-03-11T07:27:26 -01:00",
-      "Currency": "PLN",  
-      "Type": "Income",
-      "Category": "Salary"
-      
-    }
+  {
+    "Id": "615b4be6281be025752c880001",
+    "UserId": "d6ecacff-2a64-4415-a45e-ed9a1a2d840a",
+    "Amount": "2,354.13",
+    "BalanceAfterTransaction": "3,354.13",
+    "Description": "",
+    "Date": "2017-03-11T07:27:26 -01:00",
+    "Currency": "PLN",
+    "Type": "Income",
+    "Category": "Salary"
+  },
+  {
+    "Id": "615b4be6281be025752c880002",
+    "UserId": "d6ecacff-2a64-4415-a45e-ed9a1a2d840a",
+    "Amount": "3,354.13",
+    "BalanceAfterTransaction": "1500",
+    "Description": "",
+    "Date": "2017-03-11T07:27:26 -01:00",
+    "Currency": "PLN",
+    "Type": "Outcome",
+    "Category": "Credit"
+  }
 ]
