@@ -1,11 +1,13 @@
 using FinancialPlanner.Logic.Services;
-
+using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Models;
 public static class MainMenu
 {
 
     //here you can add new main menu item
     private static readonly string[] mainMenuItem = {
-                "Load data from external file",
+                "Load data from external user file",
+                "Load data from external transaction file",
                 "Add new user",
                 "View users",
                 "Enter transaction",
@@ -61,10 +63,10 @@ public static class MainMenu
                         if (currentItem < 0) currentItem = Convert.ToInt16(mainMenuItem.Length - 1);
                     }
                 } while (keyPressed.KeyChar != 13);//if press enter selected menu
-                if (mainMenuItem[currentItem] == "Load data from external file")//thing it is better way
+                if (mainMenuItem[currentItem] == "Load data from external user file")//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
-                    var users = LoadDataService.ReadUserFile();
+                    var users = LoadDataService<User>.ReadUserFile();
                     if (users.Count > 0)
                     {
                         users.ForEach(x=>Console.WriteLine($"{x.FirstName} {x.LastName}"));
@@ -73,6 +75,22 @@ public static class MainMenu
                     else
                     {
                         Console.WriteLine($"The users have not been loaded!");
+                    }
+                    Console.WriteLine($"Press any key to continue");
+                    Console.ReadKey();
+                }
+                else if (mainMenuItem[currentItem] == "Load data from external transaction file")//thing it is better way
+                {
+                    Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+                    var transactions = LoadDataService<TransactionDto>.ReadTransacionFile().ToList();
+                    if (transactions.Count > 0)
+                    {
+                        transactions.ForEach(x=>Console.WriteLine($"{x.UserId} {x.Amount} {x.Type} {x.BalanceAfterTransaction} {x.Currency} {x.Category} {x.Date}"));
+                        Console.WriteLine($"The transaction were loaded successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The transaction have not been loaded!");
                     }
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();

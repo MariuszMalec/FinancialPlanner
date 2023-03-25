@@ -8,7 +8,7 @@ namespace FinancialPlanner.Logic.Context
     public static class SeedData
     {
 
-        private static readonly List<User> _users = LoadDataService.ReadUserFile();
+        private static readonly List<User> _users = LoadDataService<User>.ReadUserFile();
 
         private static readonly List<Role> _roles = new List<Role>() 
         {
@@ -59,7 +59,7 @@ namespace FinancialPlanner.Logic.Context
 
             await context.AddAsync(user);
 
-            //TODO ja dodac liste z rola => blad save bo probuje dodac id do rol gdzie juz rola jest !!!????
+            //TODO jak dodac liste z rola => blad save bo probuje dodac id do rol gdzie juz rola jest !!!????
             //await context.Users.AddRangeAsync(_users);
             await context.SaveChangesAsync();
         }

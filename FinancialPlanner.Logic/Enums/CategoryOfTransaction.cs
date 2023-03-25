@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace FinancialPlanner.Logic.Enums
 {
+    [Serializable]
     public enum CategoryOfTransaction
     {
         All = 0,
@@ -15,6 +17,8 @@ namespace FinancialPlanner.Logic.Enums
         [Display(Name = "All Incomes")]
         allIncome,
         [Display(Name = "Salary")]
+        [EnumMember]
+        //[EnumMember(Value = "Salary")]
         Salary,
         [Display(Name = "Prize")]
         Prize,

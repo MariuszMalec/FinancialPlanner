@@ -8,7 +8,7 @@ namespace FinancialPlanner.Logic.Services
 {
     public class UserService : IUserService
     {
-        private static readonly List<User> _users = LoadDataService.ReadUserFile();
+        private static readonly List<User> _users = LoadDataService<User>.ReadUserFile();
         private readonly IRepository<User> _repository;
         private readonly ApplicationDbContext _context;
 

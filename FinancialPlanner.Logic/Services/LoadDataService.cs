@@ -1,11 +1,14 @@
-﻿using FinancialPlanner.Logic.Models;
+﻿using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FinancialPlanner.Logic.Services
 {
-    public static class LoadDataService
+    public static class LoadDataService<T>
     {
-        public static List<User> ReadUserFile()
+        public static List<T> ReadUserFile()
         {
             string fileName = @"Source/users.json";
             string getDir = Directory.GetCurrentDirectory();
@@ -14,10 +17,25 @@ namespace FinancialPlanner.Logic.Services
             if (File.Exists(fileName))
             {
                 string jsonString = File.ReadAllText(fileName);
-                List<User>? userData = JsonConvert.DeserializeObject<List<User>>(jsonString);
+                List<T>? userData = JsonConvert.DeserializeObject<List<T>>(jsonString);
                 return userData;
             }
-            return new List<User>(){};
+            return new List<T>(){};
+        }
+
+        public static IList<T> ReadTransacionFile()
+        {
+            string fileName = @"Source/transactions.json";
+            string getDir = Directory.GetCurrentDirectory();
+            fileName = Path.Combine(getDir, fileName);
+            Console.WriteLine($"{fileName}");
+            if (File.Exists(fileName))
+            {
+                string jsonString = File.ReadAllText(fileName);
+                IList<T>? data = JsonConvert.DeserializeObject<List<T>>(jsonString);
+                return data;
+            }
+            return new List<T>(){};
         }
     }
 }

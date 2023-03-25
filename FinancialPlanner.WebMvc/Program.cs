@@ -22,11 +22,12 @@ Configuration = builder.Configuration;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+    //options.UseSqlServer(Configuration.GetConnectionString("Default"));
+    options.UseNpgsql(Configuration.GetConnectionString("Linux"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//TODO dodane aby poprawic blad zapisu czasu utc w postgres
 
 
 builder.Services.AddTransient<IUserService, UserService>();

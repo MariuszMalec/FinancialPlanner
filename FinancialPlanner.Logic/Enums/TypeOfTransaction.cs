@@ -8,7 +8,7 @@ namespace FinancialPlanner.Logic.Enums
 {
     public enum TypeOfTransaction
     {
-        All = 0,
+        //All = 0,
         Income,
         Outcome,
     }
