@@ -1,6 +1,8 @@
 ﻿using FinancialPlanner.Logic.Entities;
 using FinancialPlanner.Logic.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinancialPlanner.Logic.Models
 {
@@ -11,6 +13,7 @@ namespace FinancialPlanner.Logic.Models
         [Required(ErrorMessage = "Please enter balance")]
         [DataType(DataType.Currency)]
         [RegularExpression(@"^\d+(.\d{1,2})?$", ErrorMessage = "Provide valid balance")]
+        [Column(TypeName = "decimal(18,2)")]//TODO have to be without this error 3000!
         public decimal Balance { get; set; }
         public Currency Currency { get; set; }
 

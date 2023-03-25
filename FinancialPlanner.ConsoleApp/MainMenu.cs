@@ -1,6 +1,10 @@
 using FinancialPlanner.Logic.Services;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Models;
+using FinancialPlanner.Logic.Context;
+using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.ConsoleApp.Service;
+
 public static class MainMenu
 {
 
@@ -8,6 +12,7 @@ public static class MainMenu
     private static readonly string[] mainMenuItem = {
                 "Load data from external user file",
                 "Load data from external transaction file",
+                "Load data from external user from database",
                 "Add new user",
                 "View users",
                 "Enter transaction",
@@ -18,7 +23,7 @@ public static class MainMenu
                 "Edit existing user",
                 "Edit transaction",
                 "Exit" };
-        public static void ShowMainMenu()
+        public static void ShowMainMenu(IUserService userService)
         {
             short currentItem = 0;           
             do
@@ -69,8 +74,9 @@ public static class MainMenu
                     var users = LoadDataService<User>.ReadUserFile();
                     if (users.Count > 0)
                     {
-                        users.ForEach(x=>Console.WriteLine($"{x.FirstName} {x.LastName}"));
-                        Console.WriteLine($"The Users were loaded successful");
+                      //users.ForEach(x=>Console.WriteLine($"{x.FirstName} {x.LastName}"));
+                      UserViewer.Show(users);
+                      Console.WriteLine($"The Users were loaded successful");
                     }
                     else
                     {
@@ -91,6 +97,25 @@ public static class MainMenu
                     else
                     {
                         Console.WriteLine($"The transaction have not been loaded!");
+                    }
+                    Console.WriteLine($"Press any key to continue");
+                    Console.ReadKey();
+                }
+                else if (mainMenuItem[currentItem] == "Load data from external user from database")//thing it is better way
+                {
+                    Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                    var users = userService.GetAll().Result.ToList();
+
+                    if (users.Count > 0)
+                    {
+                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
+                    UserViewer.Show(users);
+                    Console.WriteLine($"The users were loaded successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The users have not been loaded!");
                     }
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();

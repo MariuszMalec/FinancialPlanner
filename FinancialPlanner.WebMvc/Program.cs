@@ -22,8 +22,8 @@ Configuration = builder.Configuration;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    //options.UseSqlServer(Configuration.GetConnectionString("Default"));
-    options.UseNpgsql(Configuration.GetConnectionString("Linux"));
+    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+    //options.UseNpgsql(Configuration.GetConnectionString("Linux"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
