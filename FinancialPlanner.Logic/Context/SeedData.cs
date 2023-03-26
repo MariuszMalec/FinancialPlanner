@@ -45,7 +45,6 @@ namespace FinancialPlanner.Logic.Context
                 Gender = Enums.Gender.Male,
                 Email = "mario@example.com",
                 IsActive = true,
-                PasswordHash = "",
                 Phone = "",
                 Registered = DateTime.Now,
                 Role = new Role()
@@ -53,9 +52,11 @@ namespace FinancialPlanner.Logic.Context
                     Id = Guid.NewGuid().ToString(),
                     CreatedAt = DateTime.Now,
                     Name = "SuperAdmin"
-                }
-                
+                }               
             };
+
+            var encodePassword = Base64EncodeDecode.Base64Encode("123456");
+            user.PasswordHash = encodePassword;
 
             await context.AddAsync(user);
 

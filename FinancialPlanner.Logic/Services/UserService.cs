@@ -47,6 +47,11 @@ namespace FinancialPlanner.Logic.Services
 
         public Task Insert(User user)
         {
+            //TODO dodanie istniejacej roli do uzytkownika
+            var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
+            user.Role = role;
+            var encodePassword = Base64EncodeDecode.Base64Encode("trudnehaslo");
+            user.PasswordHash = encodePassword;
             return _repository.Insert(user);
         }
 

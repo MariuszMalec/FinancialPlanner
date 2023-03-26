@@ -2,8 +2,11 @@
 using FinancialPlanner.Logic.Entities;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
+using FinancialPlanner.Logic.Services;
+using FinancialPlanner.Logic.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -68,27 +71,47 @@ namespace FinancialPlanner.WebMvc.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(User model)
+        public async Task<ActionResult> Create(UserDto model)
         {
             try
             {
-                model.Id = new Guid(model.Id).ToString();
-                model.Address = "";
-                model.Phone = "";
-                model.PasswordHash = "trudnehaslo123456";
+
+                if (model == null)
+                    return NotFound("404 bledny model!");
+
+                //mapowanie na user
+                var newUser = new User()
+                {
+                    //Id = Guid.NewGuid().ToString(),
+                    //CreatedAt = x.Registered,
+                    Company ="",
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    IsActive = model.IsActive,
+                    Address="",
+                    Phone= "",
+                    Age=99,
+                    Balance=0,
+                    Currency = Logic.Enums.Currency.PLN,
+                    CreatedAt=DateTime.Now
+                };
 
                 //if (!ModelState.IsValid)
                 //{
                 //    return View(model);
                 //}
 
-                if (model == null)
-                    return NotFound("404 Brak roli!");
+                var check = UserValidate.Check(newUser, _userService);//TODO przeniesc to do serwisu!
+                if (check != string.Empty)
+                {
+                    return NotFound($"404! user not created! Blad walidacji, {check}");
+                }
 
-                await _userService.Insert(model);
+                await _userService.Insert(newUser);
                 if (model == null)
                 {
-                    return NotFound("404 user not created!");
+                    return NotFound("404! user not created!");
                 }
 
                 return RedirectToAction(nameof(Index));
