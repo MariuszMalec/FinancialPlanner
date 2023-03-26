@@ -39,7 +39,7 @@ namespace FinancialPlanner.Logic.Dtos
         public string? Company { get; set; }
 
         [EmailAddress(ErrorMessage = "Email is not valid.")]
-
+        public string Email { get; set; }
         //public string? Phone { get; set; }
         //public string? Address { get; set; }
         //public virtual Role Role { get; set; }
