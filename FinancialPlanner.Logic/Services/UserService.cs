@@ -31,7 +31,10 @@ namespace FinancialPlanner.Logic.Services
         public async Task<IEnumerable<User>> GetAll()
         {
             var all = _context.Set<User>().Include(e=>e.Role);//TODO czy da sie to dodac do repository??
-
+            if (!_context.Users.Any())
+            {
+                throw new NotFoundException("Users not found");
+            }
             return await _repository.GetAll();
         }
 
@@ -58,7 +61,7 @@ namespace FinancialPlanner.Logic.Services
             var encodePassword = Base64EncodeDecode.Base64Encode("trudnehaslo");
             user.PasswordHash = encodePassword;
             //TODO validations in service
-            var check = UserValidate.Check(user, _context);//TODO uzycie middleware
+            var check = UserValidate.Create(user, _context);//TODO uzycie middleware
             if (check != string.Empty)
             {
                 _logger.LogError($"404! user not created! Blad walidacji, {check}");
@@ -69,6 +72,13 @@ namespace FinancialPlanner.Logic.Services
 
         public async Task Update(User user)
         {
+            //TODO validations in service
+            var check = UserValidate.Edit(user, _context);//TODO uzycie middleware
+            if (check != string.Empty)
+            {
+                _logger.LogError($"404! user not edited! Blad walidacji, {check}");
+                throw new BadRequestException($"404! user not created! Blad walidacji, {check}");
+            }
             await _repository.Update(user);
         }
     }

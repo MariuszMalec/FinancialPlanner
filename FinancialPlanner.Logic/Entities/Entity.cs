@@ -10,6 +10,8 @@ namespace FinancialPlanner.Logic.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonIgnore]
         public string Id { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

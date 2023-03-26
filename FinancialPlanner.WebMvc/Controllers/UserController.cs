@@ -34,7 +34,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var model = users.Select(x=> new UserDto() 
             { 
                 Id = x.Id , 
-                CreatedAt = x.Registered, 
+                CreatedAt = x.CreatedAt, 
                 Company = x.Company,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
@@ -79,17 +79,14 @@ namespace FinancialPlanner.WebMvc.Controllers
                 //mapowanie na user
                 var newUser = new User()
                 {
-                    Company ="",
+                    Company =model.Company,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
                     IsActive = model.IsActive,
-                    Address="",
-                    Phone= "",
                     Age=99,
-                    Balance=0,
-                    Currency = Logic.Enums.Currency.PLN,
-                    CreatedAt=DateTime.Now
+                    Balance=model.Balance,
+                    Currency = Logic.Enums.Currency.PLN
                 };
                 await _userService.Insert(newUser);
                 if (model == null)
@@ -115,26 +112,12 @@ namespace FinancialPlanner.WebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(string id, User model)
         {
-            try
-            {
-                //if (!ModelState.IsValid)
-                //{
-                //    return View(model);
-                //}
-
                 await _userService.Update(model);
-
                 if (model.Id == null)
                 {
                     return NotFound("No user!");
                 }
-
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: UserController/Delete/5
