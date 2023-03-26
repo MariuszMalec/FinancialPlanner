@@ -4,6 +4,7 @@ using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
 using FinancialPlanner.Logic.Validation;
+using FinancialPlanner.WebMvc.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -73,17 +74,11 @@ namespace FinancialPlanner.WebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(UserDto model)
         {
-            try
-            {
-
                 if (model == null)
                     return NotFound("404 bledny model!");
-
                 //mapowanie na user
                 var newUser = new User()
                 {
-                    //Id = Guid.NewGuid().ToString(),
-                    //CreatedAt = x.Registered,
                     Company ="",
                     FirstName = model.FirstName,
                     LastName = model.LastName,
@@ -96,30 +91,12 @@ namespace FinancialPlanner.WebMvc.Controllers
                     Currency = Logic.Enums.Currency.PLN,
                     CreatedAt=DateTime.Now
                 };
-
-                //if (!ModelState.IsValid)
-                //{
-                //    return View(model);
-                //}
-
-                var check = UserValidate.Check(newUser, _userService);//TODO przeniesc to do serwisu!
-                if (check != string.Empty)
-                {
-                    return NotFound($"404! user not created! Blad walidacji, {check}");
-                }
-
                 await _userService.Insert(newUser);
                 if (model == null)
                 {
                     return NotFound("404! user not created!");
                 }
-
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: UserController/Edit/5
