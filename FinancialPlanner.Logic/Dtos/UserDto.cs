@@ -14,11 +14,12 @@ namespace FinancialPlanner.Logic.Dtos
     {
         public bool IsActive { get; set; }
 
-        //[Required(ErrorMessage = "Please enter balance")]
-        //[DataType(DataType.Currency)]
-        //[RegularExpression(@"^\d+(.\d{1,2})?$", ErrorMessage = "Provide valid balance")]
-        //public decimal Balance { get; set; }
-        //public Currency Currency { get; set; }
+        [Required(ErrorMessage = "Please enter balance")]
+        [DataType(DataType.Currency)]
+        [RegularExpression(@"^\d+(.\d{1,2})?$", ErrorMessage = "Provide valid balance")]
+        public decimal Balance { get; set; }
+        
+        public Currency Currency { get; set; }
 
         //[Required(ErrorMessage = "Please enter age!")]
         //public int? Age { get; set; }

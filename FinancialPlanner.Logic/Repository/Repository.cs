@@ -40,6 +40,7 @@ namespace FinancialPlanner.Logic.Repository
             {
                 throw new ArgumentNullException("entity");
             }
+            entities.Remove(entity);//TODO aby dodac uzytkownika z rola istniejaca trzeba go wykasowac z bazy!
             entities.Add(entity);
             await _context.SaveChangesAsync();
         }

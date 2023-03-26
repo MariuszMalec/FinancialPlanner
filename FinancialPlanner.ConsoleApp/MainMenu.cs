@@ -13,6 +13,7 @@ public static class MainMenu
                 "Load data from external user file",
                 "Load data from external transaction file",
                 "Load data from external user from database",
+                "View user",
                 "Add new user",
                 "View users",
                 "Enter transaction",
@@ -23,6 +24,9 @@ public static class MainMenu
                 "Edit existing user",
                 "Edit transaction",
                 "Exit" };
+
+        const int MinNameLength = 2;
+        const int MaxNameLength = 30;
         public static void ShowMainMenu(IUserService userService)
         {
             short currentItem = 0;           
@@ -120,6 +124,42 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
+                else if (mainMenuItem[currentItem] == "View user")//thing it is better way
+                {
+                    Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                    var users = LoadDataService<User>.ReadUserFile();
+
+                    if (users.Count > 0)
+                    {
+                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
+
+                    var id = GetNonDigString("Id", MinNameLength);
+                    if (id.ToLower() == "exit")
+                    {
+                        Console.WriteLine("Exit ...");
+                        Environment.Exit(0);
+                    }
+
+                    var user = users.Where(x => x.Id == id).Select(x => x).FirstOrDefault();
+                    List<User> showUser = new List<User>() { user};
+                    if (showUser.Count() > 0 && user != null)
+                    {
+                        UserViewer.Show(showUser);
+                        Console.WriteLine($"The user {id} were loaded successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The user have not been loaded!");
+                    }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The users have not been loaded!");
+                    }
+                    Console.WriteLine($"Press any key to continue");
+                    Console.ReadKey();
+                }
                 else if (mainMenuItem[currentItem] == ("Exit"))
                 {
                     Console.WriteLine("Exit ...");
@@ -131,5 +171,27 @@ public static class MainMenu
                     Console.ReadKey();
                 }
             } while (true);
-        }    
+        }
+
+
+    public static string GetNonDigString(string name, int minLength)
+    {
+        while (true)
+        {
+            var input = string.Empty;
+            if (minLength == 0)
+            {
+                Console.Write($"{name}(press enter if null): ");
+                return Console.ReadLine()?.Trim();
+            }
+
+            Console.WriteLine($"Press exit if want leave");
+            Console.Write($"{name}: ");
+            input = Console.ReadLine()?.Trim();
+            if (input == null || input.Length < minLength || input.Length > MaxNameLength || input.Any(char.IsWhiteSpace))
+                Console.WriteLine($"Invalid data. {name} should have at least {minLength} char long and in correct format Retry!");
+            else
+                return input;
+        }
+    }
 }

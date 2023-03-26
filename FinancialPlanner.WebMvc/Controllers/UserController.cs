@@ -72,10 +72,15 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
+                model.Id = new Guid(model.Id).ToString();
+                model.Address = "";
+                model.Phone = "";
+                model.PasswordHash = "trudnehaslo123456";
+
+                //if (!ModelState.IsValid)
+                //{
+                //    return View(model);
+                //}
 
                 if (model == null)
                     return NotFound("404 Brak roli!");
@@ -112,10 +117,10 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
+                //if (!ModelState.IsValid)
+                //{
+                //    return View(model);
+                //}
 
                 await _userService.Update(model);
 
