@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Configuration;
 using System;
 using FinancialPlanner.WebMvc.Middleware;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+//Culture specific problems
+var cultureInfo = new CultureInfo("en-GB");
+cultureInfo.NumberFormat.CurrencySymbol = "PLN";
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

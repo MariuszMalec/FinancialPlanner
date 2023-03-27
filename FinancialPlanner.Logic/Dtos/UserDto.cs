@@ -17,6 +17,7 @@ namespace FinancialPlanner.Logic.Dtos
         public bool IsActive { get; set; }
 
         [Required(ErrorMessage = "Please enter balance")]
+        [Range(0, 999.99)]
         [DataType(DataType.Currency)]
         [RegularExpression(@"^\d+(.\d{1,2})?$", ErrorMessage = "Provide valid balance")]
         [Column(TypeName = "decimal(18,2)")]//TODO have to be without this error 3000!
