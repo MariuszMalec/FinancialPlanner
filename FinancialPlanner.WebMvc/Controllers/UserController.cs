@@ -140,8 +140,8 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             try
             {
-                await _userService.Delete(model);
-                if (model.Id == null)
+                var check  = await _userService.Delete(model);
+                if (check == false)
                 {
                     return RedirectToAction("EmptyList");
                 }
@@ -151,6 +151,11 @@ namespace FinancialPlanner.WebMvc.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult EmptyList()
+        {
+            return View();
         }
     }
 }

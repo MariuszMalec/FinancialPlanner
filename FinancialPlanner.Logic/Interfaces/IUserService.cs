@@ -12,7 +12,7 @@ namespace FinancialPlanner.Logic.Interfaces
 
         Task<User> GetById(string id);
 
-        Task Delete(User user);
+        Task<bool> Delete(User user);
 
         Task Update(User user);
 

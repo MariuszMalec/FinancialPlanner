@@ -27,9 +27,17 @@ namespace FinancialPlanner.Logic.Services
             _mapper = mapper;
         }
 
-        public Task Delete(User user)
+        public async Task<bool> Delete(User user)
         {
-            return _repository.Delete(user);
+            //TODO validations in service
+            var check = UserValidate.Delete(user, _context);//TODO uzycie middleware
+            if (check != string.Empty)
+            {
+                _logger.LogError($"404! user can't be deleted!, {check}");
+                return false;
+            }
+            await _repository.Delete(user);
+            return true;
         }
 
         public async Task<IEnumerable<User>> GetAll()
