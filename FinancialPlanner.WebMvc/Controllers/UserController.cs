@@ -1,46 +1,48 @@
 ﻿using FinancialPlanner.Logic.Dtos;
-using FinancialPlanner.Logic.Entities;
-using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
-using FinancialPlanner.Logic.Services;
-using FinancialPlanner.Logic.Validation;
-using FinancialPlanner.WebMvc.Exceptions;
-using Microsoft.AspNetCore.Http;
+using FinancialPlanner.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMapper mapper = null)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         // GET: UserController
         public async Task<IActionResult> Index()
         {
-            var users = await _userService.GetAll();
+            //var users = await _userService.GetAll();
+
+            var users = await _userService.GetAllQueryable();//TODO dodalem do usera role!!
+
             if (!users.Any())
             {
                 return View("No users!");
             }
 
-            //var model = _mapper.Map<List<UserView>>(users);
+            //TODO automapper chyba gorszy bo trzeba szukac profile
+            var model = _mapper.Map<List<UserDto>>(users);
 
-            var model = users.Select(x=> new UserDto() 
-            { 
-                Id = x.Id , 
-                CreatedAt = x.CreatedAt, 
-                Company = x.Company,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                IsActive = x.IsActive
-            });
+            //TODO standard mapping
+            //var model = users.Select(x=> new UserDto() 
+            //{ 
+            //    Id = x.Id , 
+            //    CreatedAt = x.CreatedAt, 
+            //    Company = x.Company,
+            //    FirstName = x.FirstName,
+            //    LastName = x.LastName,
+            //    Email = x.Email,
+            //    IsActive = x.IsActive
+            //});
 
             return View(model);
         }

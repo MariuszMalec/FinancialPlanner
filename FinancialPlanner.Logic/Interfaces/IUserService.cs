@@ -6,6 +6,8 @@ namespace FinancialPlanner.Logic.Interfaces
     {
         Task<IEnumerable<User>> GetAll();
 
+        Task<IQueryable<User>> GetAllQueryable();
+
         Task Insert(User user);
 
         Task<User> GetById(string id);

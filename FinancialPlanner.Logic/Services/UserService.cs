@@ -1,4 +1,6 @@
-﻿using FinancialPlanner.Logic.Context;
+﻿using AutoMapper;
+using FinancialPlanner.Logic.Context;
+using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Exceptions;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
@@ -15,12 +17,14 @@ namespace FinancialPlanner.Logic.Services
         private readonly IRepository<User> _repository;
         private readonly ApplicationDbContext _context;
         private readonly ILogger<UserService> _logger;
+        private readonly IMapper _mapper;
 
-        public UserService(IRepository<User> repository, ApplicationDbContext context, ILogger<UserService> logger = null)
+        public UserService(IRepository<User> repository, ApplicationDbContext context, ILogger<UserService> logger = null, IMapper mapper = null)
         {
             _repository = repository;
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public Task Delete(User user)
@@ -38,9 +42,14 @@ namespace FinancialPlanner.Logic.Services
             return await _repository.GetAll();
         }
 
-        public IQueryable<User> GetAllQueryable()
+        public async Task<IQueryable<User>> GetAllQueryable()
         {
-            throw new NotImplementedException();
+            var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
+            if (!all.Any())
+            {
+                throw new NotFoundException("Users not found");
+            }
+            return all;
         }
 
         public Task<User> GetByEmail(string userEmail)
