@@ -11,9 +11,11 @@ public static class MainMenu
     //here you can add new main menu item
     private static readonly string[] mainMenuItem = {
                 "Load data from external user file",
+                "View users from file",
                 "Load data from external transaction file",
                 "Load data from external user from database",
                 "View user",
+                "Edit user",
                 "Add new user",
                 "View users",
                 "Enter transaction",
@@ -26,7 +28,7 @@ public static class MainMenu
                 "Exit" };
 
         const int MinNameLength = 2;
-        const int MaxNameLength = 30;
+        const int MaxNameLength = 50;
         public static void ShowMainMenu(IUserService userService)
         {
             short currentItem = 0;           
@@ -89,7 +91,42 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == "Load data from external transaction file")//thing it is better way
+            else if (mainMenuItem[currentItem] == "View user from file")//thing it is better way
+            {
+                Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                var users = LoadDataService<User>.ReadUserFile();
+
+                if (users.Count > 0)
+                {
+                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
+
+                    var id = GetNonDigString("Id", MinNameLength);
+                    if (id.ToLower() == "exit")
+                    {
+                        Console.WriteLine("Exit ...");
+                        Environment.Exit(0);
+                    }
+                    var user = users.Where(x => x.Id == id).Select(x => x).FirstOrDefault();
+                    List<User> showUser = new List<User>() { user };
+                    if (showUser.Count() > 0 && user != null)
+                    {
+                        UserViewer.Show(showUser);
+                        Console.WriteLine($"The user {id} were loaded successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The user have not been loaded!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"The users have not been loaded!");
+                }
+                Console.WriteLine($"Press any key to continue");
+                Console.ReadKey();
+            }
+            else if (mainMenuItem[currentItem] == "Load data from external transaction file")//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
                     var transactions = LoadDataService<TransactionDto>.ReadTransacionFile().ToList();
@@ -128,7 +165,7 @@ public static class MainMenu
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
-                    var users = LoadDataService<User>.ReadUserFile();
+                    var users =userService.GetAll().Result.ToList();
 
                     if (users.Count > 0)
                     {
@@ -140,8 +177,7 @@ public static class MainMenu
                         Console.WriteLine("Exit ...");
                         Environment.Exit(0);
                     }
-
-                    var user = users.Where(x => x.Id == id).Select(x => x).FirstOrDefault();
+                    var user = userService.GetById(id).Result;
                     List<User> showUser = new List<User>() { user};
                     if (showUser.Count() > 0 && user != null)
                     {
@@ -160,7 +196,50 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == ("Exit"))
+            else if (mainMenuItem[currentItem] == "Edit user")//thing it is better way
+            {
+                Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                var users = userService.GetAll().Result.ToList();
+
+                if (users.Count > 0)
+                {
+                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
+
+                    var id = GetNonDigString("Id", MinNameLength);
+                    if (id.ToLower() == "exit")
+                    {
+                        Console.WriteLine("Exit ...");
+                        Environment.Exit(0);
+                    }
+
+                    var newUser = userService.GetById(id).Result;
+
+                    //readline here
+                    newUser.FirstName = "test1";
+
+                    userService.Update(newUser);
+
+                    //blad za szybko wyswietlam
+                    var showUser = userService.GetAll().Result.ToList();
+                    if (showUser.Count() > 0 && showUser != null)
+                    {
+                        UserViewer.Show(showUser);
+                        Console.WriteLine($"The user {id} were loaded successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The user have not been loaded!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"The users have not been loaded!");
+                }
+                Console.WriteLine($"Press any key to continue");
+                Console.ReadKey();
+            }
+            else if (mainMenuItem[currentItem] == ("Exit"))
                 {
                     Console.WriteLine("Exit ...");
                     Environment.Exit(0);
