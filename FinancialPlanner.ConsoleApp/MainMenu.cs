@@ -30,10 +30,10 @@ public static class MainMenu
                 "Edit transaction",
                 "Exit" };
 
-        const int MinNameLength = 2;
-        const int MaxNameLength = 50;
-        const int MinAge = 13;
-        const int MaxAge = 99;
+        public const int MinNameLength = 2;
+        public const int MaxNameLength = 50;
+        public const int MinAge = 13;
+        public const int MaxAge = 99;
         public static void ShowMainMenu(IUserService userService)
         {
             short currentItem = 0;           
@@ -106,7 +106,7 @@ public static class MainMenu
                 {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
 
-                    var id = GetNonDigString("Id", MinNameLength);
+                    var id = EditService.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id.ToLower() == "exit")
                     {
                         Console.WriteLine("Exit ...");
@@ -176,7 +176,7 @@ public static class MainMenu
                     {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
 
-                    var id = GetNonDigString("Id", MinNameLength);
+                    var id = EditService.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id.ToLower() == "exit")
                     {
                         Console.WriteLine("Exit ...");
@@ -211,57 +211,20 @@ public static class MainMenu
                 {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
 
-                    var id = GetNonDigString("Id", MinNameLength);
+                    var id = EditService.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id == null)
                     {
                         Console.WriteLine("Exit ...");
                         Environment.Exit(0);
                     }
 
-                    var newUser = userService.GetById(id).Result;
-
-                    //readline here
-                    var firstName = GetNonDigString("FirstName", MinNameLength);
-                    if (firstName != null)
-                        newUser.FirstName = firstName;
-
-                    var lastName = GetNonDigString("LastName", MinNameLength);
-
-                    if (lastName != null)
-                        newUser.LastName = GetNonDigString("LastName", MinNameLength);
-
-                    var email = GetEmail();
-                    if (email != null)
-                        newUser.Email = GetEmail();
-
-                    newUser.Gender = GetGender();
-
-                    var balance = GetDecimalInput("current balance");
-                    if (balance != -1)
-                        newUser.Balance = balance;
-
-                    var age = GetIntInput("Age", MinAge, MaxAge);
-                    if (age != 0)
-                        newUser.Age = age;
-
-                    userService.Update(newUser);
+                    var selectedUser = userService.GetById(id).Result;
+                    selectedUser = EditService.EditUser(selectedUser, MinNameLength, MaxNameLength, MinAge, MaxAge);
+                    userService.Update(selectedUser);
 
                     Console.WriteLine("=================================================================");
                     Console.WriteLine("User created successfully! Press any key to continue.");
                     Console.ReadKey();
-
-
-                    //blad za szybko wyswietlam
-                    //var showUser = userService.GetAll().Result.ToList();
-                    //if (showUser.Count() > 0 && showUser != null)
-                    //{
-                    //    UserViewer.Show(showUser);
-                    //    Console.WriteLine($"The user {id} were loaded successful");
-                    //}
-                    //else
-                    //{
-                    //    Console.WriteLine($"The user have not been loaded!");
-                    //}
                 }
                 else
                 {
@@ -283,110 +246,4 @@ public static class MainMenu
             } while (true);
         }
 
-
-    public static string GetNonDigString(string name, int minLength)
-    {
-        while (true)
-        {
-            var input = string.Empty;
-            if (minLength == 0)
-            {
-                Console.Write($"{name}(press enter if null): ");
-                return Console.ReadLine()?.Trim();
-            }
-
-            Console.WriteLine($"write exit or press enter if you want leave");
-            Console.Write($"{name}: ");
-            input = Console.ReadLine()?.Trim();
-
-            if (input.ToLower() == "exit" || input == "")
-                return null;
-
-            if (input == null || input.Length < minLength || input.Length > MaxNameLength || input.Any(char.IsWhiteSpace))
-                Console.WriteLine($"Invalid data. {name} should have at least {minLength} char long and in correct format Retry!");
-            else
-                return input;
-        }
-    }
-
-    public static string GetEmail()
-    {
-        while (true)
-        {
-            Console.Write("email: ");
-            var input = Console.ReadLine()?.Trim();
-
-            if (input.ToLower() == "exit" || input == "")
-                return null;
-
-            var message = UserValidate.ValidateEmail(input);
-
-            if (string.IsNullOrEmpty(message))
-                return input;
-
-            Console.WriteLine(message);
-        }
-    }
-
-    private static Gender GetGender()
-    {
-        var genderArray = Enum.GetNames(typeof(Gender));
-
-        Console.WriteLine("Choose your gender:");
-        for (int i = 0; i < genderArray.Length; i++)
-        {
-            Console.WriteLine($"{i + 1}. {genderArray[i]}");
-        }
-        while (true)
-        {
-            var input = Console.ReadKey();
-
-            Console.WriteLine();
-            if (!char.IsDigit(input.KeyChar))
-            {
-                Console.WriteLine("Wrong value, try again!\n");
-                continue;
-            }
-
-            var isParsed = int.TryParse(input.KeyChar.ToString(), out var selection);
-
-            if (isParsed && selection <= genderArray.Length)
-                return (Gender)selection - 1;
-
-            Console.WriteLine("Wrong selection, try Again!");
-        }
-    }
-
-    private static decimal GetDecimalInput(string name)
-    {
-        while (true)
-        {
-            Console.WriteLine($"write exit or press enter if you want leave");
-            Console.Write($"{name}: ");
-            var input = Console.ReadLine().Replace(',', '.');
-            if (input.ToLower() == "exit" || input == "")
-                return -1;
-            var isDig = decimal.TryParse(input, out var result);
-            if (isDig && result >= 0)
-                return result;
-
-            Console.WriteLine($"{name} should be no less than 0");
-        }
-    }
-
-    private static int GetIntInput(string name, int min, int max)
-    {
-        while (true)
-        {
-            Console.Write($"{name}: ");
-            var input = Console.ReadLine();
-            if (input.ToLower() == "exit" || input == "")
-                return 0;
-            var isDig = int.TryParse(input, out var result);
-            if (isDig && result >= min && result <= max)
-                return result;
-
-            Console.WriteLine($"{name} should be between {min} and {max}");
-        }
-    }
 }
