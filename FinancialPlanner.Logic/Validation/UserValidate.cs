@@ -47,5 +47,22 @@ namespace FinancialPlanner.Logic.Validation
             }
             return string.Empty;
         }
+
+        public static string ValidateEmail(string input)
+        {
+            if (input == null)
+                return "Input is empty, retry!";
+
+            else if (input.ToLower() == "exit")
+                return "exit";
+
+            else if (!input.Contains('@') || !input.Contains('.') || input.Length < 7)
+                return "Email has to be in correct format";
+
+            else if (input.LastIndexOf(".", StringComparison.Ordinal) > input.Length - 3)
+                return "Email should be in correct format";
+
+            return string.Empty;
+        }
     }
 }
