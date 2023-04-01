@@ -7,6 +7,7 @@ using FinancialPlanner.ConsoleApp.Service;
 using FinancialPlanner.Logic.Validation;
 using FinancialPlanner.Logic.Enums;
 using System.ComponentModel.DataAnnotations;
+using FinancialPlanner.ConsoleApp.Validators;
 
 public static class MainMenu
 {
@@ -21,13 +22,13 @@ public static class MainMenu
                 "Edit user",
                 "Add new user",
                 "View users",
-                "Enter transaction",
-                "Show all transaction",
-                "Show transaction by Category",
-                "Show transaction according User",
-                "Show Users transaction by Type",
-                "Edit existing user",
-                "Edit transaction",
+                //"Enter transaction",
+                //"Show all transaction",
+                //"Show transaction by Category",
+                //"Show transaction according User",
+                //"Show Users transaction by Type",
+                //"Edit existing user",
+                //"Edit transaction",
                 "Exit" };
 
         public const int MinNameLength = 2;
@@ -106,7 +107,7 @@ public static class MainMenu
                 {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
 
-                    var id = EditService.GetNonDigString("Id", MinNameLength, MaxNameLength);
+                    var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id.ToLower() == "exit")
                     {
                         Console.WriteLine("Exit ...");
@@ -176,7 +177,7 @@ public static class MainMenu
                     {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
 
-                    var id = EditService.GetNonDigString("Id", MinNameLength, MaxNameLength);
+                    var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id.ToLower() == "exit")
                     {
                         Console.WriteLine("Exit ...");
@@ -211,7 +212,7 @@ public static class MainMenu
                 {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
 
-                    var id = EditService.GetNonDigString("Id", MinNameLength, MaxNameLength);
+                    var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id == null)
                     {
                         Console.WriteLine("Exit ...");
@@ -223,7 +224,45 @@ public static class MainMenu
                     userService.Update(selectedUser);
 
                     Console.WriteLine("=================================================================");
-                    Console.WriteLine("User created successfully! Press any key to continue.");
+                    Console.WriteLine("User edited successfully! Press any key to continue.");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine($"The users have not been loaded!");
+                }
+                Console.WriteLine($"Press any key to continue");
+                Console.ReadKey();
+            }
+            else if (mainMenuItem[currentItem] == "Add new user")//thing it is better way
+            {
+                Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                var users = userService.GetAll().Result.ToList();
+
+                if (users.Count > 0)
+                {
+                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
+
+                    var newUser = CreateService.Insert(MinNameLength, MaxNameLength, MinAge, MaxAge);
+                    if (newUser == null)
+                    {
+                        Console.WriteLine("Exit ...");
+                        Environment.Exit(0);
+                    }
+
+                    var check = userService.Insert(newUser).Result;
+
+                    if (check == false)
+                    {
+                        Console.WriteLine("=================================================================");
+                        Console.WriteLine("User was not created successfully! Press any key to continue.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("=================================================================");
+                        Console.WriteLine("User created successfully. Press any key to continue.");
+                    }
                     Console.ReadKey();
                 }
                 else

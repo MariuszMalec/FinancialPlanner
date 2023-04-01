@@ -8,7 +8,7 @@ namespace FinancialPlanner.Logic.Interfaces
 
         Task<IQueryable<User>> GetAllQueryable();
 
-        Task Insert(User user);
+        Task<bool> Insert(User user);
 
         Task<User> GetById(string id);
 

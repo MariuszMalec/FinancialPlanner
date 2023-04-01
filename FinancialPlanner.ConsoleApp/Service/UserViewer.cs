@@ -24,6 +24,13 @@ namespace FinancialPlanner.ConsoleApp.Service
                 {
                     foreach (var item in users)
                     {
+                        if (item.Company == null)
+                            item.Company = "Unknown";
+                        if (item.Address == null)
+                            item.Address = "Unknown";
+                        if (item.PasswordHash == null)
+                            item.PasswordHash = "123456";
+
                         Console.WriteLine($"|{item.FirstName.ToString().PadRight(textPaddingWidth, paddingChar)} " +
                                           $"|{item.LastName.ToString().PadRight(textPaddingWidth, paddingChar)} " +
                                           $"|{item.Age.ToString().PadRight(textPaddingWidth, paddingChar)} " +

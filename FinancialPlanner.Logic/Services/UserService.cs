@@ -70,21 +70,28 @@ namespace FinancialPlanner.Logic.Services
             return await _repository.GetById(id);
         }
 
-        public Task Insert(User user)
+        public async Task<bool> Insert(User user)
         {
             //TODO dodanie istniejacej roli do uzytkownika
             var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
             user.Role = role;
             var encodePassword = Base64EncodeDecode.Base64Encode("trudnehaslo");
             user.PasswordHash = encodePassword;
-            //TODO validations in service
+            //TODO validations in service           
+            if (user.Age == null || user.Balance == null || user.Email == null || user.FirstName == null || user.LastName == null)//uzycie false bez maiddleware, co lepsze!
+            {
+                _logger.LogError($"404! user not created! Blad walidacji!");
+                return false;
+            }
+
             var check = UserValidate.Create(user, _context);//TODO uzycie middleware
             if (check != string.Empty)
             {
                 _logger.LogError($"404! user not created! Blad walidacji, {check}");
                 throw new BadRequestException($"404! user not created! Blad walidacji, {check}");               
             }
-            return _repository.Insert(user);
+            await _repository.Insert(user);
+            return true;
         }
 
         public async Task Update(User user)

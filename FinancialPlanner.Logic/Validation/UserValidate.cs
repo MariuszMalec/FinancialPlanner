@@ -16,6 +16,14 @@ namespace FinancialPlanner.Logic.Validation
             {
                 return "Email exist yet, fix to new one";
             }
+            if (user.Currency == null)
+            {
+                return "Currency can't by null";
+            }
+            if (user.Age == null)
+            {
+                return "Age can't by null";
+            }
             return string.Empty;
         }
 

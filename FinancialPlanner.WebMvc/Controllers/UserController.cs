@@ -90,11 +90,10 @@ namespace FinancialPlanner.WebMvc.Controllers
                     Balance=model.Balance,
                     Currency = Logic.Enums.Currency.PLN
                 };
-                await _userService.Insert(newUser);
-                if (model == null)
-                {
-                    return NotFound("404! user not created!");
-                }
+                var check = await _userService.Insert(newUser);
+                if (check == false)
+                    return NotFound($"User was not created!");
+
                 return RedirectToAction(nameof(Index));
         }
 

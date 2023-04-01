@@ -3,11 +3,14 @@ using FinancialPlanner.Logic.Models;
 
 namespace FinancialPlanner.ConsoleApp.Service
 {
-    public static class EditService
+    public static class CreateService
     {
-        public static User EditUser(User newUser, int minNameLength, int maxNameLength, int minAge, int maxAge)
+        internal static User Insert(int minNameLength, int maxNameLength, int minAge, int maxAge)
         {
-            //readline here
+            var newUser = new User() { };
+
+            newUser.Id = Guid.NewGuid().ToString();
+
             var firstName = ValidateUser.GetNonDigString("FirstName", minNameLength, maxNameLength);
             if (firstName != null)
                 newUser.FirstName = firstName;
@@ -29,6 +32,10 @@ namespace FinancialPlanner.ConsoleApp.Service
             var age = ValidateUser.GetIntInput("Age", minAge, maxAge);
             if (age != 0)
                 newUser.Age = age;
+
+            newUser.Company = null;
+            newUser.IsActive = true;
+            newUser.Currency = Logic.Enums.Currency.PLN;
 
             return newUser;
         }
