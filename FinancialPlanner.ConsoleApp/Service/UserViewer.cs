@@ -30,6 +30,8 @@ namespace FinancialPlanner.ConsoleApp.Service
                             item.Address = "Unknown";
                         if (item.PasswordHash == null)
                             item.PasswordHash = "123456";
+                        if (item.Age == null)
+                            item.Age = 99;
 
                         Console.WriteLine($"|{item.FirstName.ToString().PadRight(textPaddingWidth, paddingChar)} " +
                                           $"|{item.LastName.ToString().PadRight(textPaddingWidth, paddingChar)} " +

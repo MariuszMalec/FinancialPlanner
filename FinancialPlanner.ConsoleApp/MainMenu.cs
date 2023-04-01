@@ -1,26 +1,23 @@
-using FinancialPlanner.Logic.Services;
-using FinancialPlanner.Logic.Dtos;
-using FinancialPlanner.Logic.Models;
-using FinancialPlanner.Logic.Context;
-using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.ConsoleApp.Service;
-using FinancialPlanner.Logic.Validation;
-using FinancialPlanner.Logic.Enums;
-using System.ComponentModel.DataAnnotations;
 using FinancialPlanner.ConsoleApp.Validators;
+using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
+using FinancialPlanner.Logic.Services;
 
 public static class MainMenu
 {
 
     //here you can add new main menu item
     private static readonly string[] mainMenuItem = {
-                "Load data from external user file",
-                "View users from file",
-                "Load data from external transaction file",
+                //"Load data from external user file",
+                //"View users from file",
+                //"Load data from external transaction file",
                 "Load data from external user from database",
                 "View user",
-                "Edit user",
                 "Add new user",
+                "Edit user",
+                "Delete user",
                 "View users",
                 //"Enter transaction",
                 //"Show all transaction",
@@ -35,6 +32,7 @@ public static class MainMenu
         public const int MaxNameLength = 50;
         public const int MinAge = 13;
         public const int MaxAge = 99;
+
         public static void ShowMainMenu(IUserService userService)
         {
             short currentItem = 0;           
@@ -97,7 +95,7 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-            else if (mainMenuItem[currentItem] == "View user from file")//thing it is better way
+                else if (mainMenuItem[currentItem] == "View user from file")//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -132,7 +130,7 @@ public static class MainMenu
                 Console.WriteLine($"Press any key to continue");
                 Console.ReadKey();
             }
-            else if (mainMenuItem[currentItem] == "Load data from external transaction file")//thing it is better way
+                else if (mainMenuItem[currentItem] == "Load data from external transaction file")//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
                     var transactions = LoadDataService<TransactionDto>.ReadTransacionFile().ToList();
@@ -192,7 +190,7 @@ public static class MainMenu
                     }
                     else
                     {
-                        Console.WriteLine($"The user have not been loaded!");
+                        Console.WriteLine($"The user with id {id} doesn't exist, have not been loaded!");
                     }
                     }
                     else
@@ -202,7 +200,7 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-            else if (mainMenuItem[currentItem] == "Edit user")//thing it is better way
+                else if (mainMenuItem[currentItem] == "Edit user")//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -210,8 +208,6 @@ public static class MainMenu
 
                 if (users.Count > 0)
                 {
-                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
-
                     var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
                     if (id == null)
                     {
@@ -220,11 +216,18 @@ public static class MainMenu
                     }
 
                     var selectedUser = userService.GetById(id).Result;
-                    selectedUser = EditService.EditUser(selectedUser, MinNameLength, MaxNameLength, MinAge, MaxAge);
-                    userService.Update(selectedUser);
 
-                    Console.WriteLine("=================================================================");
-                    Console.WriteLine("User edited successfully! Press any key to continue.");
+                    if (selectedUser != null)
+                    {
+                        selectedUser = EditService.EditUser(selectedUser, MinNameLength, MaxNameLength, MinAge, MaxAge);
+                        userService.Update(selectedUser);
+                        Console.WriteLine("=================================================================");
+                        Console.WriteLine("User edited successfully! Press any key to continue.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The user with id {id} doesn't exist, have not been loaded!");
+                    }
                     Console.ReadKey();
                 }
                 else
@@ -234,7 +237,7 @@ public static class MainMenu
                 Console.WriteLine($"Press any key to continue");
                 Console.ReadKey();
             }
-            else if (mainMenuItem[currentItem] == "Add new user")//thing it is better way
+                else if (mainMenuItem[currentItem] == "Add new user")//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -271,6 +274,54 @@ public static class MainMenu
                 }
                 Console.WriteLine($"Press any key to continue");
                 Console.ReadKey();
+
+            }
+            else if (mainMenuItem[currentItem] == "Delete user")//thing it is better way
+            {
+                Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                var users = userService.GetAll().Result.ToList();
+
+                if (users.Count > 0)
+                {
+                    var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
+                    if (id == null)
+                    {
+                        Console.WriteLine("Exit ...");
+                        Environment.Exit(0);
+                    }
+
+                    var selectedUser = userService.GetById(id).Result;
+
+                    if (selectedUser == null)
+                    {
+                        Console.WriteLine("Exit ...");
+                        Environment.Exit(0);
+                    }
+
+                    var check = userService.Delete(selectedUser).Result;
+
+                    if (check == false)
+                    {
+                        Console.WriteLine("=================================================================");
+                        Console.WriteLine("User was not deleted successfully! Press any key to continue.");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("=================================================================");
+                        Console.WriteLine("User deleted successfully. Press any key to continue.");
+                        Console.ResetColor();
+                    }
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine($"The users have not been loaded!");
+                }
+                Console.WriteLine($"Press any key to continue");
+                Console.ReadKey();
+
             }
             else if (mainMenuItem[currentItem] == ("Exit"))
                 {
