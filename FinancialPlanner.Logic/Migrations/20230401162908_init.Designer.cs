@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialPlanner.Logic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230325224514_init")]
+    [Migration("20230401162908_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -41,6 +41,46 @@ namespace FinancialPlanner.Logic.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("FinancialPlanner.Logic.Models.Transaction", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("BalanceAfterTransaction")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("FinancialPlanner.Logic.Models.User", b =>
@@ -101,11 +141,21 @@ namespace FinancialPlanner.Logic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FinancialPlanner.Logic.Models.Transaction", b =>
+                {
+                    b.HasOne("FinancialPlanner.Logic.Models.User", null)
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("FinancialPlanner.Logic.Models.User", b =>
@@ -117,6 +167,11 @@ namespace FinancialPlanner.Logic.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("FinancialPlanner.Logic.Models.User", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

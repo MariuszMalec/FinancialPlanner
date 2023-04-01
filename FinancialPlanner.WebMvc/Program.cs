@@ -45,7 +45,8 @@ using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedData.SeedRoles(dataContext);
-    await SeedData.SeedUsers(dataContext);  
+    await SeedData.SeedUsers(dataContext);
+    await SeedData.SeedTransaction(dataContext);
 }   
 
 // Configure the HTTP request pipeline.

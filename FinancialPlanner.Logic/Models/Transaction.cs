@@ -31,7 +31,6 @@ namespace FinancialPlanner.Logic.Models
         public decimal BalanceAfterTransaction { get; set; }
         public string? Description { get; set; }
         public DateTime Date { get; set; }
-
-        public virtual User User { get; set; }
+        public string? UserId { get; set; }
     }
 }

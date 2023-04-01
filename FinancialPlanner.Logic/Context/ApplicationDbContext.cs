@@ -12,7 +12,7 @@ namespace FinancialPlanner.Logic.Context
 
         public DbSet<Role> Roles { get; set; }
 
-        //public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
