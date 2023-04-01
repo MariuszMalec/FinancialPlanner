@@ -39,5 +39,7 @@ namespace FinancialPlanner.Logic.Models
         public string? PasswordHash { get; set; }
         public DateTime Registered { get; set; }
 
+        public virtual IList<Transaction> Transactions { get; set; }
+
     }
 }

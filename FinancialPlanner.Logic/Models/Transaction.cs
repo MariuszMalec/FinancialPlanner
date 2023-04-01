@@ -1,20 +1,21 @@
-using FinancialPlanner.Logic.Entities;
+﻿using FinancialPlanner.Logic.Entities;
 using FinancialPlanner.Logic.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FinancialPlanner.Logic.Dtos
+namespace FinancialPlanner.Logic.Models
 {
-    //[JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class TransactionDto : Entity
+    public class Transaction : Entity
     {
         public Currency Currency { get; set; }
 
         public TypeOfTransaction Type { get; set; }
-
-        [Required]
-        [JsonProperty(PropertyName = "UserId")]
-        public string UserId { get; set; }
 
         public CategoryOfTransaction Category { get; set; }
 
@@ -29,7 +30,8 @@ namespace FinancialPlanner.Logic.Dtos
         [JsonProperty(PropertyName = "BalanceAfterTransaction")]
         public decimal BalanceAfterTransaction { get; set; }
         public string? Description { get; set; }
-
         public DateTime Date { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

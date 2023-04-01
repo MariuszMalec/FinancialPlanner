@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using FinancialPlanner.Logic.Context;
+﻿using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Models;
+using FinancialPlanner.Logic.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
     public class RolesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IRepository<Role> _repository;
 
-        public RolesController(ApplicationDbContext context)
+        public RolesController(ApplicationDbContext context, IRepository<Role> repository = null)
         {
             _context = context;
+            _repository = repository;
         }
 
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-              return _context.Roles != null ? 
+
+            var model = _repository.GetAll().Result;//to samo tylko uzycie repository
+
+            return _context.Roles != null ? 
                           View(await _context.Roles.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Roles'  is null.");
         }

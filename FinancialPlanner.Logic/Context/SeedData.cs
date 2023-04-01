@@ -10,6 +10,8 @@ namespace FinancialPlanner.Logic.Context
 
         private static readonly List<User> _users = LoadDataService<User>.ReadUserFile();
 
+        private static readonly List<Transaction> _transactions = LoadDataService<Transaction>.ReadUserFile();
+
         private static readonly List<Role> _roles = new List<Role>() 
         {
             new Role() { Id = Guid.NewGuid().ToString() , Name = "User" },
@@ -74,5 +76,15 @@ namespace FinancialPlanner.Logic.Context
             await context.Roles.AddRangeAsync(_roles);
             await context.SaveChangesAsync();
         }
+
+        //public static async Task SeedTransaction(ApplicationDbContext context)
+        //{
+        //    if (context.Transactions.Any())
+        //    {
+        //        return;
+        //    }
+        //    await context.Transactions.AddRangeAsync(_transactions);
+        //    await context.SaveChangesAsync();
+        //}
     }
 }
