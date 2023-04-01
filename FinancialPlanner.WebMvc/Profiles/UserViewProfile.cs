@@ -13,6 +13,8 @@ namespace FinancialPlanner.WebMvc.Profiles
                 //.ForMember(d => d.Id, o => o.Ignore())
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => $"{s.Role.Name}"))
                 ;
+            CreateMap<Transaction, TransactionDto>()
+                ;
         }
     }
 }
