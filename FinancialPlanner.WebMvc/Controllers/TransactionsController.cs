@@ -10,26 +10,28 @@ using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using AutoMapper;
 using FinancialPlanner.Logic.Dtos;
+using System.Transactions;
+using FinancialPlanner.Logic.Services;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
     public class TransactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IRepository<Transaction> _repository;
         private readonly IMapper _mapper;
+        private readonly TransactionService _transactionService;
 
-        public TransactionsController(ApplicationDbContext context, IRepository<Transaction> repository = null, IMapper mapper = null)
+        public TransactionsController(ApplicationDbContext context, IMapper mapper = null, TransactionService transactionService = null)
         {
             _context = context;
-            _repository = repository;
             _mapper = mapper;
+            _transactionService = transactionService;
         }
 
         // GET: Transactions
         public async Task<IActionResult> Index()
         {
-            var transactions = await _repository.GetAll();
+            var transactions = await _transactionService.GetAllQueryable();
 
             var model = _mapper.Map<List<TransactionDto>>(transactions);
 
@@ -67,7 +69,7 @@ namespace FinancialPlanner.WebMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Transaction transaction)
+        public async Task<IActionResult> Create([Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +101,7 @@ namespace FinancialPlanner.WebMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Transaction transaction)
+        public async Task<IActionResult> Edit(string id, [Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
         {
             if (id != transaction.Id)
             {

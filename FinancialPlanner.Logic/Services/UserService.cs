@@ -53,6 +53,7 @@ namespace FinancialPlanner.Logic.Services
         public async Task<IQueryable<User>> GetAllQueryable()
         {
             var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
+
             if (!all.Any())
             {
                 throw new NotFoundException("Users not found");
@@ -103,6 +104,10 @@ namespace FinancialPlanner.Logic.Services
                 _logger.LogError($"404! user not edited! Blad walidacji, {check}");
                 throw new BadRequestException($"404! user not created! Blad walidacji, {check}");
             }
+
+            var transactions = await _context.Transactions.Where(t => t.UserId == user.Id).Select(t=>t.BalanceAfterTransaction).ToListAsync();
+            user.Balance = transactions.LastOrDefault();
+
             await _repository.Update(user);
         }
     }

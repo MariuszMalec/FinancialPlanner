@@ -15,6 +15,11 @@ namespace FinancialPlanner.WebMvc.Profiles
                 ;
             CreateMap<Transaction, TransactionDto>()
                 ;
+            CreateMap<Transaction, TransactionUserDto>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(s => $"{s.User.FirstName}"))
+                .ForMember(d => d.LastName, o => o.MapFrom(s => $"{s.User.LastName}"))
+                .ForMember(d => d.Balance, o => o.MapFrom(s => $"{s.User.Balance}"))
+                ;
         }
     }
 }

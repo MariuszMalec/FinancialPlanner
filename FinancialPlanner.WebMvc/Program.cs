@@ -33,6 +33,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//TODO dodane
 
 
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 

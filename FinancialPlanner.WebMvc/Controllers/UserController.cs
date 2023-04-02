@@ -3,6 +3,8 @@ using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using FinancialPlanner.Logic.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -10,14 +12,30 @@ namespace FinancialPlanner.WebMvc.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly TransactionService _transactionService;
 
-        public UserController(IUserService userService, IMapper mapper = null)
+        public UserController(IUserService userService, IMapper mapper = null, TransactionService transactionService = null)
         {
             _userService = userService;
             _mapper = mapper;
+            _transactionService = transactionService;
         }
 
         // GET: UserController
+
+        public async Task<IActionResult> GetUserTransactions(string id)
+        {
+            var transactions = await _transactionService.GetAllQueryable();
+
+            var userTransactions = transactions.Where(u=>u.User.Id == id).ToList();
+
+            var model = _mapper.Map<List<TransactionUserDto>>(userTransactions);
+
+            return model != null ?
+                          View(model) :
+                          Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+        }
+
         public async Task<IActionResult> Index()
         {
             //var users = await _userService.GetAll();
