@@ -25,13 +25,31 @@ namespace FinancialPlanner.Logic.Services
             _mapper = mapper;
         }
 
+        public async Task<IList<Transaction>> GetAll()
+        {
+
+            var users = _context.Users.ToList();
+            var transactions = _context.Transactions.ToList();
+
+            foreach (var item in users)
+            {
+                var balances = transactions.Where(t => t.UserId == item.Id).Select(t => t.BalanceAfterTransaction).ToList();
+                item.Balance = balances.LastOrDefault();
+                _context.Users.Update(item);
+            }
+            _context.SaveChanges();
+
+            if (!transactions.Any())
+            {
+                throw new NotFoundException("Transactions not found");
+            }
+            return transactions;
+        }
+
         public async Task<IQueryable<Transaction>> GetAllQueryable()
         {
             var all = _context.Set<Transaction>().Include(s => s.User)
                 ;//TODO czy da sie to dodac do repository??
-                                 
-            //obliczenia
-            //wez balance usera
 
             if (!all.Any())
             {

@@ -38,7 +38,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var users = await _userService.GetAll();
+            var transactions = await _transactionService.GetAll();//TODO najperw aktualizacja balansu dla userow wg transakcji
 
             var users = await _userService.GetAllQueryable();//TODO dodalem do usera role!!
 

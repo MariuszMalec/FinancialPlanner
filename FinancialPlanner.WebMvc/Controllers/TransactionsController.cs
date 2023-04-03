@@ -58,27 +58,28 @@ namespace FinancialPlanner.WebMvc.Controllers
             return View(transaction);
         }
 
-        // GET: Transactions/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //// GET: Transactions/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: Transactions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(transaction);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(transaction);
-        }
+        //// POST: Transactions/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
+        //{
+        //    //user,id = null!!!!
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(transaction);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(transaction);
+        //}
 
         // GET: Transactions/Edit/5
         public async Task<IActionResult> Edit(string id)
