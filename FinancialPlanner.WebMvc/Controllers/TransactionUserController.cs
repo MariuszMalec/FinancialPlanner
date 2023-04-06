@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,9 @@ namespace FinancialPlanner.WebMvc.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly TransactionService _transactionService;
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public TransactionUserController(ApplicationDbContext context, IMapper mapper = null, TransactionService transactionService = null, UserService userService = null)
+        public TransactionUserController(ApplicationDbContext context, IMapper mapper = null, TransactionService transactionService = null, IUserService userService = null)
         {
             _context = context;
             _mapper = mapper;
@@ -51,9 +52,10 @@ namespace FinancialPlanner.WebMvc.Controllers
             var userExist = await _context.Users.FindAsync(model.Id);
             if (userExist == null)
                 return NotFound($"User was not created!");
-
+            
+            //TODO dodac to do serwisu
             var getBalance = _context.Users.Where(u => u.Id == model.Id).Select(u => u.Balance).FirstOrDefault();
-
+            var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance + model.Amount) : (getBalance - model.Amount);
             var transaction = new Transaction()
             {
                 UserId = id,
@@ -61,7 +63,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 Type = model.Type,
                 Category = model.Category,
                 Amount = model.Amount,
-                BalanceAfterTransaction = getBalance + model.Amount,
+                BalanceAfterTransaction = getAmount,
                 Description = model.Description,
                 CreatedAt = model.CreatedAt
             };
@@ -69,8 +71,61 @@ namespace FinancialPlanner.WebMvc.Controllers
             _context.SaveChanges();
 
             //zapisac balance w user
+            var user = await _userService.GetById(id);
+            user.Balance = transaction.BalanceAfterTransaction;
+            _userService.Update(user);
+            
 
             //mapowanie na TransactionUserDto
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Edit(string id)
+        {
+            var model = await _transactionService.GetById(id);
+
+            if (model == null)
+            {
+                return NotFound($"Not found user with {id}");
+            }
+            return View(model);
+        }
+
+        // POST: UserController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(string id, TransactionUserDto model)
+        {
+            if (model.UserId == null)
+            {
+                return NotFound("No user!");
+            }
+
+            //TODO dodac to do serwisu
+            var getAmountFromDataBase = _context.Transactions.Where(u => u.Id == model.Id).Select(u => u.Amount).FirstOrDefault();
+            var newAmount = (getAmountFromDataBase-model.Amount);
+            var getBalance = _context.Users.Where(u => u.Id == model.UserId).Select(u => u.Balance).FirstOrDefault();
+            var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance - newAmount) : (getBalance + newAmount);
+            
+            var transaction = new Transaction()
+            {
+                Id= id,
+                UserId = model.UserId,
+                Currency = model.Currency,
+                Type = model.Type,
+                Category = model.Category,
+                Amount = model.Amount,
+                BalanceAfterTransaction = getAmount,
+                Description = model.Description,
+                CreatedAt = model.CreatedAt
+            };
+            _context.Transactions.Update(transaction);
+            _context.SaveChanges();
+
+            var user = await _userService.GetById(model.UserId);
+            user.Balance = transaction.BalanceAfterTransaction;
+            _userService.Update(user);
 
             return RedirectToAction(nameof(Index));
         }

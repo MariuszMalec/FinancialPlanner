@@ -27,18 +27,8 @@ namespace FinancialPlanner.Logic.Services
 
         public async Task<IList<Transaction>> GetAll()
         {
-
             var users = _context.Users.ToList();
             var transactions = _context.Transactions.ToList();
-
-            foreach (var item in users)
-            {
-                var balances = transactions.Where(t => t.UserId == item.Id).Select(t => t.BalanceAfterTransaction).ToList();
-                item.Balance = balances.LastOrDefault();
-                _context.Users.Update(item);
-            }
-            _context.SaveChanges();
-
             if (!transactions.Any())
             {
                 throw new NotFoundException("Transactions not found");
@@ -56,6 +46,16 @@ namespace FinancialPlanner.Logic.Services
                 throw new NotFoundException("Transactions not found");
             }
             return all;
+        }
+
+        public async Task<TransactionUserDto> GetById(string id)
+        {
+            var transaction = await _context.Transactions.FindAsync(id);
+            var currentTransaction = _mapper.Map<TransactionUserDto>(transaction);
+            return currentTransaction;
+
+            //TODO how to add to repo this
+            //return await _repository.GetById(id);
         }
     }
 }

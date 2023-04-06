@@ -105,8 +105,8 @@ namespace FinancialPlanner.Logic.Services
                 throw new BadRequestException($"404! user not created! Blad walidacji, {check}");
             }
 
-            var transactions = await _context.Transactions.Where(t => t.UserId == user.Id).Select(t=>t.BalanceAfterTransaction).ToListAsync();
-            user.Balance = transactions.LastOrDefault();
+            //var transactions = await _context.Transactions.Where(t => t.UserId == user.Id).Select(t=>t.BalanceAfterTransaction).ToListAsync();
+            //user.Balance = transactions.LastOrDefault();
 
             await _repository.Update(user);
         }
