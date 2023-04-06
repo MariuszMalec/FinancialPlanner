@@ -69,11 +69,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
-            <td>
-               @Html.DisplayFor(modelItem => item.Balance)
-            </td>
+                @if (item.Balance < 0)
+                {
+                    <td style="color:red">
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                }
             <td>
                 <a asp-action="GetUserTransactions" asp-route-id="@item.Id">Transactions</a> |
+                <a asp-action="AddTransaction" asp-route-id="@item.Id">AddTransaction</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
