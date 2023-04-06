@@ -129,5 +129,44 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<ActionResult> Delete(string id)
+        {
+            var model = await _context.Transactions.FindAsync(id);
+
+            if (model == null)
+            {
+                return NotFound($"Not found user with {id}");
+            }
+            return View(model);
+        }
+
+        // POST: UserController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(string id, Transaction model)
+        {
+            if (id == null)
+            {
+                return NotFound("No transaction!");
+            }
+
+            //TODO dodac to do serwisu model is empty here!!!!
+            var userId = _context.Transactions.Where(t=>t.Id == id).Select(t=>t.UserId).FirstOrDefault();
+            var getBalance = _context.Users.Where(u => u.Id == userId).Select(u => u.Balance).FirstOrDefault();
+            var getAmount = _context.Transactions.Where(t => t.Id == id).Select(t => t.Amount).FirstOrDefault();
+            var getType = _context.Transactions.Where(t => t.Id == id).Select(t => t.Type).FirstOrDefault();
+            var newBalance = getType == Logic.Enums.TypeOfTransaction.Income ? (getBalance-getAmount) : (getBalance + getAmount);
+
+            var transaction = _context.Transactions.Where(t=>t.Id == id).FirstOrDefault();
+            _context.Transactions.Remove(transaction);
+            _context.SaveChanges();
+
+            var user = await _userService.GetById(userId);
+            user.Balance = newBalance;
+            await _userService.Update(user);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
