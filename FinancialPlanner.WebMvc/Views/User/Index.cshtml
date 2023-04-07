@@ -82,11 +82,43 @@
                     </td>
                 }
             <td>
-                <a asp-action="GetUserTransactions" asp-route-id="@item.Id">Transactions</a> |
+@*                <a asp-action="GetUserTransactions" asp-route-id="@item.Id">Transactions</a> |
                 <a asp-action="AddTransaction" asp-route-id="@item.Id">AddTransaction</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |*@
+
+                    <div class="container-fluid">
+                        <ul class="navbar-nav flex-grow-1">
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetUserTransactions", "User", new {id = item.Id}) + "'");"> Transactions</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("AddTransaction", "User", new {id = item.Id}) + "'");"> AddTransaction</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Edit", "User", new {id = item.Id}) + "'");"> Edit</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Details", "User", new {id = item.Id}) + "'");"> Details</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Delete", "User", new {id = item.Id}) + "'");"> Delete</button>
+                                    </div>
+                                </li>
+                        </ul>
+                    </div>
+
+
             </td>
         </tr>
 }
