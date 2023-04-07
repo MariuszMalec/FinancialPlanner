@@ -2,7 +2,7 @@
 @model FinancialPlanner.Logic.Dtos.TransactionUserDto
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit transaction";
 }
 
 <h1>Edit</h1>
@@ -63,7 +63,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to List</a>
 </div>
 
 @section Scripts {

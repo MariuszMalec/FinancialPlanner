@@ -5,6 +5,7 @@ using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -33,6 +34,23 @@ namespace FinancialPlanner.WebMvc.Controllers
             return _context.Transactions != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+        }
+
+        // GET: Transactions/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null || _context.Transactions == null)
+            {
+                return NotFound();
+            }
+
+            var transaction = await _transactionService.GetById(id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            return View(transaction);
         }
 
         // GET: UserController/Create
