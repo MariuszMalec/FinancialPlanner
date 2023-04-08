@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
-using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Exceptions;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
@@ -52,7 +51,10 @@ namespace FinancialPlanner.Logic.Services
 
         public async Task<IQueryable<User>> GetAllQueryable()
         {
-            var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
+            //var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
+
+            var all = _repository.GetAllQueryable()//TODO cos takiego
+                        .Include(u => u.Role);
 
             if (!all.Any())
             {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FinancialPlanner.Logic.Services;
 using Microsoft.EntityFrameworkCore;
+using FinancialPlanner.Logic.Repository;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -13,12 +14,14 @@ namespace FinancialPlanner.WebMvc.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly TransactionService _transactionService;
+        private readonly IRepository<User> _repository;
 
-        public UserController(IUserService userService, IMapper mapper = null, TransactionService transactionService = null)
+        public UserController(IUserService userService, IMapper mapper = null, TransactionService transactionService = null, IRepository<User> repository = null)
         {
             _userService = userService;
             _mapper = mapper;
             _transactionService = transactionService;
+            _repository = repository;
         }
 
         // GET: UserController
