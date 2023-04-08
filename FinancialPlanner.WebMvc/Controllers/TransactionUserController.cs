@@ -88,7 +88,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             _context.Transactions.Add(transaction);
             _context.SaveChanges();
 
-            //zapisac balance w user
+            //zapisac nowy balance w user
             var user = await _userService.GetById(id);
             user.Balance = transaction.BalanceAfterTransaction;
             _userService.Update(user);
@@ -169,20 +169,12 @@ namespace FinancialPlanner.WebMvc.Controllers
                 return NotFound("No transaction!");
             }
 
-            //TODO dodac to do serwisu model is empty here!!!!
-            var userId = _context.Transactions.Where(t=>t.Id == id).Select(t=>t.UserId).FirstOrDefault();
-            var getBalance = _context.Users.Where(u => u.Id == userId).Select(u => u.Balance).FirstOrDefault();
-            var getAmount = _context.Transactions.Where(t => t.Id == id).Select(t => t.Amount).FirstOrDefault();
-            var getType = _context.Transactions.Where(t => t.Id == id).Select(t => t.Type).FirstOrDefault();
-            var newBalance = getType == Logic.Enums.TypeOfTransaction.Income ? (getBalance-getAmount) : (getBalance + getAmount);
+            var check = await _transactionService.Delete(id);
 
-            var transaction = _context.Transactions.Where(t=>t.Id == id).FirstOrDefault();
-            _context.Transactions.Remove(transaction);
-            _context.SaveChanges();
-
-            var user = await _userService.GetById(userId);
-            user.Balance = newBalance;
-            await _userService.Update(user);
+            if (!check)
+            {
+                return BadRequest("transaction not deleted!");
+            }
 
             return RedirectToAction(nameof(Index));
         }

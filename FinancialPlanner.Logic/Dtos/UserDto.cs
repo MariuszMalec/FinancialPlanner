@@ -36,7 +36,7 @@ namespace FinancialPlanner.Logic.Dtos
         [StringLength(25)]
         public string LastName { get; set; }
         //[Required]
-        //public Gender Gender { get; set; }
+        public Gender Gender { get; set; }
         public string? Company { get; set; }
 
         [EmailAddress(ErrorMessage = "Email is not valid.")]

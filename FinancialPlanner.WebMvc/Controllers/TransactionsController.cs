@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
-using FinancialPlanner.Logic.Models;
-using FinancialPlanner.Logic.Repository;
-using AutoMapper;
 using FinancialPlanner.Logic.Dtos;
-using System.Transactions;
+using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -43,43 +36,21 @@ namespace FinancialPlanner.WebMvc.Controllers
         // GET: Transactions/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Transactions == null)
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var transaction = await _transactionService.GetById(id);
+
+            var model = _mapper.Map<Transaction>(transaction);
+
+            if (model == null)
             {
                 return NotFound();
             }
 
-            var transaction = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-
-            return View(transaction);
+            return View(model);
         }
-
-        //// GET: Transactions/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Transactions/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
-        //{
-        //    //user,id = null!!!!
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(transaction);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(transaction);
-        //}
 
         // GET: Transactions/Edit/5
         public async Task<IActionResult> Edit(string id)

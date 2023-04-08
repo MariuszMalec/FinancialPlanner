@@ -6,9 +6,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-controller="TransactionUser" asp-action="Create">Create New transaction</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -56,6 +53,9 @@
                     @Html.DisplayFor(modelItem => item.CreatedAt)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Balance)
                 </td>
                 <td>
@@ -71,6 +71,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
+                    <a asp-controller="TransactionUser" asp-action="Create" asp-route-id="@item.UserId">Create New transaction</a> |
                     <a asp-controller="TransactionUser" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-controller="TransactionUser" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-controller="TransactionUser" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
