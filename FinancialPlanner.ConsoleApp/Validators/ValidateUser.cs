@@ -20,8 +20,11 @@ namespace FinancialPlanner.ConsoleApp.Validators
                 Console.Write($"{name}: ");
                 input = Console.ReadLine()?.Trim();
 
-                if (input.ToLower() == "exit" || input == "")
-                    return null;
+                if (input.ToLower() == "exit")
+                    return "exit";
+
+                if (input == "")
+                    Console.WriteLine($"Invalid data. Can't be empty!");
 
                 if (input == null || input.Length < minLength || input.Length > maxNameLength || input.Any(char.IsWhiteSpace))
                     Console.WriteLine($"Invalid data. {name} should have at least {minLength} char long and in correct format Retry!");
