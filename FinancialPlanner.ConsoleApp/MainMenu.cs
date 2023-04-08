@@ -1,6 +1,7 @@
 using FinancialPlanner.ConsoleApp.Service;
 using FinancialPlanner.ConsoleApp.Validators;
 using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
@@ -9,16 +10,15 @@ public static class MainMenu
 {
 
     //here you can add new main menu item
-    private static readonly string[] mainMenuItem = {
-                //"Load data from external user file",
-                //"View users from file",
-                //"Load data from external transaction file",
-                "Load data from external user from database",
-                "View user",
-                "Add new user",
-                "Edit user",
-                "Delete user",
-                "View users",
+    private static readonly SelectTask[] mainMenuItem = {
+                SelectTask.Load_users_from_json_file,
+                SelectTask.View_user_from_json_file,
+                SelectTask.Load_users_from_database,
+                SelectTask.View_user,
+                SelectTask.Add_new_user,
+                SelectTask.Edit_user,
+                SelectTask.Delete_user,
+                //"View users",
                 //"Enter transaction",
                 //"Show all transaction",
                 //"Show transaction by Category",
@@ -26,7 +26,7 @@ public static class MainMenu
                 //"Show Users transaction by Type",
                 //"Edit existing user",
                 //"Edit transaction",
-                "Exit" };
+                SelectTask.Exit};
 
         public const int MinNameLength = 2;
         public const int MaxNameLength = 50;
@@ -78,7 +78,7 @@ public static class MainMenu
                         if (currentItem < 0) currentItem = Convert.ToInt16(mainMenuItem.Length - 1);
                     }
                 } while (keyPressed.KeyChar != 13);//if press enter selected menu
-                if (mainMenuItem[currentItem] == "Load data from external user file")//thing it is better way
+                if (mainMenuItem[currentItem] == SelectTask.Load_users_from_json_file)//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
                     var users = LoadDataService<User>.ReadUserFile();
@@ -95,7 +95,7 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == "View user from file")//thing it is better way
+                else if (mainMenuItem[currentItem] == SelectTask.View_user_from_json_file)//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -130,7 +130,7 @@ public static class MainMenu
                 Console.WriteLine($"Press any key to continue");
                 Console.ReadKey();
             }
-                else if (mainMenuItem[currentItem] == "Load data from external transaction file")//thing it is better way
+                else if (mainMenuItem[currentItem] == SelectTask.Load_transactions_from_json_file)//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
                     var transactions = LoadDataService<TransactionDto>.ReadTransacionFile().ToList();
@@ -146,7 +146,7 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == "Load data from external user from database")//thing it is better way
+                else if (mainMenuItem[currentItem] == SelectTask.Load_users_from_database)//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -165,7 +165,7 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == "View user")//thing it is better way
+                else if (mainMenuItem[currentItem] == SelectTask.View_user)//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -200,7 +200,7 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == "Edit user")//thing it is better way
+                else if (mainMenuItem[currentItem] == SelectTask.Edit_user)//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -237,7 +237,7 @@ public static class MainMenu
                 Console.WriteLine($"Press any key to continue");
                 Console.ReadKey();
             }
-                else if (mainMenuItem[currentItem] == "Add new user")//thing it is better way
+                else if (mainMenuItem[currentItem] == SelectTask.Add_new_user)//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -276,7 +276,7 @@ public static class MainMenu
                 Console.ReadKey();
 
             }
-            else if (mainMenuItem[currentItem] == "Delete user")//thing it is better way
+            else if (mainMenuItem[currentItem] == SelectTask.Delete_user)//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
@@ -323,7 +323,7 @@ public static class MainMenu
                 Console.ReadKey();
 
             }
-            else if (mainMenuItem[currentItem] == ("Exit"))
+            else if (mainMenuItem[currentItem] == SelectTask.Exit)
                 {
                     Console.WriteLine("Exit ...");
                     Environment.Exit(0);
