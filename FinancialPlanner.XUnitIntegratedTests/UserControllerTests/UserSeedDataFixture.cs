@@ -32,7 +32,8 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
                 Id = Guid.NewGuid().ToString(),
                 PasswordHash = "",
                 Phone ="",
-                Registered=DateTime.Now
+                Registered=DateTime.Now,
+                Role = new Role () { Name = "User"}
             });
             UserContext.SaveChanges();
         }
