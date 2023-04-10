@@ -1,91 +1,89 @@
-﻿@using FinancialPlanner.Logic.Context;
-@model IEnumerable<FinancialPlanner.Logic.Dtos.TransactionDto>
-@inject ApplicationDbContext _context
-
+﻿@model FinancialPlanner.Logic.Dtos.TransactionSearchDto
+@using FinancialPlanner.Logic
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "List of transactions";
 }
 
-<h1>Index</h1>
+<h1>List of transactions</h1>
 
-@*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Currency)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.ActionLink("Amount", "Index", new { sortOrder = ViewBag.NameSortParm })
-                @*@Html.DisplayNameFor(model => model.Amount)*@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BalanceAfterTransaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>               
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Currency)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-@*                    @{
-                        var user = _context.Users.Find(item.UserId);
-                        var fullName = $"{user.FirstName} {user.LastName}";
-                    }*@
 
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<form asp-action="Index">
+
+    @{
+        await Html.RenderPartialAsync("_TransactionSearchForm");
+    }
+    <div class="container container shadow p-3 mb-5 bg-white rounded">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().CreatedAt)</label>
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Currency)</label>
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Type)</label>
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Category)</label>
+                    </th>
+                    <th>
+                        @Html.ActionLink("Amount", "Index", new { sortAmount = ViewData["AmountSortParam"] })
+                        @*<label>@Html.DisplayNameFor(model => model.Transactions.First().Amount)</label>*@
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().BalanceAfterTransaction)</label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.Transactions.First().Description"></label>
+                    </th>
+                    <th>
+                        <label>Actions</label>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Transactions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedAt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Currency)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    More
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br />
+                                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Delete</a><br />
+                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">Details</a><br />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>

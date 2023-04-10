@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +23,26 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: Transactions
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(
+            CategoryOfTransaction category,
+            TypeOfTransaction type, 
+            string description, 
+            DateTime dateFrom, 
+            DateTime dateTo, 
+            string sortAmount)
         {
-            //ViewData["DateSortParam"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+            ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
+            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
 
             var transactions = await _transactionService.GetAllQueryable();
 
+            transactions = _transactionService.FilterByTypeCategory(transactions, type, category);
+            transactions = _transactionService.FilterByDates(transactions, dateFrom, dateTo);
+            transactions = _transactionService.FilterByDescription(transactions, description);
+
             var sorted = from s in transactions
                                  select s;
-            switch (sortOrder)
+            switch (sortAmount)
             {
                 case "Amount":
                     sorted = sorted.OrderByDescending(s => s.Amount);
@@ -40,12 +51,16 @@ namespace FinancialPlanner.WebMvc.Controllers
                     sorted = sorted.OrderBy(s => s.Amount);
                     break;
             }
+            var model = new TransactionSearchDto() {
+                Category = category,
+                Transactions = sorted, 
+                Type = type,
+                Description = description,
+                DateFrom = dateFrom,
+                DateTo = dateTo 
+            };
 
-            var model = _mapper.Map<List<TransactionDto>>(sorted);
-
-            return _context.Transactions != null ? 
-                          View(model) :
-                          Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+            return View(model);
         }
 
         // GET: Transactions/Details/5

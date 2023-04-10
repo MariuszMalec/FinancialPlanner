@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Exceptions;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
@@ -76,5 +77,35 @@ namespace FinancialPlanner.Logic.Services
             await _userService.Update(user);
             return true;
         }
+
+        public IQueryable<Transaction> FilterByDates(IQueryable<Transaction> transactions, DateTime dateFrom, DateTime dateTo)
+        {
+            if (dateTo == new DateTime(0001, 01, 01))
+                dateTo = DateTime.Now;
+
+            transactions = transactions.Where(t => t.CreatedAt >= dateFrom.AddDays(1).AddMinutes(-1) && t.CreatedAt <= dateTo.AddDays(1).AddMinutes(-1));
+
+            return transactions;
+        }
+
+        public IQueryable<Transaction> FilterByDescription(IQueryable<Transaction> transactions, string description)
+        {
+            if (description is not null)
+                return transactions.Where(t => t.Description.ToLower().Contains(description.ToLower()));
+
+            return transactions;
+        }
+        public IQueryable<Transaction> FilterByTypeCategory(IQueryable<Transaction> transactions, TypeOfTransaction type, CategoryOfTransaction category)
+        {
+            if (transactions.Count() > 0 && type != TypeOfTransaction.All)
+            {
+                return transactions.Where(t => t.Type == type)
+                                   .Where(t=>t.Category == category)
+                                   ;
+            }
+
+            return transactions;
+        }
+
     }
 }
