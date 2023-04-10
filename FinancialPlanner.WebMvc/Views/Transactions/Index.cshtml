@@ -17,6 +17,9 @@
             <thead>
                 <tr>
                     <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().User.Email)</label>
+                    </th>
+                    <th>
                         <label>@Html.DisplayNameFor(model => model.Transactions.First().CreatedAt)</label>
                     </th>
                     <th>
@@ -47,6 +50,9 @@
                 @foreach (var item in Model.Transactions)
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Email)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.CreatedAt)
                         </td>
