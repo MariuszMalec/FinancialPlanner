@@ -102,6 +102,11 @@
                                 </li>
                                 <li>
                                     <div class="form-group">
+                                    <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Index", "Chart", new {id = item.Id}) + "'");"> ViewTransactions</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Edit", "User", new {id = item.Id}) + "'");"> Edit user</button>
                                     </div>
                                 </li>

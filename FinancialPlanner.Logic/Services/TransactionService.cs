@@ -30,7 +30,6 @@ namespace FinancialPlanner.Logic.Services
 
         public async Task<IList<Transaction>> GetAll()
         {
-            var users = _context.Users.ToList();
             var transactions = _context.Transactions.ToList();
             if (!transactions.Any())
             {
