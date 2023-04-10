@@ -26,13 +26,39 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         // GET: UserController
 
-        public async Task<IActionResult> GetUserTransactions(string id)
+        public async Task<IActionResult> GetUserTransactions(string id, string sortAmount, string sortType)
         {
+            ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
+            ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
+            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+
             var transactions = await _transactionService.GetAllQueryable();
 
             var userTransactions = transactions.Where(u=>u.User.Id == id).ToList();
 
-            var model = _mapper.Map<List<TransactionUserDto>>(userTransactions);
+            var sorted = from s in userTransactions
+                         select s;
+            switch (sortAmount)
+            {
+                case "Amount":
+                    sorted = sorted.OrderByDescending(s => s.Amount);
+                    break;
+                default:
+                    sorted = sorted.OrderBy(s => s.Amount);
+                    break;
+            }
+
+            switch (sortType) 
+            {
+                case "Type":
+                    sorted = sorted.OrderByDescending(s => s.Type);
+                    break;
+                default:
+                    sorted = sorted.OrderBy(s => s.Type);
+                    break;
+            }
+
+            var model = _mapper.Map<List<TransactionUserDto>>(sorted);
 
             return model != null ?
                           View(model) :

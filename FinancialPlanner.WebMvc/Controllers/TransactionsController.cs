@@ -22,11 +22,26 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: Transactions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+            //ViewData["DateSortParam"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+
             var transactions = await _transactionService.GetAllQueryable();
 
-            var model = _mapper.Map<List<TransactionDto>>(transactions);
+            var sorted = from s in transactions
+                                 select s;
+            switch (sortOrder)
+            {
+                case "Amount":
+                    sorted = sorted.OrderByDescending(s => s.Amount);
+                    break;
+                default:
+                    sorted = sorted.OrderBy(s => s.Amount);
+                    break;
+            }
+
+            var model = _mapper.Map<List<TransactionDto>>(sorted);
 
             return _context.Transactions != null ? 
                           View(model) :

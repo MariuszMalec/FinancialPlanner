@@ -19,7 +19,8 @@
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Amount)
+                @Html.ActionLink("Amount", "GetUserTransactions", new { sortAmount = ViewData["AmountSortParam"] })
+                @*@Html.DisplayNameFor(model => model.Amount)*@
             </th>
             <th>    
                 @Html.DisplayNameFor(model => model.Balance)
@@ -28,7 +29,8 @@
                 @Html.DisplayNameFor(model => model.BalanceAfterTransaction)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.ActionLink("Type", "GetUserTransactions", new { sortType = ViewData["TypeSortParam"] })
+                @*@Html.DisplayNameFor(model => model.Type)*@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)

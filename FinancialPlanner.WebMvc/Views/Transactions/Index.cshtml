@@ -24,7 +24,8 @@
                 @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Amount)
+                @Html.ActionLink("Amount", "Index", new { sortOrder = ViewBag.NameSortParm })
+                @*@Html.DisplayNameFor(model => model.Amount)*@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BalanceAfterTransaction)
@@ -32,7 +33,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th>               
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
