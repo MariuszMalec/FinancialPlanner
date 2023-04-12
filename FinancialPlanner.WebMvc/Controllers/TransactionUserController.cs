@@ -98,7 +98,8 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             //mapowanie na TransactionUserDto
 
-            return RedirectToAction(nameof(Index), new { id });
+            //return RedirectToAction(nameof(Index), new { id });
+            return RedirectToAction("GetUserTransactions", "User", new { model.Id, model.UserId });
         }
 
         public async Task<ActionResult> Edit(string id)
@@ -147,7 +148,8 @@ namespace FinancialPlanner.WebMvc.Controllers
             user.Balance = transaction.BalanceAfterTransaction;
             _userService.Update(user);
 
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("GetUserTransactions", "User", new { model.Id,  model.UserId });
         }
 
         public async Task<ActionResult> Delete(string id)
@@ -164,21 +166,21 @@ namespace FinancialPlanner.WebMvc.Controllers
         // POST: UserController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(string id, Transaction model)
+        public async Task<ActionResult> Delete(string id, TransactionUserDto model)
         {
             if (id == null)
             {
                 return NotFound("No transaction!");
             }
 
-            var check = await _transactionService.Delete(id);
+            //var check = await _transactionService.Delete(id);
+            //if (!check)
+            //{
+            //    return BadRequest("transaction not deleted!");
+            //}
 
-            if (!check)
-            {
-                return BadRequest("transaction not deleted!");
-            }
-
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("GetUserTransactions", "User", new { model.Id, model.UserId });
         }
     }
 }
