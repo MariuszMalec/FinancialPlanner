@@ -1,5 +1,7 @@
 ﻿@using FinancialPlanner.Logic.Enums;
+@using FinancialPlanner.Logic.Interfaces;
 @model FinancialPlanner.Logic.Dtos.TransactionUserDto
+@inject IUserService userService
 
 @{
     ViewData["Title"] = "Create transaction";
@@ -7,7 +9,14 @@
 
 <h1>Create</h1>
 
-<h4>Transaction</h4>
+@{
+    var userId = ViewData["UserId"];
+    var user = userService.GetById(userId.ToString()).Result;
+    var fullName = $"{user.FirstName} {user.LastName}";
+}
+
+
+<h4>Transaction : @fullName</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -61,7 +70,7 @@
 </div>
 
 <div>
-    <a asp-controller="Transactions" asp-action="Index">Back to List</a>
+    <a asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@ViewData["UserId"]>Back to List</a>
 </div>
 
 @section Scripts {

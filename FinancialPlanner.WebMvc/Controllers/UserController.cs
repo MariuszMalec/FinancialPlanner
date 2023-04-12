@@ -30,7 +30,11 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
             ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
-            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+            ViewData["UserId"] = id;
+
+            var currentUser = await _userService.GetById(id);
+
+            ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
 
             var transactions = await _transactionService.GetAllQueryable();
 

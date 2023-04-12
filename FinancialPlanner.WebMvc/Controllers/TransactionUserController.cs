@@ -6,6 +6,7 @@ using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using System.Globalization;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -55,8 +56,9 @@ namespace FinancialPlanner.WebMvc.Controllers
         }
 
         // GET: UserController/Create
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
+            ViewData["UserId"] = id;
             return View();
         }
 
@@ -93,17 +95,16 @@ namespace FinancialPlanner.WebMvc.Controllers
             var user = await _userService.GetById(id);
             user.Balance = transaction.BalanceAfterTransaction;
             _userService.Update(user);
-            
 
             //mapowanie na TransactionUserDto
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         public async Task<ActionResult> Edit(string id)
         {
             var model = await _transactionService.GetById(id);
-
+            ViewData["FullName"] = $"{model.FirstName} {model.LastName}";
             if (model == null)
             {
                 return NotFound($"Not found user with {id}");
