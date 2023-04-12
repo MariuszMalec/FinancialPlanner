@@ -166,21 +166,23 @@ namespace FinancialPlanner.WebMvc.Controllers
         // POST: UserController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(string id, TransactionUserDto model)
+        public async Task<ActionResult> Delete(string id, Transaction model)
         {
             if (id == null)
             {
                 return NotFound("No transaction!");
             }
 
-            //var check = await _transactionService.Delete(id);
-            //if (!check)
-            //{
-            //    return BadRequest("transaction not deleted!");
-            //}
+            var userId = _transactionService.GetById(id).Result.UserId;
+
+            var check = await _transactionService.Delete(id);
+            if (!check)
+            {
+                return BadRequest("transaction not deleted!");
+            }
 
             //return RedirectToAction(nameof(Index));
-            return RedirectToAction("GetUserTransactions", "User", new { model.Id, model.UserId });
+            return RedirectToAction("GetUserTransactions", "User", new { model.Id, userId });
         }
     }
 }
