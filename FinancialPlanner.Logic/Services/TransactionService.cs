@@ -75,8 +75,9 @@ namespace FinancialPlanner.Logic.Services
                 Description = model.Description,
                 CreatedAt = model.CreatedAt
             };
-            _context.Transactions.Add(transaction);
-            _context.SaveChanges();
+            //_context.Transactions.Add(transaction);
+            //_context.SaveChanges();
+            await _repository.Insert(transaction);
 
             //zapisac nowy balance w user
             var user = await _userService.GetById(id);
