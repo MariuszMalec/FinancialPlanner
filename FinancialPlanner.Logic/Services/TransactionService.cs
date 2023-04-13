@@ -60,6 +60,29 @@ namespace FinancialPlanner.Logic.Services
             //TODO how to add to repo this
             //return await _repository.GetById(id);
         }
+        public async Task Insert(string id, TransactionUserDto model)
+        {
+            var getBalance = _context.Users.Where(u => u.Id == model.Id).Select(u => u.Balance).FirstOrDefault();
+            var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance + model.Amount) : (getBalance - model.Amount);
+            var transaction = new Transaction()
+            {
+                UserId = id,
+                Currency = model.Currency,
+                Type = model.Type,
+                Category = model.Category,
+                Amount = model.Amount,
+                BalanceAfterTransaction = getAmount,
+                Description = model.Description,
+                CreatedAt = model.CreatedAt
+            };
+            _context.Transactions.Add(transaction);
+            _context.SaveChanges();
+
+            //zapisac nowy balance w user
+            var user = await _userService.GetById(id);
+            user.Balance = transaction.BalanceAfterTransaction;
+            await _userService.Update(user);
+        }
         public async Task<bool> Delete(string id)
         {
             var userId = _context.Transactions.Where(t => t.Id == id).Select(t => t.UserId).FirstOrDefault();

@@ -73,32 +73,9 @@ namespace FinancialPlanner.WebMvc.Controllers
             var userExist = await _context.Users.FindAsync(model.Id);
             if (userExist == null)
                 return NotFound($"User was not created!");
-            
-            //TODO dodac to do serwisu
-            var getBalance = _context.Users.Where(u => u.Id == model.Id).Select(u => u.Balance).FirstOrDefault();
-            var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance + model.Amount) : (getBalance - model.Amount);
-            var transaction = new Transaction()
-            {
-                UserId = id,
-                Currency = model.Currency,
-                Type = model.Type,
-                Category = model.Category,
-                Amount = model.Amount,
-                BalanceAfterTransaction = getAmount,
-                Description = model.Description,
-                CreatedAt = model.CreatedAt
-            };
-            _context.Transactions.Add(transaction);
-            _context.SaveChanges();
 
-            //zapisac nowy balance w user
-            var user = await _userService.GetById(id);
-            user.Balance = transaction.BalanceAfterTransaction;
-            _userService.Update(user);
+            await _transactionService.Insert(id, model);
 
-            //mapowanie na TransactionUserDto
-
-            //return RedirectToAction(nameof(Index), new { id });
             return RedirectToAction("GetUserTransactions", "User", new { model.Id, model.UserId });
         }
 
