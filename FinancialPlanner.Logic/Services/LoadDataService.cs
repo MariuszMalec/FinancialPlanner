@@ -1,10 +1,4 @@
-﻿using FinancialPlanner.Logic.Dtos;
-using FinancialPlanner.Logic.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using Newtonsoft.Json;
 
 namespace FinancialPlanner.Logic.Services
 {

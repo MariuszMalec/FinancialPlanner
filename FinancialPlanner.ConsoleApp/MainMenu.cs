@@ -12,6 +12,7 @@ public static class MainMenu
     //here you can add new main menu item
     private static readonly SelectTask[] mainMenuItem = {
                 SelectTask.Load_users_from_json_file,
+                SelectTask.Load_transactions_from_json_file,
                 SelectTask.View_user_from_json_file,
                 SelectTask.Load_users_from_database,
                 SelectTask.View_user,
@@ -81,7 +82,9 @@ public static class MainMenu
                 if (mainMenuItem[currentItem] == SelectTask.Load_users_from_json_file)//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
-                    var users = LoadDataService<User>.ReadUserFile();
+                    var file = @"Source/users.json";
+                    ILoadData<User> loadData = new ReadUsers<User>();
+                    var users = loadData.GetAll(file).ToList();
                     if (users.Count > 0)
                     {
                       //users.ForEach(x=>Console.WriteLine($"{x.FirstName} {x.LastName}"));
@@ -96,11 +99,9 @@ public static class MainMenu
                     Console.ReadKey();
                 }
                 else if (mainMenuItem[currentItem] == SelectTask.View_user_from_json_file)//thing it is better way
-            {
+                {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
-
                 var users = LoadDataService<User>.ReadUserFile();
-
                 if (users.Count > 0)
                 {
                     //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
@@ -133,7 +134,9 @@ public static class MainMenu
                 else if (mainMenuItem[currentItem] == SelectTask.Load_transactions_from_json_file)//thing it is better way
                 {
                     Console.WriteLine($"{mainMenuItem[currentItem]} ...");
-                    var transactions = LoadDataService<TransactionDto>.ReadTransacionFile().ToList();
+                    var file = @"Source/transactions.json";
+                    ILoadData<TransactionDto> loadData = new ReadTransactions<TransactionDto>();
+                    var transactions = loadData.GetAll(file).ToList();
                     if (transactions.Count > 0)
                     {
                         transactions.ForEach(x=>Console.WriteLine($"{x.UserId} {x.Amount} {x.Type} {x.BalanceAfterTransaction} {x.Currency} {x.Category} {x.Date}"));
