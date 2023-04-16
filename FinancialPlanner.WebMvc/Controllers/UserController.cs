@@ -76,7 +76,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult<List<UserDto>>> Index()
         {
             var transactions = await _transactionService.GetAll();//TODO najperw aktualizacja balansu dla userow wg transakcji
 

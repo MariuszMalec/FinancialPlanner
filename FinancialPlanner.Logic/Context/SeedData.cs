@@ -1,6 +1,5 @@
 ﻿using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace FinancialPlanner.Logic.Context

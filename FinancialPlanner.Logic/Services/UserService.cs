@@ -18,6 +18,11 @@ namespace FinancialPlanner.Logic.Services
         private readonly ILogger<UserService> _logger;
         private readonly IMapper _mapper;
 
+        public UserService(IRepository<User> repository)
+        {
+            _repository = repository;
+        }
+
         public UserService(IRepository<User> repository, ApplicationDbContext context, ILogger<UserService> logger = null, IMapper mapper = null)
         {
             _repository = repository;
