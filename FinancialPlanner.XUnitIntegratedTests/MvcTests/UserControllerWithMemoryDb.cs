@@ -1,16 +1,6 @@
-﻿using FinancialPlanner.Logic.Dtos;
-using FinancialPlanner.Logic.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
 {
@@ -34,6 +24,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
         [InlineData("/Roles")]
         [InlineData("/Transactions")]
         [InlineData("/TransactionUser")]
+        [InlineData("/User/Index")]
         public async Task Get_EndPointsReturns_StatusOk(string url)
         {
             var response = await _client.GetAsync(url);
@@ -47,20 +38,6 @@ namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
         {
             var response = await _client.GetAsync(url);
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        }
-
-        [Theory]
-        [InlineData("/User/Index")]
-        public async Task Get_Index_EndPointsReturns_Response(string url)
-        {
-            var response = await _client.GetAsync(url);
-
-            //var content = await response.Content.ReadAsStringAsync();
-
-            //var users = JsonConvert.DeserializeObject<List<UserDto>>(content);
-
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

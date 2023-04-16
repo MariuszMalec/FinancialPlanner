@@ -1,41 +1,33 @@
 ﻿using AutoMapper;
-using Castle.Core.Logging;
-using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
+using FinancialPlanner.XUnitIntegratedTests.UserControllerTests;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialPlanner.XUnitIntegratedTests.UserServiceTests
 {
-    public class UserServiceTests
+    public class UserServiceTests : IClassFixture<UserSeedDataFixture>
     {
         private readonly IUserService _sut;
         private readonly Mock<IRepository<User>> _repoMock = new Mock<IRepository<User>>();
         private readonly Mock<ILogger<UserService>> _loggerMock = new Mock<ILogger<UserService>>();
         private readonly Mock<IMapper> _mapperMock = new Mock<IMapper>();
+        UserSeedDataFixture _fixture;
 
-        public UserServiceTests()
+        public UserServiceTests(UserSeedDataFixture fixture = null)
         {
-            _sut = new UserService(_repoMock.Object);
+            _sut = new UserService(_repoMock.Object, fixture.UserContext , _loggerMock.Object, _mapperMock.Object);
+            _fixture = fixture;
         }
 
         [Fact]
         public async Task GetAllUsers_ShoudReturnUsers_WhenUsersExist()
         {
             // Arrange
-            //var mock = new Mock<ApplicationDbContext>();
-            //mock.Setup(x => x.Set<User>()).Returns(GetUsers());
-
             _repoMock.Setup(x => x.GetAll()).ReturnsAsync(GetUsers());
 
             // Act
@@ -43,6 +35,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserServiceTests
 
             // Assert
             users.Should().NotBeEmpty();
+            users.Should().HaveCount(1);
         }
 
         private IEnumerable<User> GetUsers()
@@ -55,7 +48,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserServiceTests
                 LastName = "Malec",
                 Age = 47,
                 Balance = 3000,
-                Address = "Sadowa",
+                Address = "Sadowa 1",
                 Company = "GE",
                 Currency = Logic.Enums.Currency.PLN,
                 Gender = Logic.Enums.Gender.Male,
