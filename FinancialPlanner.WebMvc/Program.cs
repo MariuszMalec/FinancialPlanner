@@ -9,6 +9,7 @@ using System.Configuration;
 using System;
 using FinancialPlanner.WebMvc.Middleware;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,9 +46,20 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await SeedData.SeedRoles(dataContext);
-    await SeedData.SeedUsers(dataContext);
-    await SeedData.SeedTransaction(dataContext);
+    if (dataContext.Database.IsRelational())
+    {
+        if (dataContext.Database.IsRelational())
+        {
+            dataContext?.Database.Migrate();
+            await SeedData.SeedRoles(dataContext);
+            await SeedData.SeedUsers(dataContext);
+            await SeedData.SeedTransaction(dataContext);
+        }
+    }
+    else
+    {
+        //TODO nie ralacyjna baza danych np memory msql do testow
+    }
 }   
 
 // Configure the HTTP request pipeline.
