@@ -17,6 +17,7 @@ namespace FinancialPlanner.Logic.Enums
         Edit_user,
         Delete_user,
         View_users,
+        MonthlyBalance,
         Exit
     }
 }

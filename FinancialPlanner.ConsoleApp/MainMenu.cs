@@ -16,6 +16,7 @@ public static class MainMenu
                 SelectTask.View_user_from_json_file,
                 SelectTask.Load_users_from_database,
                 SelectTask.View_user,
+                SelectTask.MonthlyBalance,
                 SelectTask.Add_new_user,
                 SelectTask.Edit_user,
                 SelectTask.Delete_user,
@@ -34,7 +35,7 @@ public static class MainMenu
         public const int MinAge = 13;
         public const int MaxAge = 99;
 
-        public static void ShowMainMenu(IUserService userService)
+        public static void ShowMainMenu(IUserService userService, ITransactionService transactionService)
         {
             short currentItem = 0;           
             do
@@ -203,7 +204,26 @@ public static class MainMenu
                     Console.WriteLine($"Press any key to continue");
                     Console.ReadKey();
                 }
-                else if (mainMenuItem[currentItem] == SelectTask.Edit_user)//thing it is better way
+            else if (mainMenuItem[currentItem] == SelectTask.MonthlyBalance)//thing it is better way
+            {
+                Console.WriteLine($"{mainMenuItem[currentItem]} ...");
+
+                var mouthlyBalance = transactionService.FilterByMonthlyBalance(3);//0-styczen
+
+                if (mouthlyBalance.Count() > 0)
+                {
+                    //users.ForEach(x => Console.WriteLine($"{x.FirstName} {x.LastName}"));
+                    MonthlyBalanceViewer.Show(mouthlyBalance.ToList());
+                    Console.WriteLine($"The transactions were loaded successful");
+                }
+                else
+                {
+                    Console.WriteLine($"The transactions have not been loaded!");
+                }
+                Console.WriteLine($"Press any key to continue");
+                Console.ReadKey();
+            }
+            else if (mainMenuItem[currentItem] == SelectTask.Edit_user)//thing it is better way
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 

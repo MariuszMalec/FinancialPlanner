@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,10 +25,12 @@ namespace FinancialPlanner.Logic.Models
         [DataType(DataType.Currency)]
         [RegularExpression(@"^\d+(.\d{1,2})?$")]
         [JsonProperty(PropertyName = "Amount")]
+        [Column(TypeName = "decimal(18,2)")]//TODO have to be without this error 3000!
         public decimal Amount { get; set; }
 
         [DataType(DataType.Currency)]
         [JsonProperty(PropertyName = "BalanceAfterTransaction")]
+        [Column(TypeName = "decimal(18,2)")]//TODO have to be without this error 3000!
         public decimal BalanceAfterTransaction { get; set; }
         public string? Description { get; set; }
         public DateTime Date { get; set; }

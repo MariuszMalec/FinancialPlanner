@@ -12,7 +12,7 @@ using System;
 
 namespace FinancialPlanner.Logic.Services
 {
-    public class TransactionService
+    public class TransactionService : ITransactionService
     {
         private readonly IRepository<Transaction> _repository;
         private readonly IUserService _userService;
@@ -20,7 +20,7 @@ namespace FinancialPlanner.Logic.Services
         private readonly ILogger<TransactionService> _logger;
         private readonly IMapper _mapper;
 
-        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<TransactionService> logger, IMapper mapper, IUserService userService = null)
+        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<TransactionService> logger, IMapper mapper = null, IUserService userService = null)
         {
             _repository = repository;
             _context = context;
@@ -124,11 +124,32 @@ namespace FinancialPlanner.Logic.Services
             if (transactions.Count() > 0 && type != TypeOfTransaction.All)
             {
                 return transactions.Where(t => t.Type == type)
-                                   .Where(t=>t.Category == category)
+                                   .Where(t => t.Category == category)
                                    ;
             }
-
             return transactions;
+        }
+        public IEnumerable<MonthlyIncomeAndExpenses> FilterByMonthlyBalance(int mounth)
+        {
+            var transactions = GetAllQueryable().Result;
+            var monthsToDate = Enumerable.Range(1, 12)
+                                .Select(m => new
+                                {
+                                    firstDay = new DateTime(DateTime.Today.Year, m, 1),
+                                    endDay = new DateTime(DateTime.Today.Year, m, DateTime.DaysInMonth(DateTime.Today.Year, m))
+                                })                               
+                                .ToList();
+            //TODO next add acording user!!
+            var sums = from month in monthsToDate
+                       select new MonthlyIncomeAndExpenses
+                       {
+                           Month = month.firstDay,
+                           Income = FilterByDates(transactions,month.firstDay,month.endDay)
+                           .Where(t => t.Type == TypeOfTransaction.Income).Select(x => x.Amount).Sum(),
+                           Expenses = FilterByDates(transactions, month.firstDay, month.endDay)
+                           .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum()
+                       };
+            return sums;
         }
 
     }

@@ -20,6 +20,7 @@ var host = Host.CreateDefaultBuilder()
         });
 
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<ITransactionService,TransactionService>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     })
     .Build();
