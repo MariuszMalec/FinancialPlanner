@@ -19,7 +19,7 @@
         Model.DateTo = DateTime.Now;
 
     if (Model.DateFrom == default && Model.Transactions.Any())
-        Model.DateFrom = Model.Transactions.Min(x => x.Date);
+        Model.DateFrom = Model.Transactions.Min(x => x.CreatedAt);
     else if (Model.DateFrom == default)
         Model.DateFrom = DateTime.Now.AddDays(-7);
 }

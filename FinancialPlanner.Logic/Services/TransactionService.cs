@@ -105,9 +105,11 @@ namespace FinancialPlanner.Logic.Services
         public IQueryable<Transaction> FilterByDates(IQueryable<Transaction> transactions, DateTime dateFrom, DateTime dateTo)
         {
             if (dateTo == new DateTime(0001, 01, 01))
+            {
                 dateTo = DateTime.Now;
+            }
 
-            transactions = transactions.Where(t => t.CreatedAt >= dateFrom.AddDays(1).AddMinutes(-1) && t.CreatedAt <= dateTo.AddDays(1).AddMinutes(-1));
+            transactions = transactions.Where(t => t.CreatedAt >= dateFrom && t.CreatedAt <= dateTo);
 
             return transactions;
         }
@@ -121,6 +123,16 @@ namespace FinancialPlanner.Logic.Services
         }
         public IQueryable<Transaction> FilterByTypeCategory(IQueryable<Transaction> transactions, TypeOfTransaction type, CategoryOfTransaction category)
         {
+            if (transactions.Count() > 0 && type == TypeOfTransaction.Outcome && (category == CategoryOfTransaction.allOutcome || category == CategoryOfTransaction.All))
+            {
+                return transactions.Where(t => t.Type == type)
+                                   ;
+            }
+            if (transactions.Count() > 0 && type == TypeOfTransaction.Income && (category == CategoryOfTransaction.allIncome || category == CategoryOfTransaction.All))
+            {
+                return transactions.Where(t => t.Type == type)
+                                   ;
+            }
             if (transactions.Count() > 0 && type != TypeOfTransaction.All)
             {
                 return transactions.Where(t => t.Type == type)
