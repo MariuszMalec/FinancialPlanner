@@ -63,6 +63,20 @@ namespace FinancialPlanner.WebMvc.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> GetMonthlyIncomeAndExpenses()
+        {
+            var model = _transactionService.FilterByMonthlyBalance(3);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            if (model.Count() == 0)
+            {
+                return NotFound("Transactions not found!");
+            }
+            return View(model);
+        }
+
         // GET: Transactions/Details/5
         public async Task<IActionResult> Details(string id)
         {

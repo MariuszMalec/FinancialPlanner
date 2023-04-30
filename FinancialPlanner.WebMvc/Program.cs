@@ -60,7 +60,7 @@ using (var scope = app.Services.CreateScope())
     {
         //TODO nie ralacyjna baza danych np memory msql do testow
     }
-}   
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -72,7 +72,7 @@ if (!app.Environment.IsDevelopment())
 
 //Culture specific problems
 var cultureInfo = new CultureInfo("en-GB");
-cultureInfo.NumberFormat.CurrencySymbol = "PLN";
+cultureInfo.NumberFormat.CurrencySymbol = "PLN ";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
