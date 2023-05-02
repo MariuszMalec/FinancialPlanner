@@ -65,7 +65,8 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         public async Task<IActionResult> GetMonthlyIncomeAndExpenses()
         {
-            var model = await  _transactionService.FilterByMonthlyBalance(3);
+            var transactions = await _transactionService.GetAllQueryable();
+            var model = await  _transactionService.FilterByYearBalance(transactions);
             if (model == null)
             {
                 return NotFound();

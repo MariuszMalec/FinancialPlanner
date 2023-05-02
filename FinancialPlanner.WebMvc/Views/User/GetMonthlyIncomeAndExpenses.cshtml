@@ -1,0 +1,76 @@
+﻿@using FinancialPlanner.Logic.Interfaces;
+@model IEnumerable<FinancialPlanner.Logic.Dtos.MonthlyIncomeAndExpenses>
+@inject IUserService userService
+
+@{
+    ViewData["Title"] = "GetMonthlyIncomeAndExpenses";
+}
+
+@{
+    var user = userService.GetById(ViewData["UserId"].ToString()).Result;
+    var fullName = $"{user.FirstName} {user.LastName}";
+}
+
+<h1>GetMonthlyIncomeAndExpenses @fullName</h1>
+
+<p>
+    @*    <a asp-action="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Month)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Income)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Expenses)
+            </th>
+            <th>
+                <label>(income-outcome)</label>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var stringMounth = item.Month.ToString("MMMM");
+                    }
+                    @stringMounth
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Income)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Expenses)
+                </td>
+                @{
+                    var difference = item.Income - item.Expenses;
+                }
+                @if (difference < 0)
+                {
+                    <td style="color:red">
+                        @difference.ToString("C")
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @difference.ToString("C")
+                    </td>
+                }
+                <td>
+                    @*                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

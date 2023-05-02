@@ -1,0 +1,88 @@
+﻿@model IEnumerable<FinancialPlanner.Logic.Dtos.TransactionUserDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Transactions User</h1>
+
+<p>
+    <a asp-controller="TransactionUser" asp-action="Create" asp-route-id=@ViewData["UserId"]>AddTransaction</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.ActionLink("Amount", "GetUserTransactions", new { sortAmount = ViewData["AmountSortParam"] })
+                @*@Html.DisplayNameFor(model => model.Amount)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BalanceAfterTransaction)
+            </th>
+            <th>
+                @Html.ActionLink("Type", "GetUserTransactions", new { sortType = ViewData["TypeSortParam"] })
+                @*@Html.DisplayNameFor(model => model.Type)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-controller="TransactionUser" asp-action="Create" asp-route-id="@item.UserId">Add transaction</a> |
+                    <a asp-controller="TransactionUser" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-controller="TransactionUser" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-controller="TransactionUser" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

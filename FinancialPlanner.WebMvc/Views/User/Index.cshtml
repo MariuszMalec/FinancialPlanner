@@ -97,6 +97,16 @@
                                 </li>
                                 <li>
                                     <div class="form-group">
+                                    <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetUserTransactionsByMounth", "User", new {id = item.Id}) + "'");"> ByMounth</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetMonthlyIncomeAndExpenses", "User", new {id = item.Id}) + "'");"> InOutCome</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("AddTransaction", "User", new {id = item.Id}) + "'");"> AddTransaction</button>
                                     </div>
                                 </li>

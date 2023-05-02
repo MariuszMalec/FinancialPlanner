@@ -140,9 +140,8 @@ namespace FinancialPlanner.Logic.Services
             }
             return transactions;
         }
-        public async Task<IEnumerable<MonthlyIncomeAndExpenses>> FilterByMonthlyBalance(int mounth)
+        public async Task<IEnumerable<MonthlyIncomeAndExpenses>> FilterByYearBalance(IQueryable<Transaction> transactions)
         {
-            var transactions = await GetAllQueryable();
             var monthsToDate = Enumerable.Range(1, 12)
                                 .Select(m => new
                                 {
@@ -163,28 +162,12 @@ namespace FinancialPlanner.Logic.Services
             return sums;
         }
 
-        public IEnumerable<Transaction> GetTransactionByMounth(int mounth, IEnumerable<Transaction> transactions)
+        public IEnumerable<Transaction> FilterTransactionByMounth(IQueryable<Transaction> transactions, int mounth)
         {
             var firstDay = new DateTime(DateTime.Today.Year, mounth, 1);
             var endDay = new DateTime(DateTime.Today.Year, mounth, DateTime.DaysInMonth(DateTime.Today.Year, mounth));
-
-            //TODO next add acording user!!
-
-            var transactionsUser = transactions;
-
-
-
-            //var sums = from month in monthsToDate
-            //           select new MonthlyIncomeAndExpenses
-            //           {
-            //               Month = month.firstDay,
-            //               Income = FilterByDates(transactions, month.firstDay, month.endDay)
-            //               .Where(t => t.Type == TypeOfTransaction.Income).Select(x => x.Amount).Sum(),
-            //               Expenses = FilterByDates(transactions, month.firstDay, month.endDay)
-            //               .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum()
-            //           };
+            var transactionsUser = transactions.Where(t => t.CreatedAt >= firstDay && t.CreatedAt <= endDay);
             return transactionsUser;
         }
-
     }
 }

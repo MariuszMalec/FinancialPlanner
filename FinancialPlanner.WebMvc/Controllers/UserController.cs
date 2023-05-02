@@ -1,11 +1,9 @@
-﻿using FinancialPlanner.Logic.Dtos;
-using FinancialPlanner.Logic.Models;
+﻿using AutoMapper;
+using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using FinancialPlanner.Logic.Services;
-using Microsoft.EntityFrameworkCore;
+using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -26,7 +24,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         // GET: UserController
 
-        public async Task<IActionResult> GetUserTransactions1(string id, string userId, string sortAmount, string sortType)
+        public async Task<IActionResult> GetUserTransactions(string id, string userId, string sortAmount, string sortType)
         {
             ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
             ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
@@ -76,8 +74,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
-        //GetUserTransactionsByMounth
-        public async Task<IActionResult> GetUserTransactions(string id, string userId, string sortAmount, string sortType)
+        public async Task<IActionResult> GetUserTransactionsByMounth(string id, string userId, string sortAmount, string sortType)
         {
             ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
             ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
@@ -96,7 +93,11 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var transactions = await _transactionService.GetAllQueryable();
 
-            var userTransactions = transactions.Where(u => u.User.Id == userId).ToList();
+            //current mounth
+            var currentMounth = DateTime.Now.Month;
+            var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
+
+            var userTransactions = userTransactionsByMounth.Where(u => u.User.Id == userId).ToList();
 
             var sorted = from s in userTransactions
                          select s;
@@ -120,14 +121,40 @@ namespace FinancialPlanner.WebMvc.Controllers
                     break;
             }
 
-            //current mounth
-            var models = _transactionService.GetTransactionByMounth(4, sorted);
-
-            var model = _mapper.Map<List<TransactionUserDto>>(models);
+            var model = _mapper.Map<List<TransactionUserDto>>(sorted);
 
             return model != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+        }
+
+        public async Task<IActionResult> GetMonthlyIncomeAndExpenses(string id, string userId)
+        {
+            if (userId == null)
+            {
+                userId = id;
+            }
+            ViewData["UserId"] = id;
+
+            var currentUser = await _userService.GetById(userId);
+
+            ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
+
+            var transactions = await _transactionService.GetAllQueryable();
+
+            var userTransactions = transactions.Where(u => u.User.Id == userId);
+
+            var model = _transactionService.FilterByYearBalance(userTransactions).Result;  
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+            if (model.Count() == 0)
+            {
+                return NotFound("Transactions not found!");
+            }
+            return View(model);
         }
 
         public async Task<ActionResult<List<UserDto>>> Index()
