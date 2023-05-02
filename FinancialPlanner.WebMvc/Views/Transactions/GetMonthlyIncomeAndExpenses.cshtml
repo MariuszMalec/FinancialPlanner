@@ -42,12 +42,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Expenses)
             </td>
-            <td>
                     @{
                         var difference = item.Income - item.Expenses;
+                    }                
+                    @if (difference < 0)
+                    {
+                    <td style="color:red">
+                            @difference.ToString("C")
+                    </td>
                     }
-                    @difference.ToString("C")
-            </td>
+                    else
+                    {
+                    <td>
+                            @difference.ToString("C")
+                    </td>
+                    }
             <td>
 @*                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
