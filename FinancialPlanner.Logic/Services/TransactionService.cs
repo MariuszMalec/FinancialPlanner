@@ -163,5 +163,28 @@ namespace FinancialPlanner.Logic.Services
             return sums;
         }
 
+        public IEnumerable<Transaction> GetTransactionByMounth(int mounth, IEnumerable<Transaction> transactions)
+        {
+            var firstDay = new DateTime(DateTime.Today.Year, mounth, 1);
+            var endDay = new DateTime(DateTime.Today.Year, mounth, DateTime.DaysInMonth(DateTime.Today.Year, mounth));
+
+            //TODO next add acording user!!
+
+            var transactionsUser = transactions;
+
+
+
+            //var sums = from month in monthsToDate
+            //           select new MonthlyIncomeAndExpenses
+            //           {
+            //               Month = month.firstDay,
+            //               Income = FilterByDates(transactions, month.firstDay, month.endDay)
+            //               .Where(t => t.Type == TypeOfTransaction.Income).Select(x => x.Amount).Sum(),
+            //               Expenses = FilterByDates(transactions, month.firstDay, month.endDay)
+            //               .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum()
+            //           };
+            return transactionsUser;
+        }
+
     }
 }

@@ -26,7 +26,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         // GET: UserController
 
-        public async Task<IActionResult> GetUserTransactions(string id, string userId, string sortAmount, string sortType)
+        public async Task<IActionResult> GetUserTransactions1(string id, string userId, string sortAmount, string sortType)
         {
             ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
             ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
@@ -70,6 +70,60 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
 
             var model = _mapper.Map<List<TransactionUserDto>>(sorted);
+
+            return model != null ?
+                          View(model) :
+                          Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+        }
+
+        //GetUserTransactionsByMounth
+        public async Task<IActionResult> GetUserTransactions(string id, string userId, string sortAmount, string sortType)
+        {
+            ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
+            ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
+
+            //TODO jak zrobic inaczej przekazuje raz id tranazakcji a raz id usera!
+            if (userId == null)
+            {
+                userId = id;
+            }
+
+            ViewData["UserId"] = id;
+
+            var currentUser = await _userService.GetById(userId);
+
+            ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
+
+            var transactions = await _transactionService.GetAllQueryable();
+
+            var userTransactions = transactions.Where(u => u.User.Id == userId).ToList();
+
+            var sorted = from s in userTransactions
+                         select s;
+            switch (sortAmount)
+            {
+                case "Amount":
+                    sorted = sorted.OrderByDescending(s => s.Amount);
+                    break;
+                default:
+                    sorted = sorted.OrderBy(s => s.Amount);
+                    break;
+            }
+
+            switch (sortType)
+            {
+                case "Type":
+                    sorted = sorted.OrderByDescending(s => s.Type);
+                    break;
+                default:
+                    sorted = sorted.OrderBy(s => s.Type);
+                    break;
+            }
+
+            //current mounth
+            var models = _transactionService.GetTransactionByMounth(4, sorted);
+
+            var model = _mapper.Map<List<TransactionUserDto>>(models);
 
             return model != null ?
                           View(model) :
