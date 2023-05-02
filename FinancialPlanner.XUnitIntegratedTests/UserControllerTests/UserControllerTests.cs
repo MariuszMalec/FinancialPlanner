@@ -1,6 +1,13 @@
-﻿using FinancialPlanner.Logic.Interfaces;
+﻿using AutoMapper;
+using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
+using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.WebMvc.Controllers;
+using FinancialPlanner.WebMvc.Profiles;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 
 namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
@@ -37,6 +44,59 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
 
             // Assert
             Assert.Equal(id, user.Id);
+        }
+
+        [Fact]
+        public void Index_ReturnFalse_WhenUsersNotExist()
+        {
+            //Arange
+            var mockRepo = new Mock<IUserService>();
+            mockRepo.Setup(r => r.GetAllQueryable().Result)
+                .Returns(GetAllFake());
+
+            var myProfile = new UserViewProfile();
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
+            IMapper mapper = new Mapper(configuration);
+
+            var controller = new UserController(mockRepo.Object, mapper);
+
+            // Act
+            var result = controller.Index();
+
+            // Assert
+            var viewResult = Assert.IsType<Task<ActionResult<List<UserDto>>>>(result);
+            var results = Assert.IsType<ViewResult>(viewResult.Result.Result);
+            var model = Assert.IsType<List<UserDto>>(results.Model);
+
+            Assert.Equal("Test", model.Select(x=>x.FirstName).FirstOrDefault());
+        }
+
+        private IQueryable<User> GetAllFake()
+        {
+            return new List<User>
+            {
+                new User
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FirstName= "Test",
+                    LastName= "Test",
+                    Company="",
+                    Balance=4000m,
+                    CreatedAt= DateTime.UtcNow,
+                    Currency= Logic.Enums.Currency.PLN,
+                    Email = "test@example.com",
+                    IsActive = true,
+                    Gender = Logic.Enums.Gender.Female,
+                    Address ="",
+                    Age=99,
+                    PasswordHash="123456",
+                    Phone="",
+                    Registered=DateTime.UtcNow,
+                    TransactionId=Guid.NewGuid().ToString(),
+                    Transactions = new List<Transaction> {},
+                    Role = new Role () { Id=Guid.NewGuid().ToString(), CreatedAt = DateTime.UtcNow,  Name = "User"}
+                }
+            }.AsQueryable();
         }
     }
 }

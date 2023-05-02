@@ -52,10 +52,8 @@ namespace FinancialPlanner.Logic.Services
         public async Task<IQueryable<User>> GetAllQueryable()
         {
             //var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
-
             var all = _repository.GetAllQueryable()//TODO cos takiego
                         .Include(u => u.Role);
-
             if (!all.Any())
             {
                 throw new NotFoundException("Users not found");

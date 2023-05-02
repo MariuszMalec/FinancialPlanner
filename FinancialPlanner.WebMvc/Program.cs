@@ -34,7 +34,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//TODO dodane
 
 
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<TransactionService>();
+builder.Services.AddTransient<ITransactionService,TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
@@ -59,6 +59,9 @@ using (var scope = app.Services.CreateScope())
     else
     {
         //TODO nie ralacyjna baza danych np memory msql do testow
+        await SeedData.SeedRoles(dataContext);
+        await SeedData.SeedUsers(dataContext);
+        await SeedData.SeedTransaction(dataContext);
     }
 }
 

@@ -9,7 +9,7 @@ namespace FinancialPlanner.Logic.Interfaces
         Task<bool> Delete(string id);
         IQueryable<Transaction> FilterByDates(IQueryable<Transaction> transactions, DateTime dateFrom, DateTime dateTo);
         IQueryable<Transaction> FilterByDescription(IQueryable<Transaction> transactions, string description);
-        IEnumerable<MonthlyIncomeAndExpenses> FilterByMonthlyBalance(int mounth);
+        Task<IEnumerable<MonthlyIncomeAndExpenses>> FilterByMonthlyBalance(int mounth);
         IQueryable<Transaction> FilterByTypeCategory(IQueryable<Transaction> transactions, TypeOfTransaction type, CategoryOfTransaction category);
         Task<IList<Transaction>> GetAll();
         Task<IQueryable<Transaction>> GetAllQueryable();

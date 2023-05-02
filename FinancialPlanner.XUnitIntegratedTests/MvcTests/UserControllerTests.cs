@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using FinancialPlanner.Logic.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Net.Http.Headers;
+using Moq;
 using System.Net;
 
 namespace FinancialPlanner.XUnitIntegratedTests.MvcTests

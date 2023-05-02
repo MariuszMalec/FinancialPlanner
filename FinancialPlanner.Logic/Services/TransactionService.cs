@@ -17,10 +17,10 @@ namespace FinancialPlanner.Logic.Services
         private readonly IRepository<Transaction> _repository;
         private readonly IUserService _userService;
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<TransactionService> _logger;
+        private readonly ILogger<ITransactionService> _logger;
         private readonly IMapper _mapper;
 
-        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<TransactionService> logger, IMapper mapper = null, IUserService userService = null)
+        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<ITransactionService> logger, IMapper mapper = null, IUserService userService = null)
         {
             _repository = repository;
             _context = context;
@@ -41,8 +41,7 @@ namespace FinancialPlanner.Logic.Services
 
         public async Task<IQueryable<Transaction>> GetAllQueryable()
         {
-            var all = _context.Set<Transaction>().Include(s => s.User)
-                ;//TODO czy da sie usera dodac do repository??
+            var all = _context.Set<Transaction>().Include(s => s.User);//TODO czy da sie usera dodac do repository??
 
             if (!all.Any())
             {
@@ -141,9 +140,9 @@ namespace FinancialPlanner.Logic.Services
             }
             return transactions;
         }
-        public IEnumerable<MonthlyIncomeAndExpenses> FilterByMonthlyBalance(int mounth)
+        public async Task<IEnumerable<MonthlyIncomeAndExpenses>> FilterByMonthlyBalance(int mounth)
         {
-            var transactions = GetAllQueryable().Result;
+            var transactions = await GetAllQueryable();
             var monthsToDate = Enumerable.Range(1, 12)
                                 .Select(m => new
                                 {

@@ -2,8 +2,8 @@
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Enums;
+using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
-using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +13,9 @@ namespace FinancialPlanner.WebMvc.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly TransactionService _transactionService;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionsController(ApplicationDbContext context, IMapper mapper = null, TransactionService transactionService = null)
+        public TransactionsController(ApplicationDbContext context, IMapper mapper = null, ITransactionService transactionService = null)
         {
             _context = context;
             _mapper = mapper;
@@ -65,7 +65,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         public async Task<IActionResult> GetMonthlyIncomeAndExpenses()
         {
-            var model = _transactionService.FilterByMonthlyBalance(3);
+            var model = await  _transactionService.FilterByMonthlyBalance(3);
             if (model == null)
             {
                 return NotFound();

@@ -16,10 +16,10 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly TransactionService _transactionService;
+        private readonly ITransactionService _transactionService;
         private readonly IUserService _userService;
 
-        public TransactionUserController(ApplicationDbContext context, IMapper mapper = null, TransactionService transactionService = null, IUserService userService = null)
+        public TransactionUserController(ApplicationDbContext context, IMapper mapper = null, ITransactionService transactionService = null, IUserService userService = null)
         {
             _context = context;
             _mapper = mapper;

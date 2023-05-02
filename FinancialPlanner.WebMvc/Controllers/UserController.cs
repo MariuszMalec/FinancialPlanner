@@ -13,10 +13,10 @@ namespace FinancialPlanner.WebMvc.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly TransactionService _transactionService;
+        private readonly ITransactionService _transactionService;
         private readonly IRepository<User> _repository;
 
-        public UserController(IUserService userService, IMapper mapper = null, TransactionService transactionService = null, IRepository<User> repository = null)
+        public UserController(IUserService userService, IMapper mapper = null, ITransactionService transactionService = null, IRepository<User> repository = null)
         {
             _userService = userService;
             _mapper = mapper;
@@ -78,8 +78,6 @@ namespace FinancialPlanner.WebMvc.Controllers
 
         public async Task<ActionResult<List<UserDto>>> Index()
         {
-            var transactions = await _transactionService.GetAll();//TODO najperw aktualizacja balansu dla userow wg transakcji
-
             var users = await _userService.GetAllQueryable();//TODO dodalem do usera role!!
 
             if (!users.Any())
