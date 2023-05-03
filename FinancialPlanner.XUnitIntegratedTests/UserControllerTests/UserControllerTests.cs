@@ -47,6 +47,34 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
         }
 
         [Fact]
+        public void GetUserTransactions_ReturnFalse_WhenUserTransactionsNotExist()
+        {
+            //Arange
+            var mockRepo = new Mock<IUserService>();
+            mockRepo.Setup(r => r.GetAllQueryable().Result)
+                .Returns(GetAllFake());
+
+            var myProfile = new UserViewProfile();
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
+            IMapper mapper = new Mapper(configuration);
+
+            var controller = new UserController(mockRepo.Object, mapper);
+
+            var id = GetAllFake().Select(x=>x.Id).FirstOrDefault();
+            var userid = GetAllFake().Select(x => x.Id).FirstOrDefault();
+
+            // Act
+            var result = controller.GetUserTransactions(id, userid, "", "");
+
+            // Assert
+            //var viewResult = Assert.IsType<Task<ActionResult<List<UserDto>>>>(result);
+            //var results = Assert.IsType<ViewResult>(viewResult.Result.Result);
+            //var model = Assert.IsType<List<UserDto>>(results.Model);
+
+            //Assert.Equal("Test", model.Select(x => x.FirstName).FirstOrDefault());
+        }
+
+        [Fact]
         public void Index_ReturnFalse_WhenUsersNotExist()
         {
             //Arange

@@ -208,7 +208,8 @@ public static class MainMenu
             {
                 Console.WriteLine($"{mainMenuItem[currentItem]} ...");
 
-                var mouthlyBalance = transactionService.FilterByMonthlyBalance(3).Result;//0-styczen
+                var transactions = transactionService.GetAllQueryable().Result;
+                var mouthlyBalance = transactionService.FilterByYearBalance(transactions).Result;//0-styczen
 
                 if (mouthlyBalance.Count() > 0)
                 {
