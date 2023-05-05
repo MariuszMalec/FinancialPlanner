@@ -34,9 +34,10 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             ViewData["UserId"] = id;
 
-            var currentUser = await _userService.GetById(userId);
+            var currentUser = await _userService.GetById(userId);//TODO to w tescie null
 
-            ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
+            if (currentUser != null)
+                ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
 
             var transactions = await _transactionService.GetAllQueryable();
 

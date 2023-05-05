@@ -77,12 +77,11 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
             var result = await controller.GetUserTransactions(id, userid, string.Empty, string.Empty);//TODO user is null in cotroller?
 
             // Assert
-            //var viewResult = Assert.IsType<Task<ActionResult<List<UserDto>>>>(result);
-            //var results = Assert.IsType<ViewResult>(viewResult.Result.Result);
-            //var model = Assert.IsType<List<UserDto>>(results.Model);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<List<TransactionUserDto>>(viewResult.Model);
 
-            //Assert.Equal("Test", model.Select(x => x.FirstName).FirstOrDefault());
             Assert.NotNull(result);
+            Assert.Equal("Test", model.Select(x => x.FirstName).FirstOrDefault());
         }
 
         [Fact]
