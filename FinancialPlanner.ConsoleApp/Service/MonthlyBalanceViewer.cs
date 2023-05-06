@@ -1,10 +1,4 @@
 ﻿using FinancialPlanner.Logic.Dtos;
-using FinancialPlanner.Logic.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialPlanner.ConsoleApp.Service
 {
@@ -14,7 +8,7 @@ namespace FinancialPlanner.ConsoleApp.Service
         {
             if (balance.Count() > 0)
             {
-                balance.ForEach(x => Console.WriteLine($"{x.Month} {x.Income} {x.Expenses}"));
+                balance.ForEach(x => Console.WriteLine($"{x.Month.ToString("MMMM")} {x.Income} {x.Expenses} {x.Differrence}"));
             }
         }
     }

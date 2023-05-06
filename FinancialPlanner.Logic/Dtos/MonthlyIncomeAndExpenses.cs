@@ -10,5 +10,18 @@ namespace FinancialPlanner.Logic.Dtos
         public decimal Income { get; set; }
         [DataType(DataType.Currency)]
         public decimal Expenses { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal Differrence { get; set; }
+        //public decimal Differrence
+        //{
+        //    get
+        //    {
+        //        return (Income - Expenses);
+        //    }
+        //    private set
+        //    {
+        //        Differrence = (Income - Expenses);
+        //    }
+        //}
     }
 }

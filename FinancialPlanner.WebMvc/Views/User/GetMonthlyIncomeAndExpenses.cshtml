@@ -26,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.Income)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Expenses)
+                @Html.DisplayNameFor(model => model.Differrence)
             </th>
             <th>
                 <label>(income-outcome)</label>
@@ -51,19 +51,18 @@
                     @Html.DisplayFor(modelItem => item.Expenses)
                 </td>
                 @{
-                    var difference = item.Income - item.Expenses;
-                }
-                @if (difference < 0)
-                {
-                    <td style="color:red">
-                        @difference.ToString("C")
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        @difference.ToString("C")
-                    </td>
+                    if (item.Differrence < 0)
+                    {
+                        <td style="color:red">
+                             @Html.DisplayFor(modelItem => item.Differrence)
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                             @Html.DisplayFor(modelItem => item.Differrence)
+                        </td>          
+                    }
                 }
                 <td>
                     @*                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
