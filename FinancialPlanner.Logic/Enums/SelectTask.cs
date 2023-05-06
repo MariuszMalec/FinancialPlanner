@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FinancialPlanner.Logic.Enums
+﻿namespace FinancialPlanner.Logic.Enums
 {
     public enum SelectTask
     {
@@ -18,6 +12,7 @@ namespace FinancialPlanner.Logic.Enums
         Delete_user,
         View_users,
         MonthlyBalance,
+        YearlyBalance,
         Exit
     }
 }

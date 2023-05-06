@@ -161,20 +161,6 @@ namespace FinancialPlanner.Logic.Services
                                 })
                                 .ToList();
 
-            ////balance current mouth before
-            //var beforefirstDay = new DateTime(DateTime.Today.Year, DateTime.Now.Month - 1, 1);
-            //var beforelastDay = beforefirstDay.AddMonths(1).AddDays(-1);
-            //var incomeFromMounthBefore = transactions.Where(t => t.CreatedAt >= beforefirstDay && t.CreatedAt <= beforelastDay)
-            //                                         .Where(t => t.Type == TypeOfTransaction.Income)
-            //                                         .Select(t => t.Amount)
-            //                                         .Sum();
-            //var outcomeFromMounthBefore = transactions.Where(t => t.CreatedAt >= beforefirstDay && t.CreatedAt <= beforelastDay)
-            //                                         .Where(t => t.Type == TypeOfTransaction.Outcome)
-            //                                         .Select(t => t.Amount)
-            //                                         .Sum();
-            //var difference = incomeFromMounthBefore - outcomeFromMounthBefore;
-
-            //TODO next add acording user!!
             var sums = from month in monthsToDate
                        select new MonthlyIncomeAndExpenses
                        {
