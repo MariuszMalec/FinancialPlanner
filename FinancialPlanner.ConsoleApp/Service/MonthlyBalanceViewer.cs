@@ -8,7 +8,7 @@ namespace FinancialPlanner.ConsoleApp.Service
         {
             if (balance.Count() > 0)
             {
-                balance.ForEach(x => Console.WriteLine($"{x.Month.ToString("MMMM")} {x.Income} {x.Expenses} {x.Differrence}"));
+                balance.ForEach(x => Console.WriteLine($"{x.Month.ToString("MMMM")} {x.Income} {x.Expenses} {x.Income - x.Expenses} {x.Differrence}"));
             }
         }
     }

@@ -12,16 +12,17 @@ namespace FinancialPlanner.Logic.Dtos
         public decimal Expenses { get; set; }
         [DataType(DataType.Currency)]
         public decimal Differrence { get; set; }
-        //public decimal Differrence
-        //{
-        //    get
-        //    {
-        //        return (Income - Expenses);
-        //    }
-        //    private set
-        //    {
-        //        Differrence = (Income - Expenses);
-        //    }
-        //}
+        [DataType(DataType.Currency)]
+        public decimal IncomeMinusOutCome
+        {
+            get
+            {
+                return (Income - Expenses);
+            }
+            private set
+            {
+                IncomeMinusOutCome = (Income - Expenses);
+            }
+        }
     }
 }

@@ -26,10 +26,13 @@
                 @Html.DisplayNameFor(model => model.Income)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Differrence)
+                @Html.DisplayNameFor(model => model.Expenses)
             </th>
             <th>
                 <label>(income-outcome)</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Differrence)
             </th>
             <th></th>
         </tr>
@@ -49,6 +52,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Expenses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncomeMinusOutCome)
                 </td>
                 @{
                     if (item.Differrence < 0)
