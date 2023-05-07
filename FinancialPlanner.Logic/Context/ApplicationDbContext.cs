@@ -1,27 +1,22 @@
 ﻿using FinancialPlanner.Logic.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace FinancialPlanner.Logic.Context
 {
-    public class ApplicationDbContext : DbContext
+    public abstract class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
-        public DbSet<User> Users { get; set; }
+        protected readonly IConfiguration Configuration;
 
-        public DbSet<Role> Roles { get; set; }
+        public abstract DbSet<User> Users { get; set; }
 
-        public DbSet<Transaction> Transactions { get; set; }
+        public abstract DbSet<Role> Roles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public abstract DbSet<Transaction> Transactions { get; set; }
+
+        protected ApplicationDbContext(IConfiguration configuration)
         {
-            //optionsBuilder.UseInMemoryDatabase("usersDb");//TODO to samo w appsettings.json jest
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<User>().ToTable("Users");
-            //base.OnModelCreating(modelBuilder);
+            Configuration = configuration;
         }
     }
 }

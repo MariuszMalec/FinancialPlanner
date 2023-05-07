@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "FinancialPlanner.ConsoleApp": {
+      "commandName": "Project"
+    }
+  }
+}

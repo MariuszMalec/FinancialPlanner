@@ -1,15 +1,12 @@
 using FinancialPlanner.Logic.Context;
+using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
-using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Configuration;
-using System;
 using FinancialPlanner.WebMvc.Middleware;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using Microsoft.AspNetCore.Identity;
+using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,26 +14,64 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //dodane
-//builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseInMemoryDatabase("usersDb"));
 IConfiguration Configuration;
 Configuration = builder.Configuration;
-//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+ConfigurationManager configuration = builder.Configuration;//TODO add special data like name provider to configuration 
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+IWebHostEnvironment environment = builder.Environment;
+
+//-------------------------------------------------------
+// -------------- ustalenie providera -------------------
+//-------------------------------------------------------
+var provider = Configuration["ConnectionStrings"];//TODO z appsettings.json
+if (environment.EnvironmentName == "Default")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
-    options.UseSqlServer(Configuration.GetConnectionString("Default"));
-    //options.UseNpgsql(Configuration.GetConnectionString("Linux"));
-    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-});
+    provider = EnumProvider.Default.ToString();
+}
+if (environment.EnvironmentName == "LinuxPg")//TODO zmiana providera gdy wybrane spec. srodowisko
+{
+    provider = EnumProvider.LinuxPg.ToString();
+}
+if (environment.EnvironmentName == "WinPg")//TODO zmiana providera gdy wybrane spec. srodowisko
+{
+    provider = EnumProvider.WinPg.ToString();
+}
+else
+{
+    provider = EnumProvider.Default.ToString();
+}
+
+//TODO add static values which I can use f.e in homecontroller!
+configuration.AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { "SqlProvider", provider },
+        });
+
+switch (provider)
+{
+    case "Default":
+        builder.Services.AddDbContext<ApplicationDbContext, MsqlDbContext>();
+        break;
+
+    case "WinPg":
+        builder.Services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
+        break;
+
+    case "LinuxPg":
+        builder.Services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
+        break;
+    default:
+        throw new Exception($"Unsupported provider: {provider}");
+}
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//TODO dodane aby poprawic blad zapisu czasu utc w postgres
-
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITransactionService,TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddScoped<ConfigurationManager>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -45,7 +80,8 @@ var app = builder.Build();
 //dodane
 using (var scope = app.Services.CreateScope())
 {
-    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();//TODO tutaj wchodzi do OnConfiguring
+    var takeConfiguration = scope.ServiceProvider.GetRequiredService<ConfigurationManager>();
     if (dataContext.Database.IsRelational())
     {
         if (dataContext.Database.IsRelational())

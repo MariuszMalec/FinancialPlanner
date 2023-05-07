@@ -3,11 +3,7 @@ using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
-using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.DependencyResolver;
-using System.Globalization;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
