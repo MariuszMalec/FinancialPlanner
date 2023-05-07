@@ -2,6 +2,7 @@
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FinancialPlanner.ConsoleApp.Service
 {
@@ -9,10 +10,11 @@ namespace FinancialPlanner.ConsoleApp.Service
     {
         public static void Show(IUserService userService, SelectTask currentItem, int MinNameLength, int MaxNameLength)
         {
-            Console.WriteLine($"{currentItem} ...(f42969be-3890-423c-8100-4a936abbfb62)");
+            Console.WriteLine($"{currentItem} ...");
             var users = userService.GetAll().Result.ToList();
             if (users.Count > 0)
             {
+                users.ForEach(u => Console.WriteLine($"{u.Id}"));
                 var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
                 if (id.ToLower() == "exit")
                 {

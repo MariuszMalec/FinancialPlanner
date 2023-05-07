@@ -12,6 +12,7 @@ namespace FinancialPlanner.ConsoleApp.Service
             var users = userService.GetAll().Result.ToList();
             if (users.Count > 0)
             {
+                users.ForEach(u => Console.WriteLine($"{u.Id}"));
                 var id = ValidateUser.GetNonDigString("Id", MinNameLength, MaxNameLength);
                 if (id == null)
                 {
