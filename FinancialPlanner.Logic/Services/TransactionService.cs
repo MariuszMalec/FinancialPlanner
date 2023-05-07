@@ -8,8 +8,6 @@ using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FinancialPlanner.Logic.Services
 {
@@ -150,14 +148,11 @@ namespace FinancialPlanner.Logic.Services
                                     endDay = new DateTime(DateTime.Today.Year, m, DateTime.DaysInMonth(DateTime.Today.Year, m)),
                                     beforefirstDay = new DateTime(DateTime.Today.Year, m, 1).AddMonths(-1).AddDays(0),
                                     beforelastDay = new DateTime(DateTime.Today.Year, m, 1).AddDays(-1),
-                                    currentDifference = FilterByDates(transactions, new DateTime(DateTime.Today.Year, m, 1), new DateTime(DateTime.Today.Year, m, DateTime.DaysInMonth(DateTime.Today.Year, m)))
+                                    currentDifference = FilterByDates(transactions, new DateTime(DateTime.Today.Year, 1, 1), new DateTime(DateTime.Today.Year, m, DateTime.DaysInMonth(DateTime.Today.Year, m)))
                                                        .Where(t => t.Type == TypeOfTransaction.Income).Select(x => x.Amount).Sum() -
-                                                       FilterByDates(transactions, new DateTime(DateTime.Today.Year, m, 1), new DateTime(DateTime.Today.Year, m, DateTime.DaysInMonth(DateTime.Today.Year, m)))
+                                                       FilterByDates(transactions, new DateTime(DateTime.Today.Year, 1, 1), new DateTime(DateTime.Today.Year, m, DateTime.DaysInMonth(DateTime.Today.Year, m)))
                                                       .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum(),
-                                    differenceBeforeMonth = FilterByDates(transactions, new DateTime(DateTime.Today.Year, m, 1).AddMonths(-1).AddDays(0), new DateTime(DateTime.Today.Year, m, 1).AddDays(-1))
-                                                .Where(t => t.Type == TypeOfTransaction.Income).Select(x => x.Amount).Sum() -
-                                                FilterByDates(transactions, new DateTime(DateTime.Today.Year, m, 1).AddMonths(-1).AddDays(0), new DateTime(DateTime.Today.Year, m, 1).AddDays(-1))
-                                                .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum(),
+                                    
                                 })
                                 .ToList();
 
@@ -170,7 +165,7 @@ namespace FinancialPlanner.Logic.Services
                            ,
                            Expenses = FilterByDates(transactions, month.firstDay, month.endDay)
                            .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum(),
-                           Differrence = month.currentDifference+month.differenceBeforeMonth
+                           Balance = month.currentDifference
                        };
             return sums;
         }

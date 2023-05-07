@@ -25,7 +25,7 @@ namespace FinancialPlanner.Logic.Context
                 FirstName = "Mariusz",
                 LastName = "Malec",
                 Age = 47,
-                Balance = 3000,
+                Balance = 0,
                 Address = "Sadowa",
                 Company = "GE",
                 Currency = Enums.Currency.PLN,
@@ -54,7 +54,7 @@ namespace FinancialPlanner.Logic.Context
                 Category = Enums.CategoryOfTransaction.Salary,
                 Type = Enums.TypeOfTransaction.Income,
                 Currency = Enums.Currency.PLN,
-                Description = "W morde kredyt",
+                Description = "test",
                 CreatedAt= DateTime.Now,
                 UserId = _users.Select(x => x.Id).First()
             },
