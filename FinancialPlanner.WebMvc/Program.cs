@@ -24,7 +24,7 @@ IWebHostEnvironment environment = builder.Environment;
 //-------------------------------------------------------
 // -------------- ustalenie providera -------------------
 //-------------------------------------------------------
-var provider = Configuration["ConnectionStrings"];//TODO z appsettings.json
+var provider = Configuration["ConnectionStrings"];//TODO z appsettings.json w linuxie nie czyta appsetings.json?? 
 if (environment.EnvironmentName == "Default")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
     provider = EnumProvider.Default.ToString();
@@ -39,7 +39,7 @@ if (environment.EnvironmentName == "WinPg")//TODO zmiana providera gdy wybrane s
 }
 else
 {
-    provider = EnumProvider.Default.ToString();
+    provider = EnumProvider.LinuxPg.ToString();
 }
 
 //TODO add static values which I can use f.e in homecontroller!
