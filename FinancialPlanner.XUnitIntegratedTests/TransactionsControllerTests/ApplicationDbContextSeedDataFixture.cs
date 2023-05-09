@@ -1,6 +1,7 @@
 ﻿using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace FinancialPlanner.XUnitIntegratedTests.TransactionsControllerTests
 {
@@ -10,11 +11,13 @@ namespace FinancialPlanner.XUnitIntegratedTests.TransactionsControllerTests
 
         public ApplicationDbContextSeedDataFixture()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("TransactionDb")
-                .Options;
+            //var options = new DbContextOptionsBuilder<MemoryDbContext>()
+            //    .UseInMemoryDatabase("FinancialPlannerDb")
+            //    .Options;
 
-            Context = new ApplicationDbContext(options);
+            ConfigurationManager configuration = new ConfigurationManager();
+
+            Context = new MemoryDbContext(configuration);
 
             Context.Transactions.Add(new Transaction
             {

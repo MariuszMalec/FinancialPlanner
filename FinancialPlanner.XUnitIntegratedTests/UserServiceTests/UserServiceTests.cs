@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;

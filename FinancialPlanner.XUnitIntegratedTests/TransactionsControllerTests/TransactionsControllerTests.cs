@@ -5,6 +5,7 @@ using FinancialPlanner.Logic.Models;
 using FinancialPlanner.WebMvc.Controllers;
 using FinancialPlanner.WebMvc.Profiles;
 using Microsoft.AspNetCore.Mvc;
+using FinancialPlanner.Logic.Context;
 using Moq;
 
 namespace FinancialPlanner.XUnitIntegratedTests.TransactionsControllerTests

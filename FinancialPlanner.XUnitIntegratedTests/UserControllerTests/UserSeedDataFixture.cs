@@ -1,6 +1,7 @@
 ﻿using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
 {
@@ -10,11 +11,13 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
 
         public UserSeedDataFixture()
         {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("UsersDb")
-                .Options;
+            //var options = new DbContextOptionsBuilder<MemoryDbContext>()
+            //    .UseInMemoryDatabase("UsersDb")
+            //    .Options;//TODO jak akywowac to tutaj
 
-            UserContext = new ApplicationDbContext(options);
+            ConfigurationManager configuration = new ConfigurationManager();
+
+            UserContext = new MemoryDbContext(configuration);
 
             UserContext.Users.Add(new User
             {
