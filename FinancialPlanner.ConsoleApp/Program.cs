@@ -18,7 +18,7 @@ configuration.AddInMemoryCollection(new Dictionary<string, string>
 var host = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
-        services.AddDbContext<ApplicationDbContext, MsqlDbContext>();
+        services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<ITransactionService,TransactionService>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

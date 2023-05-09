@@ -24,16 +24,16 @@ IWebHostEnvironment environment = builder.Environment;
 //-------------------------------------------------------
 // -------------- ustalenie providera -------------------
 //-------------------------------------------------------
-var provider = Configuration["ConnectionStrings"];//TODO z appsettings.json w linuxie nie czyta appsetings.json?? 
-if (environment.EnvironmentName == "Default")//TODO zmiana providera gdy wybrane spec. srodowisko
+var provider = Configuration["ConnectionStrings"];//TODO nie czyta appsetings.json?? dodac provider domyslny w pliku 
+if (environment.EnvironmentName == "Default" || environment.EnvironmentName == "Development")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
     provider = EnumProvider.Default.ToString();
 }
-if (environment.EnvironmentName == "LinuxPg")//TODO zmiana providera gdy wybrane spec. srodowisko
+else if (environment.EnvironmentName == "LinuxPg")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
     provider = EnumProvider.LinuxPg.ToString();
 }
-if (environment.EnvironmentName == "WinPg")//TODO zmiana providera gdy wybrane spec. srodowisko
+else if (environment.EnvironmentName == "WinPg")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
     provider = EnumProvider.WinPg.ToString();
 }

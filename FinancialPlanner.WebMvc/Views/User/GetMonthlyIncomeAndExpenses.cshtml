@@ -54,7 +54,20 @@
                     @Html.DisplayFor(modelItem => item.Expenses)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IncomeMinusOutCome)
+                @{
+                    if (item.IncomeMinusOutCome < 0)
+                    {
+                        <td style="color:red">
+                             @Html.DisplayFor(modelItem => item.IncomeMinusOutCome)
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                             @Html.DisplayFor(modelItem => item.IncomeMinusOutCome)
+                        </td>          
+                    }
+                }
                 </td>
                 @{
                     if (item.Balance < 0)
