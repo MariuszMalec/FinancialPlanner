@@ -5,6 +5,8 @@ using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
 using FinancialPlanner.WebMvc.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 using System.Globalization;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
@@ -18,6 +20,7 @@ IConfiguration Configuration;
 Configuration = builder.Configuration;
 
 ConfigurationManager configuration = builder.Configuration;//TODO add special data like name provider to configuration 
+configuration.AddJsonFile($"appsettings.json", true, true);
 
 IWebHostEnvironment environment = builder.Environment;
 
@@ -47,6 +50,20 @@ configuration.AddInMemoryCollection(new Dictionary<string, string>
         {
             { "SqlProvider", provider },
         });
+
+//Add serilog here in program.cs
+//builder.Host.UseSerilog((hostContext, services, configuration) =>
+//{
+//    configuration.MinimumLevel.Override("Microsoft", LogEventLevel.Error);
+//    configuration.WriteTo.Console();
+//    configuration.WriteTo.File("./logs.log");
+//});
+var logger = new LoggerConfiguration()
+      .ReadFrom.Configuration(configuration)//czytanie z appsettings.json
+      //.Enrich.FromLogContext()
+      .WriteTo.Console()
+      .CreateLogger();
+builder.Host.UseSerilog(logger);
 
 switch (provider)
 {

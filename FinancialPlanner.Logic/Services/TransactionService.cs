@@ -7,7 +7,7 @@ using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace FinancialPlanner.Logic.Services
 {
@@ -16,10 +16,10 @@ namespace FinancialPlanner.Logic.Services
         private readonly IRepository<Transaction> _repository;
         private readonly IUserService _userService;
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<ITransactionService> _logger;
+        private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
-        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<ITransactionService> logger, IMapper mapper = null, IUserService userService = null)
+        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger logger, IMapper mapper = null, IUserService userService = null)
         {
             _repository = repository;
             _context = context;
@@ -46,6 +46,7 @@ namespace FinancialPlanner.Logic.Services
             {
                 throw new NotFoundException("Transactions not found");
             }
+            _logger.Information($"Get all transaction with user at {DateTime.Now}");
             return all;
         }
 
@@ -53,6 +54,7 @@ namespace FinancialPlanner.Logic.Services
         {
             var transaction = await _context.Transactions.FindAsync(id);
             var currentTransaction = _mapper.Map<TransactionUserDto>(transaction);
+            _logger.Information($"Get By Id {id} transaction with user at {DateTime.Now}");
             return currentTransaction;
 
             //TODO how to add to repo this
@@ -80,6 +82,7 @@ namespace FinancialPlanner.Logic.Services
             //zapisac nowy balance w user
             var user = await _userService.GetById(id);
             user.Balance = transaction.BalanceAfterTransaction;
+            _logger.Information($"Insert {id} transaction for user at {DateTime.Now}");
             await _userService.Update(user);
         }
         public async Task<bool> Delete(string id)
@@ -97,6 +100,7 @@ namespace FinancialPlanner.Logic.Services
             var user = await _userService.GetById(userId);
             user.Balance = newBalance;
             await _userService.Update(user);
+            _logger.Warning($"Delete By Id {id} transaction with user at {DateTime.Now}");
             return true;
         }
 
@@ -108,23 +112,25 @@ namespace FinancialPlanner.Logic.Services
             }
 
             transactions = transactions.Where(t => t.CreatedAt >= dateFrom && t.CreatedAt <= dateTo);
-
+            _logger.Information($"Filter By transaction at {DateTime.Now}");
             return transactions;
         }
 
         public IQueryable<Transaction> FilterByDescription(IQueryable<Transaction> transactions, string description)
         {
             if (description is not null)
+            {
+                _logger.Information($"FilterByDescription {description} transaction at {DateTime.Now}");
                 return transactions.Where(t => t.Description.ToLower().Contains(description.ToLower()));
-
+            }
             return transactions;
         }
         public IQueryable<Transaction> FilterByTypeCategory(IQueryable<Transaction> transactions, TypeOfTransaction type, CategoryOfTransaction category)
         {
+            _logger.Information($"FilterByTypeCategory By transaction at {DateTime.Now}");
             if (transactions.Count() > 0 && type == TypeOfTransaction.Outcome && (category == CategoryOfTransaction.allOutcome || category == CategoryOfTransaction.All))
             {
-                return transactions.Where(t => t.Type == type)
-                                   ;
+                return transactions.Where(t => t.Type == type)                      ;
             }
             if (transactions.Count() > 0 && type == TypeOfTransaction.Income && (category == CategoryOfTransaction.allIncome || category == CategoryOfTransaction.All))
             {
@@ -141,6 +147,7 @@ namespace FinancialPlanner.Logic.Services
         }
         public async Task<IEnumerable<MonthlyIncomeAndExpenses>> FilterByYearBalance(IQueryable<Transaction> transactions)
         {
+            _logger.Information($"FilterByYearBalance By transaction at {DateTime.Now}");
             var monthsToDate = Enumerable.Range(1, 12)
                                 .Select(m => new
                                 {
@@ -175,6 +182,7 @@ namespace FinancialPlanner.Logic.Services
             var firstDay = new DateTime(DateTime.Today.Year, mounth, 1);
             var endDay = new DateTime(DateTime.Today.Year, mounth, DateTime.DaysInMonth(DateTime.Today.Year, mounth));
             var transactionsUser = transactions.Where(t => t.CreatedAt >= firstDay && t.CreatedAt <= endDay);
+            _logger.Information($"FilterTransactionByMounth {mounth} transaction at {DateTime.Now}");
             return transactionsUser;
         }
     }
