@@ -45,7 +45,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Expenses)
             </td>
-            <td>
                 @{
                     if (item.IncomeMinusOutCome < 0)
                     {
@@ -60,7 +59,6 @@
                         </td>
                     }
                 }
-            </td>
                 @{
                     if (item.Balance < 0)
                     {
