@@ -5,6 +5,8 @@ using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
 using FinancialPlanner.WebMvc.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 using System.Globalization;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
@@ -19,7 +21,21 @@ Configuration = builder.Configuration;
 
 ConfigurationManager configuration = builder.Configuration;//TODO add special data like name provider to configuration 
 
+configuration.AddJsonFile($"appsettings.json", true, true);
+
+if (!File.Exists("appsettings.json"))
+{
+    throw new Exception("BRAK! appsettings.json");
+}
+
 IWebHostEnvironment environment = builder.Environment;
+
+var logger = new LoggerConfiguration()
+      .ReadFrom.Configuration(configuration)//czytanie z appsettings.json
+      .CreateLogger();
+builder.Host.UseSerilog(logger);
+
+logger.Information("Starting app ...");
 
 //-------------------------------------------------------
 // -------------- ustalenie providera -------------------
@@ -72,6 +88,7 @@ builder.Services.AddTransient<ITransactionService,TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<ConfigurationManager>();
+builder.Services.AddSerilog(logger);//inject serilog
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

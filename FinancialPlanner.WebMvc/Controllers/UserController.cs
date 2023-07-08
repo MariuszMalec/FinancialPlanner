@@ -3,6 +3,8 @@ using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -12,11 +14,14 @@ namespace FinancialPlanner.WebMvc.Controllers
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
 
-        public UserController(IUserService userService, IMapper mapper = null, ITransactionService transactionService = null)
+        private ILogger _logger;
+
+        public UserController(IUserService userService, IMapper mapper = null, ITransactionService transactionService = null, ILogger logger = null)
         {
             _userService = userService;
             _mapper = mapper;
             _transactionService = transactionService;
+            _logger = logger;
         }
 
         // GET: UserController
@@ -178,7 +183,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             //    Email = x.Email,
             //    IsActive = x.IsActive
             //});
-
+            _logger.Information("Load users successfully at {registrationDate}", DateTime.Now);
             return View(model);
         }
 
