@@ -45,7 +45,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var transaction = await _transactionService.GetById(id);
             if (transaction == null)
             {
-                return NotFound();
+                return NotFound($"Brak transaction {id}");
             }
 
             return View(transaction);

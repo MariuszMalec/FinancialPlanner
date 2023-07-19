@@ -194,6 +194,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             if (user == null)
             {
+                _logger.Error($"Brak uzytkownika {id}");
                 return BadRequest($"Brak uzytkownika {id}");
             }
 

@@ -40,7 +40,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (role == null)
             {
-                return NotFound();
+                return NotFound($"Brak roli {id}");
             }
 
             return View(role);

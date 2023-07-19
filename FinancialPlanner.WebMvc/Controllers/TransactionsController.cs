@@ -91,7 +91,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             if (model == null)
             {
-                return NotFound();
+                return NotFound($"Brak transaction {id}");
             }
 
             return View(model);
