@@ -43,7 +43,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
         }
 
         [Theory]
-        [InlineData("/User/Details/3328489b-a069-4db7-baa4-318c88d985ee")]
+        [InlineData("/User/Details/a200b9f3-d139-4fa6-982f-0ad4f388b485")]
         public async Task Get_Details_EndPointsReturns_StatusOk(string url)
         {
             var response = await _client.GetAsync(url);
