@@ -8,6 +8,7 @@ using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Data;
 
 namespace FinancialPlanner.Logic.Services
 {
@@ -63,6 +64,7 @@ namespace FinancialPlanner.Logic.Services
 
             transaction.User = user;
             var currentTransaction = _mapper.Map<TransactionUserDto>(transaction);
+            _logger.LogInformation($"{id} GetById succesfull at {DateTime.Now}");
             return currentTransaction;
 
             //TODO how to add to repo this

@@ -34,6 +34,20 @@ namespace FinancialPlanner.WebMvc.Controllers
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
+        public async Task<IActionResult> Select(DateTime? selectMounth)//TODO tranzakcje z userem wg miesiaca
+        {
+
+            var transactions = await _transactionService.GetAllQueryable();
+
+            var model = _mapper.Map<List<TransactionUserDto>>(transactions);
+
+            model = model.Where(t=>t.CreatedAt.Month == selectMounth.Value.Month).ToList();
+
+            return _context.Transactions != null ?
+                          View(model) :
+                          Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+        }
+
         // GET: Transactions/Details/5
         public async Task<IActionResult> Details(string id)
         {
