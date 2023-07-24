@@ -52,6 +52,16 @@ namespace FinancialPlanner.Logic.Services
         public async Task<TransactionUserDto> GetById(string id)
         {
             var transaction = await _context.Transactions.FindAsync(id);
+            var userId = transaction.UserId;
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                _logger.LogError($"Brak uzytkownika {id} !");
+                return null;
+            }
+
+            transaction.User = user;
             var currentTransaction = _mapper.Map<TransactionUserDto>(transaction);
             return currentTransaction;
 
