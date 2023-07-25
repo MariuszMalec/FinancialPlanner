@@ -20,6 +20,7 @@ configuration.AddEnvironmentVariables();
 if (environmentName == null)
 {
     provider = EnumProvider.Default.ToString();
+    throw new Exception("Select correct environment (WinPg lub LinuxPg)!!! brak bazy danych");
 }
 else if (environmentName == "LinuxPg")//TODO zmiana providera gdy wybrane spec. srodowisko
 {

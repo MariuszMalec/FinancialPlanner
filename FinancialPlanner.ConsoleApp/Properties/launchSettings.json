@@ -8,6 +8,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "WinPg"
       }
+    },
+    "LinuxPg": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "LinuxPg"
+      }
     }
   }
 }
