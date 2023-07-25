@@ -6,6 +6,7 @@ using FinancialPlanner.WebMvc.Controllers;
 using FinancialPlanner.WebMvc.Profiles;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Serilog;
 
 namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
 {
@@ -92,11 +93,19 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
             mockRepo.Setup(r => r.GetAllQueryable().Result)
                 .Returns(GetUsers());
 
+            var mockRepoTransaction = new Mock<ITransactionService>();
+            mockRepoTransaction.Setup(r => r.GetAllQueryable().Result)
+               .Returns(GetTransactions());
+
             var myProfile = new UserViewProfile();
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
             IMapper mapper = new Mapper(configuration);
 
-            var controller = new UserController(mockRepo.Object, mapper);
+            var logger = new Mock<ILogger>();
+            logger.Setup(c => c.Information(It.IsAny<string>()))
+                 ;
+
+            var controller = new UserController(mockRepo.Object, mapper, mockRepoTransaction.Object, logger.Object);
 
             // Act
             var result = controller.Index();

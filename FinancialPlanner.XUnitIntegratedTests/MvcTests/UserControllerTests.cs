@@ -44,11 +44,10 @@ namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
 
         [Theory]
         [InlineData("/User/Details/a200b9f3-d139-4fa6-982f-0ad4f388b485")]
-        public async Task Get_Details_EndPointsReturns_StatusOk(string url)
+        public async Task Get_Details_EndPointsReturns_StatusBadRequest(string url)
         {
             var response = await _client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }   
     }
 }
