@@ -20,33 +20,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-
-                        <li class="navbar-nav flex-grow-1">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"> <i class="badge-info bi-house"></i> Home</a>
-                        </li>
-
-                        <li class="dropdown">
-                            <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bg-primary bi-gear"></i> Managment
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-controller="User" asp-action="Index"> <i class="bi bi-person"></i> Users</a>
-                                <a class="dropdown-item" asp-controller="Roles" asp-action="Index"> <i class="bi bi-person-square"></i> Roles</a>
-                                <a class="dropdown-item" asp-controller="Transactions" asp-action="Index"> <i class="bi bi-shop"></i> Transactions</a>
-                                <a class="dropdown-item" asp-controller="TransactionUser" asp-action="Index"> <i class="bi bi-person-lines-fill"></i> UserTransactions</a>
-                                <a class="dropdown-item" asp-controller="Transactions" asp-action="GetMonthlyIncomeAndExpenses"> <i class="bi bi-list-stars"></i> Balance</a>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-
-
-@*                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -68,11 +42,32 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="TransactionUser" asp-action="Index">TransactionsOfUsers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="GetMonthlyIncomeAndExpenses">BalanceTransactions</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="GetMonthlyIncomeAndExpenses">Balance</a>
                         </li>
-                        
                     </ul>
-                </div>*@
+
+                </div>
+
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+
+                        <li class="dropdown">
+                            <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bg-primary bi-gear"></i> Managment
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-controller="User" asp-action="Index"> <i class="bi bi-person"></i> Users</a>
+                                <a class="dropdown-item" asp-controller="Roles" asp-action="Index"> <i class="bi bi-person-square"></i> Roles</a>
+                                <a class="dropdown-item" asp-controller="Transactions" asp-action="Index"> <i class="bi bi-shop"></i> Transactions</a>
+                                <a class="dropdown-item" asp-controller="TransactionUser" asp-action="Index"> <i class="bi bi-person-lines-fill"></i> UserTransactions</a>
+                                <a class="dropdown-item" asp-controller="Transactions" asp-action="GetMonthlyIncomeAndExpenses"> <i class="bi bi-list-stars"></i> Balance</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
