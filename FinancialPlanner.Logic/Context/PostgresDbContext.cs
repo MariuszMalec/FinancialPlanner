@@ -21,6 +21,12 @@ namespace FinancialPlanner.Logic.Context
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var provider = Configuration["SqlProvider"];
+
+            if (provider == null)
+            {
+                throw new ArgumentNullException(nameof(provider));
+            }
+
             switch (provider)
             {
                 case "WinPg":

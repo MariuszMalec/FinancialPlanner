@@ -2,6 +2,12 @@
   "profiles": {
     "FinancialPlanner.ConsoleApp": {
       "commandName": "Project"
+    },
+    "WinPg": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "WinPg"
+      }
     }
   }
 }
