@@ -54,14 +54,28 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input id="email" asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input onclick="handlesave()" type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
+
+    <script>
+        function handlesave() {
+            var email = $('#email').val();
+            //validation
+            if (email != "" && email != null) {
+                $('#email').css('background-color', '#daedeb');
+            }
+            else {
+                $('#email').css('background-color', 'red');
+            }
+        }
+    </script>
+
 </div>
 
 <div>
