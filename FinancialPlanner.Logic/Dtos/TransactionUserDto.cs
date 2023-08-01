@@ -1,11 +1,5 @@
 ﻿using FinancialPlanner.Logic.Entities;
 using FinancialPlanner.Logic.Enums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialPlanner.Logic.Dtos
 {
@@ -27,5 +21,7 @@ namespace FinancialPlanner.Logic.Dtos
 
         public CategoryOfTransaction Category { get; set; }
         public string? Description { get; set; }
+
+        public string? Picture { get; set; }
     }
 }
