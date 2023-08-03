@@ -32,21 +32,21 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                                 </p>
                             </div>
                         </div>
-@*                        <div class="col-md-6">
-                            <img class="card-img-top" src="@item.Picture" alt="@item.Picture"
-                            style="object-fit:scale-down;
+                        <div class="col-md-6">
+                                    <img src="@item.Picture" alt="@item.Picture"
+                            style="object-fit:scale-down;                     
                                 width:80%;
                                 height:auto;
-                                border: solid 1px #CCC"
+                                border: solid 1px #CCC"                             
                             >
-                        </div>*@
+                        </div>
                         <div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Description: @item.Description</li>
                                     <li class="list-group-item"></li>
                                             <li class="list-group-item">Who: @item.FirstName.ToString() @item.LastName.ToString()</li>
-                                            <li class="list-group-item">CreatedAt: @item.CreatedAt.ToString()</li>
+                                            <li class="list-group-item">CreatedAt: @item.CreatedAt.ToShortDateString()</li>
                                 </ul>
                                 <p class="card-text ">
                                             <b>Balance: </b>

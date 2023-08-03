@@ -36,8 +36,10 @@ namespace FinancialPlanner.Logic.Context
                 case "LinuxPg":
                     options.UseNpgsql(Configuration.GetConnectionString(EnumProvider.LinuxPg.ToString()));
                     break;
+                default:
+                    throw new ArgumentNullException(nameof(provider));
             }
-            //options.UseNpgsql("Server = localhost; Port=5432; User Id=postgres; Password=Alicja13a; Database=PlannerDb;");
+            //options.UseNpgsql("Server = localhost; Port=5432; User Id=postgres; Password=mario13; Database=PlannerDb;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
