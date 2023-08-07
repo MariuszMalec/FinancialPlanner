@@ -25,8 +25,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
         [InlineData("/Home")]
         [InlineData("/User")]
         [InlineData("/Roles")]
-        [InlineData("/Transactions")]
-        [InlineData("/TransactionUser")]
+        [InlineData("/Transactions/GetMonthlyIncomeAndExpenses/a200b9f3-d139-4fa6-982f-0ad4f388b485")]
         public async Task Get_EndPointsReturns_StatusOk(string url)
         {
             var response = await _client.GetAsync(url);

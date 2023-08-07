@@ -22,8 +22,6 @@ namespace FinancialPlanner.XUnitIntegratedTests.MvcTests
         [InlineData("/Home")]
         [InlineData("/User")]
         [InlineData("/Roles")]
-        [InlineData("/Transactions")]
-        [InlineData("/TransactionUser")]
         [InlineData("/User/Index")]
         public async Task Get_EndPointsReturns_StatusOk(string url)
         {
