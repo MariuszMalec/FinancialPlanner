@@ -29,10 +29,15 @@ namespace FinancialPlanner.WebMvc.Controllers
             string description, 
             DateTime dateFrom, 
             DateTime dateTo, 
-            string sortAmount)
+            string sortOrder)
         {
-            ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
+            //ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
             //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+            ViewBag.DateSortParm = sortOrder == "CreatedAt" ? "date_desc" : "CreatedAt";
+
 
             var transactions = await _transactionService.GetAllQueryable();
 
@@ -42,10 +47,16 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var sorted = from s in transactions
                                  select s;
-            switch (sortAmount)
+            switch (sortOrder)
             {
                 case "Amount":
                     sorted = sorted.OrderByDescending(s => s.Amount);
+                    break;
+                case "CreatedAt":
+                    sorted = sorted.OrderByDescending(s => s.CreatedAt);
+                    break;
+                case "date_desc":
+                    sorted = sorted.OrderBy(s => s.CreatedAt);
                     break;
                 default:
                     sorted = sorted.OrderBy(s => s.Amount);

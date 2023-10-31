@@ -75,7 +75,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
             var userid = GetTransactions().Select(x => x.UserId).FirstOrDefault();
 
             // Act
-            var result = await controller.GetUserTransactions(id, userid, string.Empty, string.Empty);//TODO user is null in cotroller?
+            var result = await controller.GetUserTransactions(id, userid, string.Empty);//TODO user is null in cotroller?
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);

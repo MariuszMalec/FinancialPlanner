@@ -20,7 +20,8 @@
                         <label>@Html.DisplayNameFor(model => model.Transactions.First().User.Email)</label>
                     </th>
                     <th>
-                        <label>@Html.DisplayNameFor(model => model.Transactions.First().CreatedAt)</label>
+                        @Html.ActionLink("CreatedAt", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter=ViewBag.CurrentFilter })
+                        @* <label>@Html.DisplayNameFor(model => model.Transactions.First().CreatedAt)</label> *@
                     </th>
                     <th>
                         <label>@Html.DisplayNameFor(model => model.Transactions.First().Currency)</label>
@@ -32,7 +33,8 @@
                         <label>@Html.DisplayNameFor(model => model.Transactions.First().Category)</label>
                     </th>
                     <th>
-                        @Html.ActionLink("Amount", "Index", new { sortAmount = ViewData["AmountSortParam"] })
+                        @Html.ActionLink("Amount", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter=ViewBag.CurrentFilter })
+                        @* @Html.ActionLink("Amount", "Index", new { sortAmount = ViewData["AmountSortParam"] }) *@
                         @*<label>@Html.DisplayNameFor(model => model.Transactions.First().Amount)</label>*@
                     </th>
                     <th>
