@@ -49,9 +49,16 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                                             <li class="list-group-item">CreatedAt: @item.CreatedAt.ToShortDateString()</li>
                                 </ul>
                                 <p class="card-text ">
-                                            <b>Balance: </b>
-                                            <span class="badge bg-success text-white">@item.Amount.ToString()</span>
-                                </p>
+                                            <b>Amount: </b>
+                                            @if(item.Type == FinancialPlanner.Logic.Enums.TypeOfTransaction.Income)
+                                            {
+                                                <span class="badge bg-success text-white">@item.Amount.ToString()</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning text-white">@item.Amount.ToString()</span>
+                                            }
+                                        </p>
 
                             </div>
                         </div>

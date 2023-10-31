@@ -3,7 +3,6 @@ using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using X.PagedList;
 
 namespace FinancialPlanner.WebMvc.Controllers
