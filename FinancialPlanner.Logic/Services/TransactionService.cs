@@ -9,6 +9,7 @@ using FinancialPlanner.Logic.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Data;
+using static System.Net.WebRequestMethods;
 
 namespace FinancialPlanner.Logic.Services
 {
@@ -83,7 +84,8 @@ namespace FinancialPlanner.Logic.Services
                 Amount = model.Amount,
                 BalanceAfterTransaction = getAmount,
                 Description = model.Description,
-                CreatedAt = model.CreatedAt
+                CreatedAt = model.CreatedAt,
+                Picture = AddPicture(model.Category)
             };
             //_context.Transactions.Add(transaction);
             //_context.SaveChanges();
@@ -94,6 +96,16 @@ namespace FinancialPlanner.Logic.Services
             user.Balance = transaction.BalanceAfterTransaction;
             await _userService.Update(user);
         }
+
+        public string AddPicture(CategoryOfTransaction categoryOfTransaction)//to mozna pobierac z bazy
+        {
+            if (categoryOfTransaction == CategoryOfTransaction.Kids)
+            {
+                return "https://images.unsplash.com/photo-1607453998774-d533f65dac99?auto=format&fit=crop&q=80&w=1887&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+            }
+            return string.Empty;
+        }
+
         public async Task<bool> Delete(string id)
         {
             var userId = _context.Transactions.Where(t => t.Id == id).Select(t => t.UserId).FirstOrDefault();
