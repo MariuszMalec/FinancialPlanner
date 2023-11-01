@@ -85,7 +85,7 @@ namespace FinancialPlanner.Logic.Services
                 BalanceAfterTransaction = getAmount,
                 Description = model.Description,
                 CreatedAt = model.CreatedAt,
-                Picture = AddPicture(model.Category)
+                Picture = _context.TransactionPictures.Where(x=>x.Category == model.Category).Select(x=>x.Source).FirstOrDefault()//AddPicture(model.Category)
             };
             //_context.Transactions.Add(transaction);
             //_context.SaveChanges();

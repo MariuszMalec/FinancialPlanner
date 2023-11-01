@@ -114,7 +114,22 @@ namespace FinancialPlanner.Logic.Context
             new TransactionPicture() {
                 Id = Guid.NewGuid().ToString(),
                 Category = Enums.CategoryOfTransaction.Home,
-                Source = "https://unsplash.com/photos/living-room-set-with-green-dumb-cane-plant-R-LK3sqLiBw"
+                Source = "https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG9tZXxlbnwwfHwwfHx8MA%3D%3D"
+            },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Car,
+                Source = "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2FyfGVufDB8fDB8fHww"
+            },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Clothing,
+                Source = "https://images.unsplash.com/photo-1560243563-062bfc001d68?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2xvdGhpbmd8ZW58MHx8MHx8fDA%3D"
+            },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.School,
+                Source = "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2Nob29sfGVufDB8fDB8fHww"
             },
         };
     }

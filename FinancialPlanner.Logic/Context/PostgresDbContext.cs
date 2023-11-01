@@ -26,7 +26,7 @@ namespace FinancialPlanner.Logic.Context
 
             if (provider == null)
             {
-                provider = "WinPg";//TODO aby zadzialala migracja to musi byc, nie czyta configuration!?
+                provider = "WinPg";//TODO aby zadzialala migracja to musi byc, nie czyta configuration!? JAK TO ROZWIAZAC?
             }
 
             switch (provider)

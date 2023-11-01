@@ -39,5 +39,7 @@ namespace FinancialPlanner.Logic.Models
         public User? User { get; set;}
 
         public string? Picture { get; set; }
+
+        public virtual TransactionPicture? TransactionPicture { get; set; }
     }
 }

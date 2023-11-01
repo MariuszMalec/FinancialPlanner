@@ -107,6 +107,7 @@ using (var scope = app.Services.CreateScope())
             await SeedData.SeedRoles(dataContext);
             await SeedData.SeedUsers(dataContext);
             await SeedData.SeedTransaction(dataContext);
+            await SeedData.SeedTransactionPictures(dataContext);
         }
     }
     else
@@ -115,6 +116,7 @@ using (var scope = app.Services.CreateScope())
         await SeedData.SeedRoles(dataContext);
         await SeedData.SeedUsers(dataContext);
         await SeedData.SeedTransaction(dataContext);
+        await SeedData.SeedTransactionPictures(dataContext);
     }
 }
 
