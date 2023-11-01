@@ -101,7 +101,7 @@ namespace FinancialPlanner.Logic.Services
         {
             if (categoryOfTransaction == CategoryOfTransaction.Kids)
             {
-                return "https://images.unsplash.com/photo-1607453998774-d533f65dac99?auto=format&fit=crop&q=80&w=1887&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+                return "https://plus.unsplash.com/premium_photo-1686836995180-06df3b20884e?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8a2lkc3xlbnwwfHwwfHx8MA%3D%3D";
             }
             return string.Empty;
         }
