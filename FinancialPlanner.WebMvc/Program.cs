@@ -53,6 +53,10 @@ else if (environment.EnvironmentName == "WinPg")//TODO zmiana providera gdy wybr
 {
     provider = EnumProvider.WinPg.ToString();
 }
+else if (environment.EnvironmentName == "MemorySql")//TODO zmiana providera gdy wybrane spec. srodowisko
+{
+    provider = EnumProvider.MemorySql.ToString();
+}
 else
 {
     provider = EnumProvider.LinuxPg.ToString();
@@ -77,6 +81,11 @@ switch (provider)
     case "LinuxPg":
         builder.Services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
         break;
+
+    case "MemorySql":
+        builder.Services.AddDbContext<ApplicationDbContext, MemoryDbContext>();
+        break;
+
     default:
         throw new Exception($"Unsupported provider: {provider}");
 }

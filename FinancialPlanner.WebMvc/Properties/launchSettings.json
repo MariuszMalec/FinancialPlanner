@@ -42,6 +42,15 @@
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7293;http://localhost:5155"
+    },
+    "MemorySql": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "MemorySql"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7293;http://localhost:5155"
     }
   },
   "iisSettings": {
