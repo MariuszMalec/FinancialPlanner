@@ -40,7 +40,7 @@ logger.Information("Starting app ...");
 //-------------------------------------------------------
 // -------------- ustalenie providera -------------------
 //-------------------------------------------------------
-var provider = Configuration["ConnectionStrings"];//TODO nie czyta appsetings.json?? dodac provider domyslny w pliku 
+var provider = Configuration["ProviderFromAppsettings"];//TODO to nie czyta appsetings.json gdy odpalam migracje??
 if (environment.EnvironmentName == "Default" || environment.EnvironmentName == "Development")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
     provider = EnumProvider.Default.ToString();

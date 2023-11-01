@@ -14,6 +14,8 @@ namespace FinancialPlanner.Logic.Context
 
         public abstract DbSet<Transaction> Transactions { get; set; }
 
+        public abstract DbSet<TransactionPicture> TransactionPictures { get; set; }
+
         protected ApplicationDbContext(IConfiguration configuration)
         {
             Configuration = configuration;

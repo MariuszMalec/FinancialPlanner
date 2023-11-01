@@ -17,6 +17,8 @@ namespace FinancialPlanner.Logic.Context
 
         public override DbSet<Transaction> Transactions { get; set; }
 
+        public override DbSet<TransactionPicture> TransactionPictures { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseInMemoryDatabase("FinancialPlannerDb");
@@ -27,6 +29,7 @@ namespace FinancialPlanner.Logic.Context
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Transaction>().ToTable("Transactions");
+            modelBuilder.Entity<TransactionPicture>().ToTable("TransactionPictures");
             base.OnModelCreating(modelBuilder);
         }
     }

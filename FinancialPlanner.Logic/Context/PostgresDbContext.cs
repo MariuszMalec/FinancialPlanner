@@ -18,13 +18,15 @@ namespace FinancialPlanner.Logic.Context
 
         public override DbSet<Transaction> Transactions { get; set; }
 
+        public override DbSet<TransactionPicture> TransactionPictures { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var provider = Configuration["SqlProvider"];
+            var provider = Configuration["ProviderFromAppsettings"];
 
             if (provider == null)
             {
-                throw new ArgumentNullException(nameof(provider));
+                provider = "WinPg";//TODO aby zadzialala migracja to musi byc, nie czyta configuration!?
             }
 
             switch (provider)
@@ -47,6 +49,7 @@ namespace FinancialPlanner.Logic.Context
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Transaction>().ToTable("Transactions");
+            modelBuilder.Entity<TransactionPicture>().ToTable("TransactionPictures");
             base.OnModelCreating(modelBuilder);
         }
     }

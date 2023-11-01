@@ -98,5 +98,24 @@ namespace FinancialPlanner.Logic.Context
             await context.Transactions.AddRangeAsync(_transactions);
             await context.SaveChangesAsync();
         }
+
+        public static async Task SeedTransactionPictures(ApplicationDbContext context)
+        {
+            if (context.TransactionPictures.Any())
+            {
+                return;
+            }
+            await context.TransactionPictures.AddRangeAsync(_transactionPictures);
+            await context.SaveChangesAsync();
+        }
+
+        private static readonly List<TransactionPicture> _transactionPictures = new List<TransactionPicture>()
+        {
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Home,
+                Source = "https://unsplash.com/photos/living-room-set-with-green-dumb-cane-plant-R-LK3sqLiBw"
+            },
+        };
     }
 }
