@@ -1,42 +1,58 @@
 ﻿<body>
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
-
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"> 
+                <a class="one" asp-area="" asp-controller="Home" asp-action="Index"> 
                     <i class="bi bi-house "></i>       
                     Home
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <a class="one" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">
+                <a class="one" asp-area="" asp-controller="User" asp-action="Index">
                     <i class="bi bi-people"></i>
                     Users
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                <a class="one" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="Index">
+                <a class="one" asp-area="" asp-controller="Transactions" asp-action="Index">
                     <i class="bi bi-cart4"></i>
                     Transactions
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="TransactionUser" asp-action="Index">TransactionsByMonth</a>
+                <a class="one" asp-area="" asp-controller="TransactionUser" asp-action="Index">ByMonth</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="TransactionUserPage" asp-action="Index">TransactionsPages</a>
+                <a class="one" asp-area="" asp-controller="TransactionUserPage" asp-action="Index">Pages</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Transactions" asp-action="GetMonthlyIncomeAndExpenses">Balance</a>
+                <a class="one" asp-area="" asp-controller="Transactions" asp-action="GetMonthlyIncomeAndExpenses">Balance</a>
             </li>
         </ul>
     </div>
 </body>
 
+<style>
+    a.one {
+        background-color: darkseagreen;
+        padding: 10px 2px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        border: 2px solid green;
+        border-radius: 25%;
+        margin-right: 5px;
+        width: 100px;
+    }
+        a.one:hover, a.one:active {
+            background-color: darkcyan;
+            color: white;
+        }
+</style>
