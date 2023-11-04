@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Transactions User</h1>
+<h1>Transactions User @ViewData["FullName"]</h1>
 
 <p>
     <a asp-controller="TransactionUser" asp-action="Create" asp-route-id=@ViewData["UserId"]>AddTransaction</a>
