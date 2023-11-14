@@ -85,10 +85,12 @@ namespace FinancialPlanner.WebMvc.Controllers
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
-        public async Task<IActionResult> GetUserTransactionsByMounth(string id, string userId, string sortAmount, string sortType)
+        public async Task<IActionResult> GetUserTransactionsByMounth(string id, string userId, string sortOrder)
         {
-            ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
-            ViewData["TypeSortParam"] = sortType == "Type" ? "type_desc" : "Type";
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+            ViewBag.DateSortParm = sortOrder == "CreatedAt" ? "date_desc" : "CreatedAt";
+            ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
 
             //TODO jak zrobic inaczej przekazuje raz id tranazakcji a raz id usera!
             if (userId == null)
@@ -100,7 +102,8 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var currentUser = await _userService.GetById(userId);
 
-            ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
+            if (currentUser != null)
+                ViewData["FullName"] = $"{currentUser.FirstName} {currentUser.LastName}";
 
             var transactions = await _transactionService.GetAllQueryable();
 
@@ -112,23 +115,25 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var sorted = from s in userTransactions
                          select s;
-            switch (sortAmount)
+            switch (sortOrder)
             {
                 case "Amount":
                     sorted = sorted.OrderByDescending(s => s.Amount);
                     break;
-                default:
-                    sorted = sorted.OrderBy(s => s.Amount);
+                case "CreatedAt":
+                    sorted = sorted.OrderByDescending(s => s.CreatedAt);
                     break;
-            }
-
-            switch (sortType)
-            {
+                case "date_desc":
+                    sorted = sorted.OrderBy(s => s.CreatedAt);
+                    break;
                 case "Type":
                     sorted = sorted.OrderByDescending(s => s.Type);
                     break;
-                default:
+                case "type_desc":
                     sorted = sorted.OrderBy(s => s.Type);
+                    break;
+                default:
+                    sorted = sorted.OrderBy(s => s.Amount);
                     break;
             }
 

@@ -38,10 +38,11 @@ else
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
+                @Html.ActionLink("CreatedAt", "GetUserTransactionsByMounth", new { sortOrder = ViewBag.DateSortParm, currentFilter=ViewBag.CurrentFilter })
+                @* @Html.DisplayNameFor(model => model.CreatedAt) *@
             </th>
             <th>
-                @Html.ActionLink("Amount", "GetUserTransactions", new { sortAmount = ViewData["AmountSortParam"] })
+                @Html.ActionLink("Amount", "GetUserTransactionsByMounth", new { sortOrder = ViewBag.NameSortParm, currentFilter=ViewBag.CurrentFilter })
                 @*@Html.DisplayNameFor(model => model.Amount)*@
             </th>
             <th>
@@ -51,7 +52,7 @@ else
                 @Html.DisplayNameFor(model => model.BalanceAfterTransaction)
             </th>
             <th>
-                @Html.ActionLink("Type", "GetUserTransactions", new { sortType = ViewData["TypeSortParam"] })
+                @Html.ActionLink("Type", "GetUserTransactionsByMounth", new { sortOrder = ViewBag.TypeSortParm, currentFilter=ViewBag.CurrentFilter })
                 @*@Html.DisplayNameFor(model => model.Type)*@
             </th>
             <th>
