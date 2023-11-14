@@ -2,9 +2,27 @@
 
 @{
     ViewData["Title"] = "Index";
+    var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
 }
 
 <h1>Transactions User @ViewData["FullName"]</h1>
+
+@if (balance < 2400 && balance >= 1000)
+{
+    <h2 style="color:green">MontlyBalance:  @balance</h2>
+}
+else if (balance < 1000 && balance >= 300)
+{
+    <h2 style="color:orange">MontlyBalance:  @balance</h2>
+}
+else if (balance < 300)
+{
+    <h2 style="color:red">MontlyBalance:  @balance</h2>
+}
+else
+{
+    <h2>MontlyBalance:  @balance</h2>
+}
 
 <p>
     <a asp-controller="TransactionUser" asp-action="Create" asp-route-id=@ViewData["UserId"]>AddTransaction</a>

@@ -76,6 +76,10 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var model = _mapper.Map<List<TransactionUserDto>>(sorted);
 
+            var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            ViewData["MontlyBalance"] = incomes - outcomes;
+
             return model != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
@@ -129,6 +133,10 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
 
             var model = _mapper.Map<List<TransactionUserDto>>(sorted);
+
+            var incomes = model.Where(x=>x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            ViewData["MontlyBalance"] = incomes - outcomes;
 
             return model != null ?
                           View(model) :
