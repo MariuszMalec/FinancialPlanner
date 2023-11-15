@@ -13,8 +13,25 @@
     var userId = ViewData["UserId"];
     var user = userService.GetById(userId.ToString()).Result;
     var fullName = $"{user.FirstName} {user.LastName}";
+    var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
 }
 
+@if (balance < 2400 && balance >= 1000)
+{
+    <h2 style="color:green">MontlyBalance:  @balance</h2>
+}
+else if (balance < 1000 && balance >= 300)
+{
+    <h2 style="color:orange">MontlyBalance:  @balance</h2>
+}
+else if (balance < 300)
+{
+    <h2 style="color:red">MontlyBalance:  @balance</h2>
+}
+else
+{
+    <h2>MontlyBalance:  @balance</h2>
+}
 
 <h4>Transaction : @fullName</h4>
 <hr />

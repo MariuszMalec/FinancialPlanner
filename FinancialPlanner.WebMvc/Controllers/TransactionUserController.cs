@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
+using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -69,6 +71,16 @@ namespace FinancialPlanner.WebMvc.Controllers
         public ActionResult Create(string id)
         {
             ViewData["UserId"] = id;
+
+            var transactions = _transactionService.GetAllQueryable().Result.Where(x => x.UserId == id);
+            var currentMounth = DateTime.Now.Month;
+            var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
+
+            var incomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            var balance = incomes - outcomes;
+            ViewData["MontlyBalance"] = incomes - outcomes;
+
             return View();
         }
 
