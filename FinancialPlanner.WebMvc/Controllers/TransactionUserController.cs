@@ -5,6 +5,7 @@ using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -36,6 +37,14 @@ namespace FinancialPlanner.WebMvc.Controllers
                 return NotFound("Transactions not found!");
             }
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
+
+            //current mounth
+            var currentMounth = DateTime.Now.Month;
+            var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
+            var incomes = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            ViewData["MontlyBalance"] = incomes - outcomes;
+
             _logger.Information("Load user transactions successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(model) :
@@ -50,6 +59,14 @@ namespace FinancialPlanner.WebMvc.Controllers
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
 
             model = model.Where(t=>t.CreatedAt.Month == selectMounth.Value.Month).ToList();
+
+            //current mounth
+            var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            ViewData["MontlyBalance"] = incomes - outcomes;
+            var CultureName = "pl-PL";
+            ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
+
             _logger.Information("Load user transactions by month successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(model) :
@@ -109,7 +126,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             await _transactionService.Insert(id, model);
             _logger.Information("Create transactions successfully at {registrationDate}", DateTime.Now);
-            return RedirectToAction("GetUserTransactions", "User", new { model.Id, model.UserId });
+            return RedirectToAction("GetUserTransactionsByMounth", "User", new { model.Id, model.UserId });
         }
 
         public async Task<ActionResult> Edit(string id)
@@ -155,7 +172,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             user.Balance = transaction.BalanceAfterTransaction;
             await _userService.Update(user);
             _logger.Information("Transaction was edited successful at {registrationDate}", id, DateTime.Now);
-            return RedirectToAction("GetUserTransactions", "User", new { model.Id,  model.UserId });
+            return RedirectToAction("GetUserTransactionsByMounth", "User", new { model.Id,  model.UserId });
         }
 
         public async Task<ActionResult> Delete(string id)
@@ -183,7 +200,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 return BadRequest("transaction not deleted!");
             }
             _logger.Information("Transaction was deleted successful at {registrationDate}", id, DateTime.Now);
-            return RedirectToAction("GetUserTransactions", "User", new { model.Id, userId });
+            return RedirectToAction("GetUserTransactionsByMounth", "User", new { model.Id, userId });
         }
     }
 }

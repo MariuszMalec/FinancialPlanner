@@ -4,6 +4,25 @@
 
 @{
     ViewData["Title"] = "Index";
+    var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
+    var currentMonth = ViewData["CurrentMonth"];
+}
+
+@if (balance < 2400 && balance >= 1000)
+{
+    <h2 style="color:green">MontlyBalance:  @balance for @currentMonth</h2>
+}
+else if (balance < 1000 && balance >= 300)
+{
+    <h2 style="color:orange">MontlyBalance: @balance for @currentMonth</h2>
+}
+else if (balance < 300)
+{
+    <h2 style="color:red">MontlyBalance: @balance for @currentMonth</h2>
+}
+else
+{
+    <h2>MontlyBalance :  @balance for @currentMonth </h2>
 }
 
 <h1>Index</h1>
