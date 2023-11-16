@@ -3,7 +3,6 @@ using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -79,7 +78,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
             ViewData["MontlyBalance"] = incomes - outcomes;
-
+            _logger.Information("Load user transactions successfully at {registrationDate}", DateTime.Now);
             return model != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
@@ -142,7 +141,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var incomes = model.Where(x=>x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
             ViewData["MontlyBalance"] = incomes - outcomes;
-
+            _logger.Information("Load user transactions by month successfully at {registrationDate}", DateTime.Now);
             return model != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
@@ -172,8 +171,10 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
             if (model.Count() == 0)
             {
+                _logger.Error("Transactions not found!");
                 return NotFound("Transactions not found!");
             }
+            _logger.Information("Load user expanses by month successfully at {registrationDate}", DateTime.Now);
             return View(model);
         }
 
@@ -214,12 +215,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 _logger.Error($"Brak uzytkownika {id}");
                 return BadRequest($"Brak uzytkownika {id}");
             }
-
-            var model = new UserDto()
-            {
-
-            };
-
+            _logger.Information("Load details of user successfully at {registrationDate}", DateTime.Now);
             return View(user);
         }
 
@@ -234,25 +230,31 @@ namespace FinancialPlanner.WebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(UserDto model)
         {
-                if (model == null)
-                    return NotFound("404 bledny model!");
-                //mapowanie na user
-                var newUser = new User()
-                {
-                    Company =model.Company,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    IsActive = model.IsActive,
-                    Age=99,
-                    Balance=model.Balance,
-                    Currency = Logic.Enums.Currency.PLN
-                };
-                var check = await _userService.Insert(newUser);
-                if (check == false)
-                    return NotFound($"User was not created!");
-
-                return RedirectToAction(nameof(Index));
+            if (model == null)
+            {
+                _logger.Error($"404 bledny model!");
+                return NotFound("404 bledny model!");
+            }
+            //mapowanie na user
+            var newUser = new User()
+            {
+                Company =model.Company,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                IsActive = model.IsActive,
+                Age=99,
+                Balance=model.Balance,
+                Currency = Logic.Enums.Currency.PLN
+            };
+            var check = await _userService.Insert(newUser);
+            if (check == false)
+            {
+                _logger.Error($"User was not created!");
+                return NotFound($"User was not created!");
+            }
+            _logger.Information($"Dodano uzytkownika {newUser.LastName}");
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: UserController/Edit/5
@@ -261,6 +263,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var model = await _userService.GetById(id);
             if (model == null)
             {
+                _logger.Error($"Not found user with {id}!");
                 return NotFound($"Not found user with {id}");
             }
             return View(model);
@@ -276,6 +279,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 {
                     return NotFound("No user!");
                 }
+                _logger.Information($"Edytowano uzytkownika {model.Id}");
                 return RedirectToAction(nameof(Index));
         }
 
@@ -285,6 +289,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var model = await _userService.GetById(id);
             if (model == null)
             {
+                _logger.Error($"Not found user with {id}!");
                 return NotFound($"Not found user with {id}");
             }
             return View(model);
@@ -300,8 +305,10 @@ namespace FinancialPlanner.WebMvc.Controllers
                 var check  = await _userService.Delete(model);
                 if (check == false)
                 {
+                    _logger.Error($"User with id {id} not deleted!");
                     return RedirectToAction("EmptyList");
                 }
+                _logger.Warning($"Usunieto uzytkownika!");
                 return RedirectToAction("Index");
             }
             catch

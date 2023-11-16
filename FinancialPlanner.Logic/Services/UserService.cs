@@ -35,6 +35,14 @@ namespace FinancialPlanner.Logic.Services
                 _logger.LogError($"404! user can't be deleted!, {check}");
                 return false;
             }
+            //TODO nalezy usunac wszystkie tranzakcje uzytkownika
+            var transactions = _context.Transactions.Where(t => t.User.Id == user.Id);
+            foreach (var transaction in transactions)
+            {
+                _context.Transactions.Remove(transaction);
+            }
+            await _context.SaveChangesAsync();
+            //TODO dopiero teraz usunac usera
             await _repository.Delete(user);
             return true;
         }
