@@ -6,6 +6,7 @@ using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -14,12 +15,14 @@ namespace FinancialPlanner.WebMvc.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
+        private ILogger _logger;
 
-        public TransactionsController(ApplicationDbContext context, IMapper mapper = null, ITransactionService transactionService = null)
+        public TransactionsController(ApplicationDbContext context, IMapper mapper = null, ITransactionService transactionService = null, ILogger logger = null)
         {
             _context = context;
             _mapper = mapper;
             _transactionService = transactionService;
+            _logger = logger;
         }
 
         // GET: Transactions
@@ -70,7 +73,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 DateFrom = dateFrom,
                 DateTo = dateTo 
             };
-
+            _logger.Information("Load all transactions successfully at {registrationDate}", DateTime.Now);
             return View(model);
         }
 
@@ -86,6 +89,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             {
                 return NotFound("Transactions not found!");
             }
+            _logger.Information("Load user expanses by month successfully at {registrationDate}", DateTime.Now);
             return View(model);
         }
 
@@ -102,9 +106,10 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             if (model == null)
             {
+                _logger.Error("Brak transaction {id}, {registrationDate}", DateTime.Now);
                 return NotFound($"Brak transaction {id}");
             }
-
+            _logger.Information("Load transaction details successfully at {registrationDate}", DateTime.Now);
             return View(model);
         }
 
@@ -113,12 +118,14 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             if (id == null || _context.Transactions == null)
             {
+                _logger.Error("Not found transaction {id}, {registrationDate}", DateTime.Now);
                 return NotFound();
             }
 
             var transaction = await _context.Transactions.FindAsync(id);
             if (transaction == null)
             {
+                _logger.Error("Not found transaction {id}, {registrationDate}", DateTime.Now);
                 return NotFound();
             }
             return View(transaction);
@@ -154,6 +161,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                         throw;
                     }
                 }
+                _logger.Information("Edit transaction successfully at {registrationDate}", DateTime.Now);
                 return RedirectToAction(nameof(Index));
             }
             return View(transaction);
@@ -171,6 +179,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (transaction == null)
             {
+                _logger.Error("Not found transaction {id}, {registrationDate}", DateTime.Now);
                 return NotFound();
             }
 
@@ -193,6 +202,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _logger.Error("Delete transaction with id {id}, {registrationDate}", DateTime.Now);
             return RedirectToAction(nameof(Index));
         }
 

@@ -48,6 +48,7 @@ namespace FinancialPlanner.Logic.Services
             {
                 throw new NotFoundException("Transactions not found");
             }
+            _logger.LogInformation("Get all transaction with user at {registrationDate}", DateTime.Now);
             return all;
         }
 
@@ -65,7 +66,7 @@ namespace FinancialPlanner.Logic.Services
 
             transaction.User = user;
             var currentTransaction = _mapper.Map<TransactionUserDto>(transaction);
-            _logger.LogInformation($"{id} GetById succesfull at {DateTime.Now}");
+            _logger.LogInformation($"GetById succesfull at {DateTime.Now}");
             return currentTransaction;
 
             //TODO how to add to repo this
@@ -132,7 +133,7 @@ namespace FinancialPlanner.Logic.Services
             }
 
             transactions = transactions.Where(t => t.CreatedAt >= dateFrom && t.CreatedAt <= dateTo);
-
+            _logger.LogInformation("FilterByDates successful at {registrationDate}", DateTime.Now);
             return transactions;
         }
 
@@ -140,7 +141,7 @@ namespace FinancialPlanner.Logic.Services
         {
             if (description is not null)
                 return transactions.Where(t => t.Description.ToLower().Contains(description.ToLower()));
-
+            _logger.LogInformation("FilterByDescription successful at {registrationDate}", DateTime.Now);
             return transactions;
         }
         public IQueryable<Transaction> FilterByTypeCategory(IQueryable<Transaction> transactions, TypeOfTransaction type, CategoryOfTransaction category)
@@ -191,6 +192,7 @@ namespace FinancialPlanner.Logic.Services
                            .Where(t => t.Type == TypeOfTransaction.Outcome).Select(x => x.Amount).Sum(),
                            Balance = month.currentDifference
                        };
+            _logger.LogInformation("FilterByYearBalance successful at {registrationDate}", DateTime.Now);
             return sums;
         }
 
@@ -199,6 +201,7 @@ namespace FinancialPlanner.Logic.Services
             var firstDay = new DateTime(DateTime.Today.Year, mounth, 1);
             var endDay = new DateTime(DateTime.Today.Year, mounth, DateTime.DaysInMonth(DateTime.Today.Year, mounth));
             var transactionsUser = transactions.Where(t => t.CreatedAt >= firstDay && t.CreatedAt <= endDay);
+            _logger.LogInformation("FilterTransactionByMounth successful at {registrationDate}", DateTime.Now);
             return transactionsUser;
         }
     }

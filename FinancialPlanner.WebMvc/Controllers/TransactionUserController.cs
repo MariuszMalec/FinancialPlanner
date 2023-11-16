@@ -4,8 +4,8 @@ using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
-using FinancialPlanner.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -16,21 +16,27 @@ namespace FinancialPlanner.WebMvc.Controllers
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
         private readonly IUserService _userService;
+        private readonly ILogger _logger;
 
-        public TransactionUserController(ApplicationDbContext context, IMapper mapper = null, ITransactionService transactionService = null, IUserService userService = null)
+        public TransactionUserController(ApplicationDbContext context, IMapper mapper = null, ITransactionService transactionService = null, IUserService userService = null, ILogger logger = null)
         {
             _context = context;
             _mapper = mapper;
             _transactionService = transactionService;
             _userService = userService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()//TODO tranzakcje z userem
         {
             var transactions = await _transactionService.GetAllQueryable();
-
+            if (transactions == null)
+            {
+                _logger.Error("Transactions not found at {registrationDate}", DateTime.Now);
+                return NotFound("Transactions not found!");
+            }
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
-
+            _logger.Information("Load user transactions successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
@@ -44,7 +50,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
 
             model = model.Where(t=>t.CreatedAt.Month == selectMounth.Value.Month).ToList();
-
+            _logger.Information("Load user transactions by month successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
@@ -55,15 +61,17 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             if (id == null || _context.Transactions == null)
             {
+                _logger.Error("Brak transaction {id} at {registrationDate}", id, DateTime.Now);
                 return NotFound();
             }
 
             var transaction = await _transactionService.GetById(id);
             if (transaction == null)
             {
+                _logger.Error("Brak transaction {id} at {registrationDate}", id,DateTime.Now);
                 return NotFound($"Brak transaction {id}");
             }
-
+            _logger.Information("Load transaction detail successfully at {registrationDate}", DateTime.Now);
             return View(transaction);
         }
 
@@ -80,7 +88,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var outcomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
             var balance = incomes - outcomes;
             ViewData["MontlyBalance"] = incomes - outcomes;
-
+            
             return View();
         }
 
@@ -90,14 +98,17 @@ namespace FinancialPlanner.WebMvc.Controllers
         public async Task<ActionResult> Create(string id, TransactionUserDto model)
         {
             if (model == null)
-                return NotFound("Transaction not found!");
+                return NotFound("model transaction not found!");
 
             var userExist = await _context.Users.FindAsync(model.Id);
             if (userExist == null)
-                return NotFound($"User was not created!");
+            {
+                _logger.Error("Transaction was not created at {registrationDate}", DateTime.Now);
+                return NotFound($"Transaction was not created!");
+            }
 
             await _transactionService.Insert(id, model);
-
+            _logger.Information("Create transactions successfully at {registrationDate}", DateTime.Now);
             return RedirectToAction("GetUserTransactions", "User", new { model.Id, model.UserId });
         }
 
@@ -105,9 +116,11 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             var model = await _transactionService.GetById(id);
             ViewData["FullName"] = $"{model.FirstName} {model.LastName}";
+            ViewData["UserId"] = id;
             if (model == null)
             {
-                return NotFound($"Not found user with {id}");
+                _logger.Error("Not found tranasction with {id} at {registrationDate}", id, DateTime.Now);
+                return NotFound($"Not found transaction with {id}");
             }
             return View(model);
         }
@@ -117,11 +130,6 @@ namespace FinancialPlanner.WebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(string id, TransactionUserDto model)
         {
-            if (model.UserId == null)
-            {
-                return NotFound("No user!");
-            }
-
             //TODO dodac to do serwisu
             var getAmountFromDataBase = _context.Transactions.Where(u => u.Id == model.Id).Select(u => u.Amount).FirstOrDefault();
             var newAmount = (getAmountFromDataBase-model.Amount);
@@ -145,9 +153,8 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var user = await _userService.GetById(model.UserId);
             user.Balance = transaction.BalanceAfterTransaction;
-            _userService.Update(user);
-
-            //return RedirectToAction(nameof(Index));
+            await _userService.Update(user);
+            _logger.Information("Transaction was edited successful at {registrationDate}", id, DateTime.Now);
             return RedirectToAction("GetUserTransactions", "User", new { model.Id,  model.UserId });
         }
 
@@ -157,7 +164,8 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             if (model == null)
             {
-                return NotFound($"Not found user with {id}");
+                _logger.Error("Not found tranasction with {id} at {registrationDate}", id, DateTime.Now);
+                return NotFound($"Not found tranasction with {id}");
             }
             return View(model);
         }
@@ -167,20 +175,14 @@ namespace FinancialPlanner.WebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id, Transaction model)
         {
-            if (id == null)
-            {
-                return NotFound("No transaction!");
-            }
-
             var userId = _transactionService.GetById(id).Result.UserId;
-
             var check = await _transactionService.Delete(id);
             if (!check)
             {
+                _logger.Error("transaction not deleted! at {registrationDate}", id, DateTime.Now);
                 return BadRequest("transaction not deleted!");
             }
-
-            //return RedirectToAction(nameof(Index));
+            _logger.Information("Transaction was deleted successful at {registrationDate}", id, DateTime.Now);
             return RedirectToAction("GetUserTransactions", "User", new { model.Id, userId });
         }
     }
