@@ -7,6 +7,7 @@ using FinancialPlanner.WebMvc.Profiles;
 using Microsoft.AspNetCore.Mvc;
 using FinancialPlanner.Logic.Context;
 using Moq;
+using Serilog;
 
 namespace FinancialPlanner.XUnitIntegratedTests.TransactionsControllerTests
 {
@@ -31,7 +32,11 @@ namespace FinancialPlanner.XUnitIntegratedTests.TransactionsControllerTests
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
             IMapper mapper = new Mapper(configuration);
 
-            var controller = new TransactionsController(_fixture.Context, mapper, mockRepo.Object);
+            var logger = new Mock<ILogger>();
+            logger.Setup(c => c.Information(It.IsAny<string>()))
+                 ;
+
+            var controller = new TransactionsController(_fixture.Context, mapper, mockRepo.Object, logger.Object);
 
             // Act
             var result = await controller.Details(newGuid);

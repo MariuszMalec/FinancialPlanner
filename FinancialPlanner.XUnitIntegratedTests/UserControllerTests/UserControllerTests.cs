@@ -69,7 +69,11 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
             IMapper mapper = new Mapper(configuration);
 
-            var controller = new UserController(mockRepoUser.Object, mapper, mockRepoTransaction.Object);
+            var logger = new Mock<ILogger>();
+            logger.Setup(c => c.Information(It.IsAny<string>()))
+                 ;
+
+            var controller = new UserController(mockRepoUser.Object, mapper, mockRepoTransaction.Object, logger.Object);
 
             var id = GetUsers().Select(x=>x.Id).FirstOrDefault();
             var userid = GetTransactions().Select(x => x.UserId).FirstOrDefault();
