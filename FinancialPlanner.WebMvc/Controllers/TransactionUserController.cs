@@ -61,13 +61,13 @@ namespace FinancialPlanner.WebMvc.Controllers
             model = model.Where(t=>t.CreatedAt.Month == selectMounth.Value.Month).ToList();
 
             //current mounth
-            var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
-            var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            var incomes = model.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = model.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
             ViewData["MontlyBalance"] = incomes - outcomes;
             var CultureName = "pl-PL";
             ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
-
-            _logger.Information("Load user transactions by month successfully at {registrationDate}", DateTime.Now);
+            ViewData["CurrentMonthAsDataTime"] = selectMounth;
+            _logger.Information("Load user transactions by selected month successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(model) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");

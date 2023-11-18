@@ -6,6 +6,7 @@
     ViewData["Title"] = "Index";
     var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
     var currentMonth = ViewData["CurrentMonth"];
+    var selectedMonth = ViewData["CurrentMonthAsDataTime"];
 }
 
 @if (balance < 2400 && balance >= 1000)
@@ -33,7 +34,7 @@ else
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Select Month</label>
-                <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
+                <input asp-for=@selectedMonth type="month" name="selectMounth" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Select" class="btn btn-primary" />
