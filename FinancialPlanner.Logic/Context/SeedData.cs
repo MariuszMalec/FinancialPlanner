@@ -131,6 +131,26 @@ namespace FinancialPlanner.Logic.Context
                 Category = Enums.CategoryOfTransaction.School,
                 Source = "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2Nob29sfGVufDB8fDB8fHww"
             },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Food,
+                Source = "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1332&q=80"
+            },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Salary,
+                Source = "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Medicine,
+                Source = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=2030&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Credit,
+                Source = "https://images.unsplash.com/photo-1624811532681-e58a7e25f273?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
         };
     }
 }

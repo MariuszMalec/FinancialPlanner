@@ -112,6 +112,7 @@ using (var scope = app.Services.CreateScope())
     {
         if (dataContext.Database.IsRelational())
         {
+            //dataContext.Database.EnsureDeleted();//TODO jesli chcem postawic nowa baze!!
             dataContext?.Database.Migrate();
             await SeedData.SeedRoles(dataContext);
             await SeedData.SeedUsers(dataContext);
