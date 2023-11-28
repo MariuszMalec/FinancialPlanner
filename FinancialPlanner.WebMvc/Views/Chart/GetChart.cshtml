@@ -7,11 +7,13 @@
     var activityValues = Model.IncomeOutcomeSum.Select(x => x.Value);
 
     var income = ViewData["Income"];
+    var outcome = ViewData["Outcome"];
     var balance = ViewData["Balance"];
 }
-
-<h1>Income: @income</h1>
-<h2> 
+<h2>Activity by month @DateTime.Now</h2>
+<h3>Income: @income</h3>
+<h3>Outcome: @outcome</h3>
+<h3> 
     @if (Convert.ToDecimal(balance) <= 100m)
     {
         <a style="color:red">
@@ -25,7 +27,7 @@
             Balance: @balance
         </a>
     }
-</h2>
+</h3>
 
 <head>
     <!--Load the AJAX API-->

@@ -1,4 +1,5 @@
 ﻿using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
@@ -11,10 +12,12 @@ namespace FinancialPlanner.WebMvc.Controllers
     public class ChartController : Controller
     {
         private readonly IRepository<Transaction> _repository;
+        private readonly ITransactionService _transactionService;
 
-        public ChartController(IRepository<Transaction> repository = null)
+        public ChartController(IRepository<Transaction> repository = null, ITransactionService transactionService = null)
         {
             _repository = repository;
+            _transactionService = transactionService;
         }
 
         public async Task<IActionResult> Index(string id)
@@ -38,18 +41,22 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             ViewBag.UserId = String.IsNullOrEmpty(id) ? "UserId" : "";
 
-            var transactions = _repository.GetAll().Result.Where(u => u.UserId == id).ToList();
 
-            if (transactions.Count() == 0)
+            //current mounth
+            var currentMounth = DateTime.Now.Month;
+            var transactions = _repository.GetAll().Result.Where(u => u.UserId == id).AsQueryable();
+            var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
+
+            if (userTransactionsByMounth.Count() == 0)
             {
                 return BadRequest("No transactions!");
             }
 
             //wydatki
-            var sumOutcome = transactions.Where(t => t.Type == Logic.Enums.TypeOfTransaction.Outcome)
+            var sumOutcome = userTransactionsByMounth.Where(t => t.Type == Logic.Enums.TypeOfTransaction.Outcome)
                                    .Select(t => t.Amount).Sum();
             //wplywy
-            var sumIncome = transactions.Where(t => t.Type == Logic.Enums.TypeOfTransaction.Income)
+            var sumIncome = userTransactionsByMounth.Where(t => t.Type == Logic.Enums.TypeOfTransaction.Income)
                                    .Select(t => t.Amount).Sum();
 
             var transactionWithUser = _repository.GetAllQueryable()
@@ -61,11 +68,12 @@ namespace FinancialPlanner.WebMvc.Controllers
                 .FirstOrDefault();
             ViewData["Balance"] = balance;
             ViewData["Income"] = sumIncome;
+            ViewData["Outcome"] = sumOutcome;
 
             //TODO tu skonczylem wykres procentowy chcem pokazac, zamienic na double
 
             //TODO dodanie do wykresu pozostale aby pokazac ogolny procent
-            transactions.Add(new Transaction ()
+            userTransactionsByMounth.ToList().Add(new Transaction ()
             {
                 UserId = id,
                 Amount = balance,
@@ -84,7 +92,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 return BadRequest("budzet zostal przekroczony!");
             }
 
-            var sums = transactions.Where(x=>x.Type == Logic.Enums.TypeOfTransaction.Outcome)
+            var sums = userTransactionsByMounth.Where(x=>x.Type == Logic.Enums.TypeOfTransaction.Outcome)
                 .GroupBy(x => x.Category.ToString())
                 .ToDictionary(x => x.Key, x => x.Select(y => ( (y.Amount/ sumIncome)) ).Sum());
 
