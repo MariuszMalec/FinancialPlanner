@@ -92,9 +92,19 @@ namespace FinancialPlanner.WebMvc.Controllers
                 return BadRequest("budzet zostal przekroczony!");
             }
 
-            var sums = userTransactionsByMounth.Where(x=>x.Type == Logic.Enums.TypeOfTransaction.Outcome)
-                .GroupBy(x => x.Category.ToString())
-                .ToDictionary(x => x.Key, x => x.Select(y => ( (y.Amount/ sumIncome)) ).Sum());
+            var sums = new Dictionary<string, decimal>();
+            if (sumIncome > 0)
+            {
+                sums = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome)
+                    .GroupBy(x => x.Category.ToString())
+                    .ToDictionary(x => x.Key, x => x.Select(y => ((y.Amount / sumIncome))).Sum());
+            }
+            else
+            {
+                sums = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome)
+                    .GroupBy(x => x.Category.ToString())
+                    .ToDictionary(x => x.Key, x => x.Select(y => ((y.Amount))).Sum());
+            }
 
             return View(new IncomeOutcomeDto() { IncomeOutcomeSum = sums });
         }
