@@ -151,6 +151,11 @@ namespace FinancialPlanner.Logic.Context
                 Category = Enums.CategoryOfTransaction.Credit,
                 Source = "https://images.unsplash.com/photo-1624811532681-e58a7e25f273?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             },
+            new TransactionPicture() {
+                Id = Guid.NewGuid().ToString(),
+                Category = Enums.CategoryOfTransaction.Entertainment,
+                Source = "https://images.unsplash.com/photo-1567593810070-7a3d471af022?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
         };
     }
 }
