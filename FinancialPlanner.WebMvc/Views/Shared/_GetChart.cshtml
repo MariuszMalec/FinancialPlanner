@@ -1,0 +1,171 @@
+﻿@using FinancialPlanner.Logic.Enums
+@* @model FinancialPlanner.Logic.Dtos.IncomeOutcomeDto *@
+
+@using FinancialPlanner.Logic.Context;
+@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+@using FinancialPlanner.Logic.Services
+@model IEnumerable<FinancialPlanner.Logic.Dtos.TransactionUserDto>
+@inject ApplicationDbContext _context
+@inject ITransactionService _transactionService
+@inject IRepository<Transaction> _repository;
+
+@{
+    ViewData["Title"] = "Index";
+
+    //current mounth
+    var currentMounth = ViewData["selectMounthAsInt"];//DateTime.Now.Month;
+    int selectedMonth = Convert.ToInt32(currentMounth);
+    var transactions = _repository.GetAll().Result.Where(u => u.UserId == "961eb006-a983-48bf-b526-745ced3eb4ba").AsQueryable();
+    var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, selectedMonth);
+
+    //wydatki
+    var sumOutcome = userTransactionsByMounth.Where(t => t.Type == TypeOfTransaction.Outcome)
+                           .Select(t => t.Amount).Sum();
+    //wplywy
+    var sumIncome = userTransactionsByMounth.Where(t => t.Type == TypeOfTransaction.Income)
+                           .Select(t => t.Amount).Sum();
+
+    var sums = new Dictionary<string, decimal>();
+    if (sumIncome > 0)
+    {
+        sums = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Outcome)
+            .GroupBy(x => x.Category.ToString())
+            .ToDictionary(x => x.Key, x => x.Select(y => ((y.Amount / sumIncome))).Sum());
+    }
+    else
+    {
+        sums = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Outcome)
+            .GroupBy(x => x.Category.ToString())
+            .ToDictionary(x => x.Key, x => x.Select(y => ((y.Amount))).Sum());
+    }
+
+    var activityNames = sums.Select(x => x.Key);
+    var activityValues = sums.Select(x => x.Value);
+
+    var income = ViewData["Income"];
+    var outcome = ViewData["Outcome"];
+    var balance = ViewData["Balance"];
+}
+<h2>Activity by month @DateTime.Now</h2>
+<h3>Income: @income</h3>
+<h3>Outcome: @outcome</h3>
+<h3> 
+    @if (Convert.ToDecimal(balance) <= 100m)
+    {
+        <a style="color:red">
+            Balance was almost overload!!!
+            Balance: @balance
+        </a>
+    }
+    else
+    {
+        <a style="color:green">
+            Balance: @balance
+        </a>
+    }
+</h3>
+
+<head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+
+            var activityNames = @Html.Raw(Json.Serialize(@activityNames));
+            var labels = [];
+            var activityValues = @Html.Raw(Json.Serialize(@activityValues));
+            var dataValues = [];
+            for (var i = 0; i < activityNames.length; i++) {
+                var objName = activityNames[i];
+                var objValue = activityValues[i];
+                data.addRows([
+                    [objName, objValue]
+                ]);
+            };
+            // Set chart options
+            var options = {
+                'title': 'Activity',
+                'width': 600,
+                'height': 500
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+
+
+<body>
+    <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+</body>
+
+<script>
+
+    var models = @Html.Raw(Json.Serialize(@activityNames));
+    var labels = [];
+    for (var i = 0; i < models.length; i++) {
+        var obj = models[i];
+        labels.push(obj);
+    };
+
+    var models = @Html.Raw(Json.Serialize(@activityValues));
+    var dataValues = [];
+    for (var i = 0; i < models.length; i++) {
+        var obj = models[i];
+        dataValues.push(obj);
+    };
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '# of Activity',
+                data: dataValues,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

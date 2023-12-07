@@ -5,6 +5,7 @@ using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using System.Globalization;
 using ILogger = Serilog.ILogger;
 
@@ -65,6 +66,10 @@ namespace FinancialPlanner.WebMvc.Controllers
             var outcomes = model.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
             ViewData["MontlyBalance"] = incomes - outcomes;
             var CultureName = "pl-PL";
+            ViewData["Income"] = incomes;
+            ViewData["Outcome"] = outcomes;
+            ViewData["Balance"] = incomes - outcomes;
+            ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString() ;
             ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
             ViewData["CurrentMonthAsDataTime"] = selectMounth;
             _logger.Information("Load user transactions by selected month successfully at {registrationDate}", DateTime.Now);
