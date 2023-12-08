@@ -55,11 +55,16 @@ namespace FinancialPlanner.WebMvc.Controllers
         public async Task<IActionResult> Select(DateTime? selectMounth, string id)//TODO tranzakcje z userem wg miesiaca
         {
 
-            var transactions = await _transactionService.GetAllQueryable();
+            var transactions = await _transactionService.GetAllQueryable();    
 
             if (id != null)
             {
                 transactions = transactions.Where(x => x.UserId == id);
+                ViewData["UserId"] = id;
+            }
+            else
+            {
+                ViewData["UserId"] = id;
             }
 
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);

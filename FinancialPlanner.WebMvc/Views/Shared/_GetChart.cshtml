@@ -13,11 +13,19 @@
 
 @{
     ViewData["Title"] = "Index";
-
+    string id = "";
+    if (ViewData["UserId"] == null)
+    {
+        id = "961eb006-a983-48bf-b526-745ced3eb4ba";
+    }
+    else
+    {
+        id = ViewData["UserId"].ToString();
+    }
     //current mounth
     var currentMounth = ViewData["selectMounthAsInt"];//DateTime.Now.Month;
     int selectedMonth = Convert.ToInt32(currentMounth);
-    var transactions = _repository.GetAll().Result.Where(u => u.UserId == "961eb006-a983-48bf-b526-745ced3eb4ba").AsQueryable();
+    var transactions = _repository.GetAll().Result.Where(u => u.UserId == id).AsQueryable();
     var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, selectedMonth);
 
     //wydatki
