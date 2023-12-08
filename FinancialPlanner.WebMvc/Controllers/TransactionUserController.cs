@@ -52,10 +52,15 @@ namespace FinancialPlanner.WebMvc.Controllers
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
-        public async Task<IActionResult> Select(DateTime? selectMounth)//TODO tranzakcje z userem wg miesiaca
+        public async Task<IActionResult> Select(DateTime? selectMounth, string id)//TODO tranzakcje z userem wg miesiaca
         {
 
             var transactions = await _transactionService.GetAllQueryable();
+
+            if (id != null)
+            {
+                transactions = transactions.Where(x => x.UserId == id);
+            }
 
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
 

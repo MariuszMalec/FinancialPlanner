@@ -9,6 +9,7 @@
 <p>
     <a class="two" asp-action="Create">Create New User</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -97,8 +98,25 @@
                                 </li>
                                 <li>
                                     <div class="form-group">
-                                    <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetUserTransactionsByMounth", "User", new {id = item.Id}) + "'");"> ByMounth</button>
+                                    <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetUserTransactionsByMounth", "User", new {id = item.Id}) + "'");"> CurrMonth</button>
                                     </div>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                    <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("Select", "TransactionUser", new {id = item.Id}) + "'");"> ByMonth</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <form asp-action="Select" asp-controller="TransactionUser" asp-route-id="@item.Id">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Select Month</label>
+                                                    <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="submit" value="Select" class="btn btn-primary" />
+                                                </div>
+                                            </form>
                                 </li>
                                 <li>
                                     <div class="form-group">
