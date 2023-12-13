@@ -6,6 +6,7 @@ using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using System.Data;
 using System.Globalization;
 using ILogger = Serilog.ILogger;
 
@@ -69,19 +70,29 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
 
-            model = model.Where(t=>t.CreatedAt.Month == selectMounth.Value.Month).ToList();
+            var CultureName = "pl-PL";
+            if (selectMounth == null)
+            {
+                model = model.Where(t => t.CreatedAt.Month == DateTime.Now.Month).ToList();
+                ViewData["selectMounthAsInt"] = DateTime.Now.Month.ToString();
+                ViewData["CurrentMonth"] = DateTime.Now.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
+                ViewData["CurrentMonthAsDataTime"] = DateTime.Now;
+            }
+            else
+            {
+                model = model.Where(t => t.CreatedAt.Month == selectMounth.Value.Month).ToList();
+                ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString();
+                ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
+                ViewData["CurrentMonthAsDataTime"] = selectMounth;
+            }
 
             //current mounth
             var incomes = model.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = model.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
             ViewData["MontlyBalance"] = incomes - outcomes;
-            var CultureName = "pl-PL";
             ViewData["Income"] = incomes;
             ViewData["Outcome"] = outcomes;
             ViewData["Balance"] = incomes - outcomes;
-            ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString() ;
-            ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
-            ViewData["CurrentMonthAsDataTime"] = selectMounth;
             _logger.Information("Load user transactions by selected month successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(model) :
@@ -141,7 +152,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             await _transactionService.Insert(id, model);
             _logger.Information("Create transactions successfully at {registrationDate}", DateTime.Now);
-            return RedirectToAction("GetUserTransactionsByMounth", "User", new { model.Id, model.UserId });
+            return RedirectToAction("Index", "User", new { model.Id, model.UserId });
         }
 
         public async Task<ActionResult> Edit(string id)

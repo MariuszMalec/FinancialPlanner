@@ -15,7 +15,7 @@ namespace FinancialPlanner.Logic.Dtos
 
         public decimal BalanceAfterTransaction { get; set; }
 
-        public Currency Currency { get; set; }
+        public Currency Currency { get; set; } = Currency.PLN;
 
         public TypeOfTransaction Type { get; set; }
 

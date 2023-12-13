@@ -108,12 +108,14 @@
                                 </li>
                                 <li>
                                     <form asp-action="Select" asp-controller="TransactionUser" asp-route-id="@item.Id">
-                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Select Month</label>
-                                                    <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
+@*                                                 <div class="form-group" style="float:left; width:35%; background-color:green;">
+                                                    <label class="control-label">Select Month</label>                                        
+                                                </div> *@
+                                                 <div class="form-group" style="float:left; width:50%; background-color:green;">
+                                                  <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group" style="float:left; width:10%; background-color:blue;">
                                                     <input type="submit" value="Select" class="btn btn-primary" />
                                                 </div>
                                             </form>
