@@ -18,7 +18,7 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "WinPg"
+                "ASPNETCORE_ENVIRONMENT": "LinuxPg"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
