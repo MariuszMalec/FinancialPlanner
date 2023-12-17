@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -14,6 +14,9 @@
     <None Include="Source\users.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="wwwroot\lib\Chart-js\chart.js" />
+    <None Include="wwwroot\lib\Chart-js\chart.min.js" />
+    <None Include="wwwroot\lib\palette\palette.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Chart\GetChart_slupki.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\css\PagedList.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -13,7 +13,7 @@
 <h2>Activity by month @DateTime.Now</h2>
 <h3>Income: @income</h3>
 <h3>Outcome: @outcome</h3>
-<h3>
+<h3> 
     @if (Convert.ToDecimal(balance) <= 100m)
     {
         <a style="color:red">
@@ -76,25 +76,16 @@
 
 <body>
     <!--Div that will hold the pie chart-->
-    <h3 align="center">Current activities</h3>
-    <div class="container text-center">
-        <div class="row">
-            <div class="container " style="position: relative; width: 50%">
-                <h3 align="center">Current activities</h3>
-                <canvas id="myChart"></canvas>
-            </div>
-            <div class="col" id="chart_div"></div>
-        </div>
-    </div>
+    <div id="chart_div"></div>
 </body>
 
 
 <h1>Activity statistics</h1>
-@* 
+
 <div class="container " style="position: relative; width: 50%">
     <h3 align="center">Current activities</h3>
     <canvas id="myChart"></canvas>
-</div> *@
+</div>
 
 <script>
 
