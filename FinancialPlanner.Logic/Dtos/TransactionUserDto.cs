@@ -1,5 +1,6 @@
 ﻿using FinancialPlanner.Logic.Entities;
 using FinancialPlanner.Logic.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinancialPlanner.Logic.Dtos
 {
@@ -17,8 +18,10 @@ namespace FinancialPlanner.Logic.Dtos
 
         public Currency Currency { get; set; } = Currency.PLN;
 
+        [Display(Name = "Type")]
         public TypeOfTransaction Type { get; set; }
 
+        [Display(Name = "Category")]
         public CategoryOfTransaction Category { get; set; }
         public string? Description { get; set; }
 
