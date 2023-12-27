@@ -97,7 +97,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             {
                 sums = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome)
                     .GroupBy(x => x.Category.ToString())
-                    .ToDictionary(x => x.Key, x => x.Select(y => ((y.Amount / sumIncome))).Sum());
+                    .ToDictionary(x => x.Key, x => x.Select(y => ((y.Amount))).Sum());
             }
             else
             {
