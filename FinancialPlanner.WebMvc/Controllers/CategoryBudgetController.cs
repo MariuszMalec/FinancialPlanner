@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Immutable;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -10,12 +12,14 @@ namespace FinancialPlanner.WebMvc.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
+        private readonly ApplicationDbContext _context;
 
-        public CategoryBudgetController(IUserService userService, IMapper mapper, ITransactionService transactionService)
+        public CategoryBudgetController(IUserService userService, IMapper mapper, ITransactionService transactionService, ApplicationDbContext context)
         {
             _userService = userService;
             _mapper = mapper;
             _transactionService = transactionService;
+            _context = context;
         }
 
         public async Task<ActionResult> Index(string id, DateTime date)
@@ -29,16 +33,21 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var transactionsDal = userTransactions.Where(x => x.User.Id == id).OrderByDescending(x => x.Date).ToList();
 
-            var userBudget = new List<CategoryBudgetDto>() { new CategoryBudgetDto() { Id = 1,
-               UserId =id,
-               Date = DateTime.Now,
-               Category = Logic.Enums.CategoryOfTransaction.Car,
-                PlanedBudget = 0}}; 
+            var userBudget = _context.CategoryBudgets.Where(b=>b.UserId == id).ToList();
 
-            var userBudgetDto = new UsersBudgetDto() { UserId = id,
-                Date = date,
-                CategorySums = sums,
-                UserBudgets = userBudget};
+            //mapowanie
+            var categoryBudgetDto = new List<CategoryBudgetDto>();
+            userBudget.ForEach(x => categoryBudgetDto.Add(new CategoryBudgetDto() { Id= x.Id,
+            UserId = x.UserId,
+            Category = x.Category,
+            CreatedAt=x.CreatedAt,
+            PlanedBudget = x.PlanedBudget}));
+
+            var userBudgetDto = new UsersBudgetDto() { Id = id, 
+            CreatedAt = date,
+            UserId = id,
+            UserBudgets = categoryBudgetDto.ToImmutableList(),
+            CategorySums = sums};
 
             return View(userBudgetDto);
         }

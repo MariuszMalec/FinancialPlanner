@@ -109,6 +109,46 @@ namespace FinancialPlanner.Logic.Context
             await context.SaveChangesAsync();
         }
 
+        public static async Task SeedCategoryBudget(ApplicationDbContext context)
+        {
+            if (context.CategoryBudgets.Any())
+            {
+                return;
+            }
+            var _categoryBudgets = GetCategoryBudgets(context);
+            await context.CategoryBudgets.AddRangeAsync(_categoryBudgets);
+            await context.SaveChangesAsync();
+        }
+
+        private static List<CategoryBudget> GetCategoryBudgets(ApplicationDbContext context)
+        {
+            var userId = context.Users.OrderByDescending(u=>u.Id).First().Id;
+            List<CategoryBudget> _categoryBudgets = new List<CategoryBudget>()
+            {
+                new CategoryBudget() { Id = Guid.NewGuid().ToString(),
+                    Category = Enums.CategoryOfTransaction.Food,
+                    PlanedBudget = 3000,
+                    CreatedAt = DateTime.Now,
+                    UserId = userId},
+                new CategoryBudget() { Id = Guid.NewGuid().ToString(),
+                    Category = Enums.CategoryOfTransaction.Home,
+                    PlanedBudget = 1000,
+                    CreatedAt = DateTime.Now,
+                    UserId = userId},
+                new CategoryBudget() { Id = Guid.NewGuid().ToString(),
+                    Category = Enums.CategoryOfTransaction.Car,
+                    PlanedBudget = 300,
+                    CreatedAt = DateTime.Now,
+                    UserId = userId},
+                new CategoryBudget() { Id = Guid.NewGuid().ToString(),
+                    Category = Enums.CategoryOfTransaction.Entertainment,
+                    PlanedBudget = 250,
+                    CreatedAt = DateTime.Now,
+                    UserId = userId}
+           };
+            return _categoryBudgets;
+        }
+
         private static readonly List<TransactionPicture> _transactionPictures = new List<TransactionPicture>()
         {
             new TransactionPicture() {

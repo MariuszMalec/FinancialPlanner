@@ -20,6 +20,8 @@ namespace FinancialPlanner.Logic.Context
 
         public override DbSet<TransactionPicture> TransactionPictures { get; set; }
 
+        public override DbSet<CategoryBudget> CategoryBudgets { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var provider = Configuration["ProviderFromAppsettings"];

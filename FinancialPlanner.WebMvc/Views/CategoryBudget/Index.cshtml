@@ -10,7 +10,7 @@
     var possibleOutcomeCategories = Enum.GetValues<CategoryOfTransaction>().Where(x => (int)x > 100);
     var totalIncome = Model.CategorySums.Where(x => (int)x.Key < 100).Select(x => x.Value).Sum();
     var totalOutcome = Model.CategorySums.Where(x => (int)x.Key > 100).Select(x => x.Value).Sum();
-    var dateCommunication = $"For {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.UserBudgets.First().Date.Month)} of {Model.UserBudgets.First().Date.Year}";
+    var dateCommunication = $"For {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.UserBudgets.First().CreatedAt.Month)} of {Model.UserBudgets.First().CreatedAt.Year}";
     var planedIncome = Model.UserBudgets.Where(x => (int)x.Category > 1 && (int)x.Category < 100).Select(x => x.PlanedBudget).Sum();
     var planedOutcome = Model.UserBudgets.Where(x => (int)x.Category > 100).Select(x => x.PlanedBudget).Sum();
 }

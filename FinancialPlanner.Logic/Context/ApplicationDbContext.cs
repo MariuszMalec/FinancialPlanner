@@ -1,4 +1,5 @@
-﻿using FinancialPlanner.Logic.Models;
+﻿using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -15,6 +16,8 @@ namespace FinancialPlanner.Logic.Context
         public abstract DbSet<Transaction> Transactions { get; set; }
 
         public abstract DbSet<TransactionPicture> TransactionPictures { get; set; }
+
+        public abstract DbSet<CategoryBudget> CategoryBudgets { get; set; }
 
         protected ApplicationDbContext(IConfiguration configuration)
         {

@@ -118,6 +118,7 @@ using (var scope = app.Services.CreateScope())
             await SeedData.SeedUsers(dataContext);
             await SeedData.SeedTransaction(dataContext);
             await SeedData.SeedTransactionPictures(dataContext);
+            await SeedData.SeedCategoryBudget(dataContext);
         }
     }
     else
