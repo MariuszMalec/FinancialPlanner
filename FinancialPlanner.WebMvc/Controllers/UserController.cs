@@ -188,7 +188,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
 
             //TODO automapper chyba gorszy bo trzeba szukac profile
-            var model = _mapper.Map<List<UserDto>>(users);
+            var model = _mapper.Map<List<UserDto>>(users).OrderBy(x => x.CreatedAt);
 
             //TODO standard mapping
             //var model = users.Select(x=> new UserDto() 

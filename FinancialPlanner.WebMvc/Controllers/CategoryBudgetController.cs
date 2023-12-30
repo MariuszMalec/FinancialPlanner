@@ -3,6 +3,7 @@ using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Immutable;
@@ -108,6 +109,28 @@ namespace FinancialPlanner.WebMvc.Controllers
                 .GroupBy(x => new { x.year, x.month, x.sum }, (key, group) => new { date = $"{key.month}.{key.year}", sum = key.sum })
                 .ToList();
             return groupedTransactions;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateBudget(string id, IFormCollection collection)
+        {
+            foreach (var category in collection)
+            {
+                //TODO: obsłużyć brakujace
+                if (Enum.TryParse<CategoryOfTransaction>(category.Key, out var categoryEnum))
+                {
+                    var existing = _context.CategoryBudgets
+                        .FirstOrDefault(x => x.UserId == id && x.Category == categoryEnum) ?? new CategoryBudget() { UserId = id, Category = categoryEnum };
+
+                    var stringValue = category.Value.FirstOrDefault();
+                    existing.PlanedBudget = string.IsNullOrWhiteSpace(stringValue) ? 0M : decimal.Parse(stringValue);
+
+                    _context.Update(existing);
+                }
+            }
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index), new { id });
         }
     }
 }

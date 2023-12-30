@@ -189,7 +189,9 @@ namespace FinancialPlanner.WebMvc.Controllers
                 Amount = model.Amount,
                 BalanceAfterTransaction = getAmount,
                 Description = model.Description,
-                CreatedAt = model.CreatedAt
+                CreatedAt = model.CreatedAt,
+                Picture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x.Source).FirstOrDefault(),
+                TransactionPicture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x).FirstOrDefault()
             };
             _context.Transactions.Update(transaction);
             _context.SaveChanges();
