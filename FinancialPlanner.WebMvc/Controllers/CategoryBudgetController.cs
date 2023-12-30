@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
+using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,13 @@ namespace FinancialPlanner.WebMvc.Controllers
             ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString();
             ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
             ViewData["CurrentMonthAsDataTime"] = selectMounth;
+
+            var incomes = userTransactions.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = userTransactions.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            ViewData["MontlyBalance"] = incomes - outcomes;
+            ViewData["Income"] = incomes;
+            ViewData["Outcome"] = outcomes;
+            ViewData["Balance"] = incomes - outcomes;
 
             return View(userBudgetDto);
         }

@@ -15,20 +15,26 @@
     var planedOutcome = Model.UserBudgets.Where(x => (int)x.Category > 100).Select(x => x.PlanedBudget).Sum();
     var currentMonth = ViewData["CurrentMonth"];
     var selectedMonth = ViewData["CurrentMonthAsDataTime"];
+    var userId = Model.UserId;
+
+    var income = Convert.ToDecimal(ViewData["Income"]);
+    var outcome = Convert.ToDecimal(ViewData["Outcome"]);
+    var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
+
+
 }
 
 
 <div class="d-flex flex-column container shadow-sm p-3 mb-5 bg-white rounded">
-    <div>
-        <form asp-action="UserBudget">
-            <div class="row">
-                <div class="col">
-                    <label class="col-form-label">Month and year: </label>
-                    <input asp-for=@selectedMonth type="month" name="selectMounth" class="form-control" />
-                </div>
-                <div class="col">
-                    <input style="position: absolute; bottom: 0;" type="submit" value="Select" class="btn btn-secondary" />
-                </div>
+    <div class="col">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Select Month</label>
+                <input asp-for=@selectedMonth type="month" name="selectMounth" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Select" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -53,14 +59,14 @@
         <tbody>
             <tr>
                 <td>
-                    @totalIncome.ToString("C")
+                    @income.ToString("C")
                 </td>
                 <td>
-                    @totalOutcome.ToString("C")
+                    @outcome.ToString("C")
                 </td>
                 <td>
                     @{
-                        var dif = totalIncome - totalOutcome;
+                        var dif = income - outcome;
                     }
                     @dif.ToString("C")
                 </td>
