@@ -2,8 +2,10 @@
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
+using System.Globalization;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
@@ -22,16 +24,15 @@ namespace FinancialPlanner.WebMvc.Controllers
             _context = context;
         }
 
-        public async Task<ActionResult> Index(string id, DateTime date)
+        public async Task<ActionResult> Index(DateTime? selectMounth, string id)
         {
             var transactions = await _transactionService.GetAllQueryable();
 
-            var userTransactions = transactions.Where(u => u.User.Id == id).ToList();
+            var userTransactions = transactions.Where(t => t.CreatedAt.Month == selectMounth.Value.Month)
+                .Where(u => u.User.Id == id).ToList();
 
             var sums = userTransactions.GroupBy(x => x.Category)
             .ToDictionary(x => x.Key, x => x.Select(y => y.Amount).Sum());
-
-            var transactionsDal = userTransactions.Where(x => x.User.Id == id).OrderByDescending(x => x.Date).ToList();
 
             var userBudget = _context.CategoryBudgets.Where(b=>b.UserId == id).ToList();
 
@@ -44,10 +45,20 @@ namespace FinancialPlanner.WebMvc.Controllers
             PlanedBudget = x.PlanedBudget}));
 
             var userBudgetDto = new UsersBudgetDto() { Id = id, 
-            CreatedAt = date,
+            CreatedAt = selectMounth.Value,
             UserId = id,
             UserBudgets = categoryBudgetDto.ToImmutableList(),
             CategorySums = sums};
+
+            if (!userBudget.Any())
+            {
+                return Content("No budget!");
+            }
+
+            var CultureName = "pl-PL";
+            ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString();
+            ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
+            ViewData["CurrentMonthAsDataTime"] = selectMounth;
 
             return View(userBudgetDto);
         }

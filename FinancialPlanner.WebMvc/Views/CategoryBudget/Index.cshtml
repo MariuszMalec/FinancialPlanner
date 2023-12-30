@@ -13,6 +13,8 @@
     var dateCommunication = $"For {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.UserBudgets.First().CreatedAt.Month)} of {Model.UserBudgets.First().CreatedAt.Year}";
     var planedIncome = Model.UserBudgets.Where(x => (int)x.Category > 1 && (int)x.Category < 100).Select(x => x.PlanedBudget).Sum();
     var planedOutcome = Model.UserBudgets.Where(x => (int)x.Category > 100).Select(x => x.PlanedBudget).Sum();
+    var currentMonth = ViewData["CurrentMonth"];
+    var selectedMonth = ViewData["CurrentMonthAsDataTime"];
 }
 
 
@@ -22,7 +24,7 @@
             <div class="row">
                 <div class="col">
                     <label class="col-form-label">Month and year: </label>
-                    <input type="month" id="date" name="date" class="form-control" />
+                    <input asp-for=@selectedMonth type="month" name="selectMounth" class="form-control" />
                 </div>
                 <div class="col">
                     <input style="position: absolute; bottom: 0;" type="submit" value="Select" class="btn btn-secondary" />
@@ -190,7 +192,7 @@
                         }
                         @difference.ToString("C")
                     </td>
-                    <td>
+
                         @{
                             decimal pSpent = 0;
                             decimal pLeft = 0;
@@ -205,14 +207,27 @@
                             }
 
                             if (pLeft < 0)
+                            {
                                 output = $"You spent {pSpent - 100}% more!";
+                                <td style="color:red">
+                                    @output
+                                </td>
+                            }
                             else if (budget == 0 && spent > 0)
+                            {
                                 output = $"You spent {spent:c} without budget set";
+                                <td>
+                                    @output
+                                </td>
+                            }
                             else
+                            {
                                 output = $"{pSpent}% / {pLeft}%";
+                                <td>
+                                    @output
+                                </td>
+                            }
                         }
-                        @output
-                    </td>
                     <td>
                         <div class="dropdown">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
