@@ -16,5 +16,6 @@ namespace FinancialPlanner.Logic.Interfaces
         Task<TransactionUserDto> GetById(string id);
         Task Insert(string id, TransactionUserDto model);
         IEnumerable<Transaction> FilterTransactionByMounth(IQueryable<Transaction> transactions, int mounth);
+        Task Edit(string id, TransactionUserDto model);
     }
 }

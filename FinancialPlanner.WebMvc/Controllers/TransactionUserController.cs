@@ -5,7 +5,6 @@ using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using System.Data;
 using System.Globalization;
 using ILogger = Serilog.ILogger;
@@ -174,33 +173,8 @@ namespace FinancialPlanner.WebMvc.Controllers
         public async Task<ActionResult> Edit(string id, TransactionUserDto model)
         {
             //TODO dodac to do serwisu
-            var getAmountFromDataBase = _context.Transactions.Where(u => u.Id == model.Id).Select(u => u.Amount).FirstOrDefault();
-            var newAmount = (getAmountFromDataBase-model.Amount);
-            var getBalance = _context.Users.Where(u => u.Id == model.UserId).Select(u => u.Balance).FirstOrDefault();
-            var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance - newAmount) : (getBalance + newAmount);
-            
-            var transaction = new Transaction()
-            {
-                Id= id,
-                UserId = model.UserId,
-                Currency = model.Currency,
-                Type = model.Type,
-                Category = model.Category,
-                Amount = model.Amount,
-                BalanceAfterTransaction = getAmount,
-                Description = model.Description,
-                CreatedAt = model.CreatedAt,
-                Picture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x.Source).FirstOrDefault(),
-                TransactionPicture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x).FirstOrDefault()
-            };
-            _context.Transactions.Update(transaction);
-            _context.SaveChanges();
-
-            var user = await _userService.GetById(model.UserId);
-            user.Balance = transaction.BalanceAfterTransaction;
-            await _userService.Update(user);
-            _logger.Information("Transaction was edited successful at {registrationDate}", id, DateTime.Now);
-            return RedirectToAction("GetUserTransactionsByMounth", "User", new { model.Id,  model.UserId });
+            await _transactionService.Edit(id, model);
+            return RedirectToAction("GetUserTransactionsByMounth", "User", new { model.Id, model.UserId });
         }
 
         public async Task<ActionResult> Delete(string id)
