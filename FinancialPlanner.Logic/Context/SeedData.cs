@@ -49,14 +49,22 @@ namespace FinancialPlanner.Logic.Context
             new Transaction() { 
                 Id = Guid.NewGuid().ToString(),
                 Date = DateTime.Now,
-                Amount= 0,
-                BalanceAfterTransaction= 0,
+                Amount= 6700,
+                BalanceAfterTransaction= 6700,
                 Category = Enums.CategoryOfTransaction.Salary,
                 Type = Enums.TypeOfTransaction.Income,
                 Currency = Enums.Currency.PLN,
-                Description = "test",
+                Description = "wyplata",
                 CreatedAt= DateTime.Now,
-                UserId = _users.Select(x => x.Id).First()
+                UserId = _users.Select(x => x.Id).First(),
+                User = new User() { IsActive = true,
+                    Balance = 6700,
+                    LastName = _users.Select(x => x.LastName).First(),
+                    FirstName = _users.Select(x => x.FirstName).First(),
+                    Email = _users.Select(x => x.Email).First(),
+                    Age = _users.Select(x => x.Age).First(),
+                    Role = _users.Select(x => x.Role).First(),
+                    }
             },
         };
 

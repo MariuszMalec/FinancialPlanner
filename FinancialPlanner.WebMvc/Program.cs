@@ -125,7 +125,7 @@ using (var scope = app.Services.CreateScope())
     {
         //TODO nie ralacyjna baza danych np memory msql do testow
         await SeedData.SeedRoles(dataContext);
-        await SeedData.SeedUsers(dataContext);
+        //await SeedData.SeedUsers(dataContext);
         await SeedData.SeedTransaction(dataContext);
         await SeedData.SeedTransactionPictures(dataContext);
         await SeedData.SeedCategoryBudget(dataContext);
