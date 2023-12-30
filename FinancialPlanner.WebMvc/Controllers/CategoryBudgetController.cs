@@ -3,8 +3,8 @@ using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
-using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 using System.Collections.Immutable;
 using System.Globalization;
 
@@ -28,6 +28,11 @@ namespace FinancialPlanner.WebMvc.Controllers
         public async Task<ActionResult> Index(DateTime? selectMounth, string id)
         {
             var transactions = await _transactionService.GetAllQueryable();
+
+            if (selectMounth == null)
+            {
+                selectMounth = DateTime.Now;
+            }
 
             var userTransactions = transactions.Where(t => t.CreatedAt.Month == selectMounth.Value.Month)
                 .Where(u => u.User.Id == id).ToList();
@@ -69,6 +74,40 @@ namespace FinancialPlanner.WebMvc.Controllers
             ViewData["Balance"] = incomes - outcomes;
 
             return View(userBudgetDto);
+        }
+
+        public ActionResult UsersTrending(string id, CategoryOfTransaction category, DateTime dateFrom, DateTime dateTo)
+        {
+            CheckDateToTrending(ref dateFrom, ref dateTo);
+
+            var groupedTransactions = GroupTransactionForTrending(id, category, dateFrom, dateTo);
+
+            return View(new UsersTrendingDto() { Transactions = groupedTransactions, Category = category, UserId = id });
+        }
+
+        private void CheckDateToTrending(ref DateTime dateFrom, ref DateTime dateTo)
+        {
+            var now = DateTime.UtcNow;
+            var currentMonth = new DateTime(now.Year, now.Month, 1);
+            var pastMonth = currentMonth.AddMonths(-2).AddDays(-1);
+            dateFrom = dateFrom == default ? new DateTime(now.Year, now.Month, 1).AddMonths(-3) : dateFrom;
+            dateTo = dateTo == default ? DateTime.UtcNow : dateTo;
+        }
+
+        private IEnumerable GroupTransactionForTrending(string id, CategoryOfTransaction category, DateTime dateFrom, DateTime dateTo)
+        {
+            var transactions = _transactionService.GetAllQueryable().Result;
+
+            var userTransactions = transactions.Where(x => x.User.Id == id)
+                .Where(x => x.CreatedAt > dateFrom && x.CreatedAt < dateTo).Where(x => x.Category == category).ToList();
+
+            var groupedTransactions = userTransactions.Select(x => new { x.CreatedAt.Year, x.CreatedAt.Month, x.Amount })
+                .GroupBy(y => new { y.Year, y.Month },
+                    (key, group) => new { year = key.Year, month = key.Month, sum = @group.Sum(x => x.Amount) })
+                .OrderBy(d => d.year).ThenBy(d => d.month)
+                .GroupBy(x => new { x.year, x.month, x.sum }, (key, group) => new { date = $"{key.month}.{key.year}", sum = key.sum })
+                .ToList();
+            return groupedTransactions;
         }
     }
 }

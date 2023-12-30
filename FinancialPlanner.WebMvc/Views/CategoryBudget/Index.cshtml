@@ -235,7 +235,7 @@
                             }
                         }
                     <td>
-                        <div class="dropdown">
+                        @*  <div class="dropdown">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 More
                             </a>
@@ -243,7 +243,10 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" asp-action="UsersTrending" asp-route-id="@Model.UserId" asp-route-category="@item">Trending</a>
                             </div>
-                        </div>
+                        </div>*@
+
+                        <a asp-action="UsersTrending" asp-route-id="@Model.UserId" asp-route-category="@item">Trending</a>
+
 
                     </td>
                 </tr>
