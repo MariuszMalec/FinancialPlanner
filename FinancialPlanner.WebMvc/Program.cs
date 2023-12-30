@@ -41,7 +41,7 @@ logger.Information("Starting app ...");
 // -------------- ustalenie providera -------------------
 //-------------------------------------------------------
 var provider = Configuration["ProviderFromAppsettings"];//TODO to nie czyta appsetings.json gdy odpalam migracje??
-if (environment.EnvironmentName == "Default" || environment.EnvironmentName == "Development")//TODO zmiana providera gdy wybrane spec. srodowisko
+if (environment.EnvironmentName == "Default")//TODO zmiana providera gdy wybrane spec. srodowisko
 {
     provider = EnumProvider.Default.ToString();
 }
@@ -53,7 +53,7 @@ else if (environment.EnvironmentName == "WinPg")//TODO zmiana providera gdy wybr
 {
     provider = EnumProvider.WinPg.ToString();
 }
-else if (environment.EnvironmentName == "MemorySql")//TODO zmiana providera gdy wybrane spec. srodowisko
+else if (environment.EnvironmentName == "MemorySql" || environment.EnvironmentName == "Development")//TODO zmiana providera gdy wybrane spec. srodowisko oraz unit testy
 {
     provider = EnumProvider.MemorySql.ToString();
 }
@@ -128,6 +128,7 @@ using (var scope = app.Services.CreateScope())
         await SeedData.SeedUsers(dataContext);
         await SeedData.SeedTransaction(dataContext);
         await SeedData.SeedTransactionPictures(dataContext);
+        await SeedData.SeedCategoryBudget(dataContext);
     }
 }
 
