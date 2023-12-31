@@ -15,6 +15,7 @@ namespace FinancialPlanner.Logic.Services
 {
     public class TransactionService : ITransactionService
     {
+        private static readonly IList<Transaction> _transactions = LoadDataService<Transaction>.ReadTransacionFile();
         private readonly IRepository<Transaction> _repository;
         private readonly IUserService _userService;
         private readonly ApplicationDbContext _context;

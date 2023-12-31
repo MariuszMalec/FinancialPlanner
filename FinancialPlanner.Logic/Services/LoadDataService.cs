@@ -19,7 +19,7 @@ namespace FinancialPlanner.Logic.Services
             return new List<T>(){};
         }
 
-        public static IList<T> ReadTransacionFile()
+        public static List<T> ReadTransacionFile()
         {
             string fileName = @"Source/transactions.json";
             string getDir = Directory.GetCurrentDirectory();
@@ -28,7 +28,7 @@ namespace FinancialPlanner.Logic.Services
             if (File.Exists(fileName))
             {
                 string jsonString = File.ReadAllText(fileName);
-                IList<T>? data = JsonConvert.DeserializeObject<List<T>>(jsonString);
+                List<T>? data = JsonConvert.DeserializeObject<List<T>>(jsonString);
                 return data;
             }
             return new List<T>(){};

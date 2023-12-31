@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Source\transactions.json" />
     <Content Remove="Source\users.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Source\transactions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Source\users.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="wwwroot\lib\Chart-js\chart.js" />
     <None Include="wwwroot\lib\Chart-js\chart.min.js" />

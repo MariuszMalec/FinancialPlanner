@@ -124,11 +124,13 @@ using (var scope = app.Services.CreateScope())
     else
     {
         //TODO nie ralacyjna baza danych np memory msql do testow
-        await SeedData.SeedRoles(dataContext);
+        //await SeedData.SeedRoles(dataContext);
         //await SeedData.SeedUsers(dataContext);
-        await SeedData.SeedTransaction(dataContext);
-        await SeedData.SeedTransactionPictures(dataContext);
-        await SeedData.SeedCategoryBudget(dataContext);
+        //await SeedData.SeedTransaction(dataContext);
+        //await SeedData.SeedTransactionPictures(dataContext);
+        //await SeedData.SeedCategoryBudget(dataContext);
+        //await SeedDataFromJson.SeedUsers(dataContext);
+        await SeedDataFromJson.SeedTransactions(dataContext);
     }
 }
 
