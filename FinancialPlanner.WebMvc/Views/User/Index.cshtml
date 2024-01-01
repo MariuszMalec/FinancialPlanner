@@ -89,85 +89,86 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |*@
 
-                    <div class="container-fluid">
-                        <ul class="navbar-nav flex-grow-1">
-                                <li>
-                                    <div class="form-group">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Menu
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetUserTransactions", "User", new {id = item.Id}) + "'");"> Transactions</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetUserTransactionsByMounth", "User", new {id = item.Id}) + "'");"> CurrMonth</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("Select", "TransactionUser", new {id = item.Id}) + "'");"> ByMonth</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <form asp-action="Select" asp-controller="TransactionUser" asp-route-id="@item.Id">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
-@*                                                 <div class="form-group" style="float:left; width:35%; background-color:green;">
-                                                    <label class="control-label">Select Month</label>                                        
-                                                </div> *@
-                                                 <div class="form-group" style="float:left; width:50%; background-color:green;">
-                                                  <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
-                                                </div>
-                                                <div class="form-group" style="float:left; width:10%; background-color:blue;">
-                                                    <input type="submit" value="Economy" class="btn btn-primary" />
-                                                </div>
-                                            </form>
-                                </li>
-                                <li>
-                                    <form asp-action="Index" asp-controller="CategoryBudget" asp-route-id="@item.Id">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <div class="form-group" style="float:left; width:50%; background-color:green;">
-                                            <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
-                                        </div>
-                                        <div class="form-group" style="float:left; width:10%; background-color:blue;">
-                                            <input type="submit" value="Budget" class="btn btn-primary" />
-                                        </div>
-                                    </form>
-                                    @*                                     <div class="form-group">
-                                <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Index", "CategoryBudget", new {id = item.Id}) + "'");"> Budgets</button>
+                                </div>
+                            </li>
+                            <li>
+                                <form asp-action="Select" asp-controller="TransactionUser" asp-route-id="@item.Id">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    @*                                                 <div class="form-group" style="float:left; width:35%; background-color:green;">
+                                <label class="control-label">Select Month</label>
                                 </div> *@
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                    <div class="form-group" style="float:left; width:50%; background-color:green;">
+                                        <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
+                                    </div>
+                                    <div class="form-group" style="float:left; width:10%; background-color:blue;">
+                                        <input type="submit" value="Economy" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </li>
+                            <li>
+                                <form asp-action="Index" asp-controller="CategoryBudget" asp-route-id="@item.Id">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group" style="float:left; width:50%; background-color:green;">
+                                        <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
+                                    </div>
+                                    <div class="form-group" style="float:left; width:10%; background-color:blue;">
+                                        <input type="submit" value="Budget" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                                @*                                     <div class="form-group">
+                            <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Index", "CategoryBudget", new {id = item.Id}) + "'");"> Budgets</button>
+                            </div> *@
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-person-circle me-2" type="submit" onclick="@("window.location.href='" + @Url.Action("GetMonthlyIncomeAndExpenses", "User", new {id = item.Id}) + "'");"> ByYear</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("AddTransaction", "User", new {id = item.Id}) + "'");"> AddTransaction</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("GetChart", "Chart", new {id = item.Id}) + "'");"> Economy</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Edit", "User", new {id = item.Id}) + "'");"> Edit user</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Details", "User", new {id = item.Id}) + "'");"> Details user</button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-group">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item">
                                     <button class="button-92 bi bi-box-arrow-in-left" type="submit" onclick="@("window.location.href='" + @Url.Action("Delete", "User", new {id = item.Id}) + "'");"> Delete user</button>
-                                    </div>
-                                </li>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-
-
             </td>
         </tr>
 }
