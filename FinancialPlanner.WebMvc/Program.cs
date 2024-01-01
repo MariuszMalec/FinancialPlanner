@@ -131,6 +131,8 @@ using (var scope = app.Services.CreateScope())
         //await SeedData.SeedCategoryBudget(dataContext);
         //await SeedDataFromJson.SeedUsers(dataContext);
         await SeedDataFromJson.SeedTransactions(dataContext);
+        await SeedDataFromJson.SeedTransactionPictures(dataContext);
+        await SeedDataFromJson.SeedCategoryBudget(dataContext);
     }
 }
 
