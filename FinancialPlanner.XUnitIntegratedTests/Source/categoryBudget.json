@@ -1,0 +1,20 @@
+[
+  {
+    "Id": "615b4be6281be025752c7800",
+    "userId": "615b4be6281be025752c8800",
+    "planedBudget": "250",
+    "category": "Car"
+  },
+  {
+    "Id": "615b4be6281be025752c7801",
+    "userId": "615b4be6281be025752c8800",
+    "planedBudget": "500",
+    "category": "School"
+  },
+  {
+    "Id": "615b4be6281be025752c7802",
+    "userId": "615b4be6281be025752c8800",
+    "planedBudget": "500",
+    "category": "Food"
+  }
+]
