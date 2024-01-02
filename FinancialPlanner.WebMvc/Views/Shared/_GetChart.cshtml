@@ -109,8 +109,8 @@
             // Set chart options
             var options = {
                 'title': 'Activity',
-                'width': 600,
-                'height': 500
+                'width': 400,
+                'height': 300
             };
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -121,8 +121,12 @@
 
 
 <body>
-    <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+    <!--Div that will hold the pie chart-->    
+    <div style="position: relative; width: 50%">
+        <h3 align="center">Current activities</h3>
+        <div id="chart_div"></div>
+        <canvas style="position: relative; width: 50%" id="myChart"></canvas>
+    </div>
 </body>
 
 <script>
