@@ -198,10 +198,10 @@ namespace FinancialPlanner.Logic.Services
             return sums;
         }
 
-        public IEnumerable<Transaction> FilterTransactionByMounth(IQueryable<Transaction> transactions, int mounth)
+        public IEnumerable<Transaction> FilterTransactionByMounth(IQueryable<Transaction> transactions, DateTime date)
         {
-            var firstDay = new DateTime(DateTime.Today.Year, mounth, 1);
-            var endDay = new DateTime(DateTime.Today.Year, mounth, DateTime.DaysInMonth(DateTime.Today.Year, mounth));
+            var firstDay = new DateTime(date.Year, date.Month, 1);
+            var endDay = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(DateTime.Today.Year, date.Month));
             var transactionsUser = transactions.Where(t => t.CreatedAt >= firstDay && t.CreatedAt <= endDay);
             _logger.LogInformation("FilterTransactionByMounth successful at {registrationDate}", DateTime.Now);
             return transactionsUser;

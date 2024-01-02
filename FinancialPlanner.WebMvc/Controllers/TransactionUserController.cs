@@ -40,7 +40,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var model = _mapper.Map<List<TransactionUserDto>>(transactions);
 
             //current mounth
-            var currentMounth = DateTime.Now.Month;
+            var currentMounth = DateTime.Now;
             var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
             var incomes = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
@@ -123,7 +123,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             ViewData["UserId"] = id;
 
             var transactions = _transactionService.GetAllQueryable().Result.Where(x => x.UserId == id);
-            var currentMounth = DateTime.Now.Month;
+            var currentMounth = DateTime.Now;
             var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
 
             var incomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);

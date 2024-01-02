@@ -24,9 +24,11 @@
     }
     //current mounth
     var currentMounth = ViewData["selectMounthAsInt"];//DateTime.Now.Month;
+    var currentMonth = ViewData["CurrentMonth"];
+    var currentDate = Convert.ToDateTime(ViewData["CurrentMonthAsDataTime"]);
     int selectedMonth = Convert.ToInt32(currentMounth);
     var transactions = _repository.GetAll().Result.Where(u => u.UserId == id).AsQueryable();
-    var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, selectedMonth);
+    var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentDate);
 
     //wydatki
     var sumOutcome = userTransactionsByMounth.Where(t => t.Type == TypeOfTransaction.Outcome)
@@ -56,10 +58,10 @@
     var outcome = ViewData["Outcome"];
     var balance = ViewData["Balance"];
 }
-<h2>Activity by month @DateTime.Now</h2>
-<h3>Income: @income</h3>
-<h3>Outcome: @outcome</h3>
-<h3> 
+<h4>Activity by month @currentMonth</h4>
+<h4>Income: @income</h4>
+<h4>Outcome: @outcome</h4>
+<h4> 
     @if (Convert.ToDecimal(balance) <= 100m)
     {
         <a style="color:red">
@@ -73,7 +75,7 @@
             Balance: @balance
         </a>
     }
-</h3>
+</h4>
 
 <head>
     <!--Load the AJAX API-->

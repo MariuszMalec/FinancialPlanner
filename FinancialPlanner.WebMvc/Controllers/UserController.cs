@@ -107,7 +107,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var transactions = await _transactionService.GetAllQueryable();
 
             //current mounth
-            var currentMounth = DateTime.Now.Month;
+            var currentMounth = DateTime.Now;
             var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
 
             var userTransactions = userTransactionsByMounth.Where(u => u.User.Id == userId).ToList();

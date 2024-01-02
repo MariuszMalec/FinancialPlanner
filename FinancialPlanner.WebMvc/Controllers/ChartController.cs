@@ -43,7 +43,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
 
             //current mounth
-            var currentMounth = DateTime.Now.Month;
+            var currentMounth = DateTime.Now;
             var transactions = _repository.GetAll().Result.Where(u => u.UserId == id).AsQueryable();
             var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
 
