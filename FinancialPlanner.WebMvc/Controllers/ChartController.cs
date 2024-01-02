@@ -41,7 +41,6 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             ViewBag.UserId = String.IsNullOrEmpty(id) ? "UserId" : "";
 
-
             //current mounth
             var currentMounth = DateTime.Now;
             var transactions = _repository.GetAll().Result.Where(u => u.UserId == id).AsQueryable();
@@ -61,6 +60,9 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var transactionWithUser = _repository.GetAllQueryable()
                                                 .Include(u => u.User);
+            //user id
+            ViewData["UserId"] = id;
+
             //srodki
             var balance = transactionWithUser
                 .Where(t=>t.UserId == id)

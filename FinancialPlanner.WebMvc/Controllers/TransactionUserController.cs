@@ -64,6 +64,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
             else
             {
+                id = _context.Users.First().Id;
                 ViewData["UserId"] = id;
             }
 

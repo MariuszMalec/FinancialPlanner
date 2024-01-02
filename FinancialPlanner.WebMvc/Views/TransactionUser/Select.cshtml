@@ -1,12 +1,16 @@
 ﻿@using FinancialPlanner.Logic.Context;
+@using FinancialPlanner.Logic.Interfaces
 @model IEnumerable<FinancialPlanner.Logic.Dtos.TransactionUserDto>
 @inject ApplicationDbContext _context
+@inject IUserService _userService
 
 @{
     ViewData["Title"] = "Index";
     var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
     var currentMonth = ViewData["CurrentMonth"];
     var selectedMonth = ViewData["CurrentMonthAsDataTime"];
+    var userId = ViewData["UserId"];
+    var user = _userService.GetById(userId.ToString()).Result;
 }
 
 @if (balance < 2400 && balance >= 1000)
@@ -26,7 +30,7 @@ else
     <h3>MontlyBalance :  @balance for @currentMonth </h3>
 }
 
-<h2>Transactions user</h2>
+<h2>Transactions user : @user.FirstName @user.LastName</h2>
 
 <div class="row">
     <div class="col">

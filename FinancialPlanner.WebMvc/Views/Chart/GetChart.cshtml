@@ -1,16 +1,20 @@
 ﻿@using FinancialPlanner.Logic.Enums
+@using FinancialPlanner.Logic.Interfaces
 @model FinancialPlanner.Logic.Dtos.IncomeOutcomeDto
+@inject IUserService _userService
 
 @{
     ViewData["Title"] = "Index";
     var activityNames = Model.IncomeOutcomeSum.Select(x => x.Key);
     var activityValues = Model.IncomeOutcomeSum.Select(x => x.Value);
-
     var income = ViewData["Income"];
     var outcome = ViewData["Outcome"];
     var balance = ViewData["Balance"];
+
+    var userId = ViewData["UserId"];
+    var user = _userService.GetById(userId.ToString()).Result;
 }
-<h2>Activity by month @DateTime.Now</h2>
+<h2>Activity by month @DateTime.Now : @user.FirstName @user.LastName</h2>
 <h3>Income: @income</h3>
 <h3>Outcome: @outcome</h3>
 <h3>
