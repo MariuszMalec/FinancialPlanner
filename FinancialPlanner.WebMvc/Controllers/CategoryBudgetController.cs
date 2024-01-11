@@ -36,6 +36,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             }
 
             var userTransactions = transactions.Where(t => t.CreatedAt.Month == selectMounth.Value.Month)
+                .Where(u => u.CreatedAt.Year == selectMounth.Value.Year)
                 .Where(u => u.User.Id == id).ToList();
 
             var sums = userTransactions.GroupBy(x => x.Category)

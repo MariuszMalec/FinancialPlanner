@@ -73,14 +73,18 @@ namespace FinancialPlanner.WebMvc.Controllers
             var CultureName = "pl-PL";
             if (selectMounth == null)
             {
-                model = model.Where(t => t.CreatedAt.Month == DateTime.Now.Month).ToList();
+                model = model.Where(t => t.CreatedAt.Month == DateTime.Now.Month)
+                    .Where(u => u.CreatedAt.Year == selectMounth.Value.Year)
+                    .ToList();
                 ViewData["selectMounthAsInt"] = DateTime.Now.Month.ToString();
                 ViewData["CurrentMonth"] = DateTime.Now.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
                 ViewData["CurrentMonthAsDataTime"] = DateTime.Now;
             }
             else
             {
-                model = model.Where(t => t.CreatedAt.Month == selectMounth.Value.Month).ToList();
+                model = model.Where(t => t.CreatedAt.Month == selectMounth.Value.Month)
+                    .Where(u => u.CreatedAt.Year == selectMounth.Value.Year)
+                    .ToList();
                 ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString();
                 ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
                 ViewData["CurrentMonthAsDataTime"] = selectMounth;
