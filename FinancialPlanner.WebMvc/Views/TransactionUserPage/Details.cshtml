@@ -1,0 +1,17 @@
+﻿@model FinancialPlanner.Logic.Dtos.TransactionUserDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@Model.Picture" alt="@Model.Picture">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Description.ToUpper()</h5>
+        <p class="card-text">@Model.FirstName @Model.LastName</p>
+        <p class="card-text text-success">@Model.Type: @Model.Amount</p>
+        <p class="card-text text-warning">BALANCE: @Model.Balance</p>
+        <p class="card-text">Created: @Model.CreatedAt.ToShortDateString()</p>
+        <a asp-action="Index">Back to transaction list</a>
+    </div>
+</div>

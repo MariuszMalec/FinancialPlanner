@@ -45,5 +45,16 @@ namespace FinancialPlanner.WebMvc.Controllers
                           View(onePageOfTransaction) :
                           NotFound("transaction is null!");
         }
+
+        // GET: UserController/Details/5
+        public async Task<ActionResult> Details(string id)
+        {
+            var transaction = await _transactionService.GetById(id);
+            if (transaction == null)
+            {
+                return BadRequest($"Brak tranzakcji {id}");
+            }
+            return View(transaction);
+        }
     }
 }
