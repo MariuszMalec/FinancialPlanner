@@ -52,6 +52,57 @@ namespace FinancialPlanner.WebMvc.Controllers
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
+        public async Task<IActionResult> SelectByMonth(DateTime? selectMounth, string id)
+        {
+
+            var transactions = await _transactionService.GetAllQueryable();
+
+            if (id != null)
+            {
+                transactions = transactions.Where(x => x.UserId == id);
+                ViewData["UserId"] = id;
+            }
+            else
+            {
+                id = _context.Users.First().Id;
+                ViewData["UserId"] = "";
+            }
+
+            var model = _mapper.Map<List<TransactionUserDto>>(transactions);
+
+            var CultureName = "pl-PL";
+            if (selectMounth == null)
+            {
+                model = model.Where(t => t.CreatedAt.Month == DateTime.Now.Month)
+                    .Where(u => u.CreatedAt.Year == DateTime.Now.Year)
+                    .ToList();
+                ViewData["selectMounthAsInt"] = DateTime.Now.Month.ToString();
+                ViewData["CurrentMonth"] = DateTime.Now.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
+                ViewData["CurrentMonthAsDataTime"] = DateTime.Now;
+            }
+            else
+            {
+                model = model.Where(t => t.CreatedAt.Month == selectMounth.Value.Month)
+                    .Where(u => u.CreatedAt.Year == selectMounth.Value.Year)
+                    .ToList();
+                ViewData["selectMounthAsInt"] = selectMounth.Value.Month.ToString();
+                ViewData["CurrentMonth"] = selectMounth.Value.ToString("MMMM", CultureInfo.CreateSpecificCulture(CultureName));
+                ViewData["CurrentMonthAsDataTime"] = selectMounth;
+            }
+
+            //current mounth
+            var incomes = model.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = model.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            ViewData["MontlyBalance"] = incomes - outcomes;
+            ViewData["Income"] = incomes;
+            ViewData["Outcome"] = outcomes;
+            ViewData["Balance"] = incomes - outcomes;
+            _logger.Information("Load user transactions by selected month successfully at {registrationDate}", DateTime.Now);
+            return _context.Transactions != null ?
+                          View(model) :
+                          Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
+        }
+
         public async Task<IActionResult> Select(DateTime? selectMounth, string id)//TODO tranzakcje z userem wg miesiaca
         {
 

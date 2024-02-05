@@ -1,30 +1,49 @@
 ﻿@using FinancialPlanner.Logic.Context;
+@using FinancialPlanner.Logic.Interfaces
 @model IEnumerable<FinancialPlanner.Logic.Dtos.TransactionUserDto>
 @inject ApplicationDbContext _context
+@inject IUserService _userService
 
 @{
     ViewData["Title"] = "Index";
     var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
+    var currentMonth = ViewData["CurrentMonth"];
+    var selectedMonth = ViewData["CurrentMonthAsDataTime"];
+    var userId = ViewData["UserId"];
+    var user = _userService.GetById(userId.ToString()).Result;
 }
 
 @if (balance < 2400 && balance >= 1000)
 {
-    <h2 style="color:green">MontlyBalance:  @balance</h2>
+    <h3 style="color:green">MontlyBalance:  @balance for @currentMonth</h3>
 }
 else if (balance < 1000 && balance >= 300)
 {
-    <h2 style="color:orange">MontlyBalance:  @balance</h2>
+    <h3 style="color:orange">MontlyBalance: @balance for @currentMonth</h3>
 }
 else if (balance < 300)
 {
-    <h2 style="color:red">MontlyBalance:  @balance</h2>
+    <h3 style="color:red">MontlyBalance: @balance for @currentMonth</h3>
 }
 else
 {
-    <h2>MontlyBalance:  @balance</h2>
+    <h3>MontlyBalance :  @balance for @currentMonth </h3>
 }
 
-<h1>All transactions</h1>
+@{
+    if (user != null)
+    {
+        <h2>Transactions user : @user.FirstName
+            @user.LastName
+        </h2>
+    }
+    else
+    {
+        <h2>
+            Transactions users
+        </h2>
+    }
+}
 
 <div class="row">
     <div class="col">
@@ -32,13 +51,13 @@ else
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Select Month</label>
-                <input asp-for=@DateTime.Now type="month" name="selectMounth" class="form-control" />
+                <input asp-for=@selectedMonth type="month" name="selectMounth" class="form-control" />
             </div>
             <div class="form-group">
                 <input asp-controller="TransactionUser" asp-action="SelectByMonth" type="submit" value="Select" class="btn btn-primary" />
+                <input asp-controller="User" asp-action="Index" type="submit" value="Back to users" class="btn btn-primary" />
             </div>
         </form>
-
     </div>
 </div>
 @*<p>
@@ -118,3 +137,7 @@ else
         }
     </tbody>
 </table>
+
+<div class="form-group">
+    <a class="btn btn-primary" asp-controller="User" asp-action="Index">Back to users</a>
+</div>
