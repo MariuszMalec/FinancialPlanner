@@ -50,9 +50,9 @@ else
             <th>
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
-            <th>
+@*             <th>
                 @Html.DisplayNameFor(model => model.Currency)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
@@ -84,9 +84,9 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item.UserId)
                 </td>
-                <td>
+@*                 <td>
                     @Html.DisplayFor(modelItem => item.Currency)
-                </td>
+                </td> *@
                 <td>
                     @Html.DisplayFor(modelItem => item.Type)
                 </td>
@@ -109,12 +109,38 @@ else
                     @Html.DisplayFor(modelItem => item.CreatedAt)
                 </td>
                 <td>
-                    <a asp-action="Create" asp-route-id="@item.UserId">AddTransaction</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+<style>
+    td {
+        color: darkblue;
+        font-style: italic;
+        font-size: 14px;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+
+
+    thead {
+        background-color: silver;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.75ex 0.5ex 0.25ex;
+    }
+
+    th {
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+</style>
