@@ -326,6 +326,11 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             return RedirectToAction("Create", "TransactionUser", new { id });
         }
+
+        public ActionResult AddNextTransaction(string id)
+        {
+            return RedirectToAction("CreateNext", "TransactionUser", new { id });
+        }
         public ActionResult ViewTransaction(string id)
         {
             return RedirectToAction("Index", "Chart", new { id });

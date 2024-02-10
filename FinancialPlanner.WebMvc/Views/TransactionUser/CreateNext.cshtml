@@ -22,10 +22,10 @@
     else
     {
         var users = userService.GetAll().Result;
-        userId = users.Select(u=>u.Id).FirstOrDefault();
+        userId = users.Select(u => u.Id).FirstOrDefault();
         var user = userService.GetById(userId.ToString()).Result;
         fullName = $"{user.FirstName} {user.LastName}";
-        var getBalance = users.Where(u => u.Id == userId).Select(u=>u.Balance).FirstOrDefault();
+        var getBalance = users.Where(u => u.Id == userId).Select(u => u.Balance).FirstOrDefault();
         balance = Convert.ToDecimal(getBalance);
     }
 }
@@ -59,15 +59,8 @@ else
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="CreateNext" asp-route-id=@ViewData["UserId"]>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*             <div class="form-group">
-                <label asp-for="Currency" class="control-label"></label>
-                <select asp-for="Currency" asp-items="Html.GetEnumSelectList<Currency>()" class="form-control">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="Currency" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
                 <select onclick="myFunction()" asp-for="Type" id="transactionTypeSelect" asp-items="typeList" class="form-control">
@@ -93,17 +86,13 @@ else
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-@*            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>*@
             <div class="form-group">
                 <label asp-for="CreatedAt" class="control-label"></label>
                 <input asp-for="CreatedAt" class="form-control" />
                 <span asp-validation-for="CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="CreateNext" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -114,7 +103,9 @@ else
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 <script>

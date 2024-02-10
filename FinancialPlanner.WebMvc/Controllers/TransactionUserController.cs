@@ -186,7 +186,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var outcomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
             var balance = incomes - outcomes;
             ViewData["MontlyBalance"] = incomes - outcomes;
-            
+
             return View();
         }
 
@@ -208,6 +208,46 @@ namespace FinancialPlanner.WebMvc.Controllers
             await _transactionService.Insert(id, model);
             _logger.Information("Create transactions successfully at {registrationDate}", DateTime.Now);
             return RedirectToAction("Index", "User", new { model.Id, model.UserId });
+        }
+
+        public ActionResult CreateNext()
+        {
+            var users = _userService.GetAll().Result;
+
+            var id = users.Select(u => u.Id).FirstOrDefault();        
+
+            ViewData["UserId"] = id;
+
+            var transactions = _transactionService.GetAllQueryable().Result.Where(x => x.UserId == id);
+            var currentMounth = DateTime.Now;
+            var userTransactionsByMounth = _transactionService.FilterTransactionByMounth(transactions, currentMounth);
+
+            var incomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Income).Sum(x => x.Amount);
+            var outcomes = userTransactionsByMounth.Where(x => x.Type == TypeOfTransaction.Outcome).Sum(x => x.Amount);
+            var balance = incomes - outcomes;
+            ViewData["MontlyBalance"] = incomes - outcomes;
+
+            return View();
+        }
+
+        // POST: UserController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateNext(string id, TransactionUserDto model)
+        {
+            if (model == null)
+                return NotFound("model transaction not found!");
+
+            var userExist = await _context.Users.FindAsync(model.Id);
+            if (userExist == null)
+            {
+                _logger.Error("Transaction was not created at {registrationDate}", DateTime.Now);
+                return NotFound($"Transaction was not created!");
+            }
+
+            await _transactionService.Insert(id, model);
+            _logger.Information("Create transactions successfully at {registrationDate}", DateTime.Now);
+            return RedirectToAction("CreateNext", "TransactionUser", new { model.Id, model.UserId });
         }
 
         public async Task<ActionResult> Edit(string id)
