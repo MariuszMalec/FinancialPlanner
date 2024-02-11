@@ -7,17 +7,18 @@
     ViewData["Title"] = "Create transaction";
 }
 
-<h1>Create</h1>
-
 @{
     var userId = ViewData["UserId"];
     var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
     var fullName = "";
     if (userId != null)
     {
+        var users = userService.GetAll().Result;
+        userId = users.Where(u=>u.FirstName == "Mariusz").Select(u => u.Id).FirstOrDefault();
         var user = userService.GetById(userId.ToString()).Result;
         fullName = $"{user.FirstName} {user.LastName}";
-        balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
+        var getBalance = users.Where(u => u.Id == userId).Select(u => u.Balance).FirstOrDefault();
+        balance = Convert.ToDecimal(getBalance);
     }
     else
     {
@@ -38,68 +39,114 @@
 
 }
 
-@if (balance < 2400 && balance >= 1000)
-{
-    <h2 style="color:green">MontlyBalance:  @balance</h2>
-}
-else if (balance < 1000 && balance >= 300)
-{
-    <h2 style="color:orange">MontlyBalance:  @balance</h2>
-}
-else if (balance < 300)
-{
-    <h2 style="color:red">MontlyBalance:  @balance</h2>
-}
-else
-{
-    <h2>MontlyBalance:  @balance</h2>
-}
+<div class="row-md-4 col-xs-3 border-primary mb-3">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="rows-md-12">
+                <div class="card-header text-white bg-info">
+                    <p class="card-text">
+                        <h5 class="card-title">
+                            Create transaction for @fullName
+                        </h5>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="https://plus.unsplash.com/premium_photo-1682096455830-c0a319148078?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""
+                     style="object-fit:scale-down;
+                            width:100%;
+                            height:auto;
+                            border: solid 1px #CCC">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
 
-<h4>Transaction : @fullName</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateNext" asp-route-id=@ViewData["UserId"]>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select onclick="myFunction()" asp-for="Type" id="transactionTypeSelect" asp-items="typeList" class="form-control">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="Category" id="categorySelect" asp-items="new List<SelectListItem>()" class="form-control">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
+                    @if (balance < 2400 && balance >= 1000)
+                    {
+                        <p style="color:green" class="card-text">Balance is @balance</p>
+                    }
+                    else if (balance < 1000 && balance >= 300)
+                    {
+                        <p style="color:orange" class="card-text">Balance is @balance</p>
+                    }
+                    else if (balance < 300)
+                    {
+                        <p style="color:red" class="card-text">Balance is @balance</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">Balance is @balance</p>
+                    }
 
-            <div class="form-group">
-                <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
+                    <form asp-action="CreateNext">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Type" class="control-label"></label>
+                            <select onclick="myFunction()" asp-for="Type" id="transactionTypeSelect" asp-items="typeList" class="form-control">
+                                <option selected="selected" value="">Please select</option>
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Category" class="control-label"></label>
+                            <select asp-for="Category" id="categorySelect" asp-items="new List<SelectListItem>()" class="form-control">
+                                <option selected="selected" value="">Please select</option>
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreatedAt" class="control-label"></label>
+                            <input asp-for="CreatedAt" class="form-control" />
+                            <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer ">
+                                <p class="card-text">
+                                    <input type="submit" value="Create next" class="button-93" />
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="CreateNext" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
+
+<div class="row-md-4 col-xs-3 border-primary mb-3">
+    <div class="card mb-3" style="max-width: 540px;">
+
+        <div class="row g-0">
+            <div class="rows-md-12">
+                <div class="card-header text-white bg-info">
+                    <p class="card-text">
+                        <h5 class="card-title">
+                            Create transaction for @fullName
+                        </h5>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+ 
+ </div>
+
+
 <div>
-    <a asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@ViewData["UserId"]>Back to List</a>
+    <a class="one" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@ViewData["UserId"]>Back to List</a>
 </div>
 
 @section Scripts {
