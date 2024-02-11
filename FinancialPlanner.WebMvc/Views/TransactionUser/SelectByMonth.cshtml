@@ -99,41 +99,82 @@ else
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Currency)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Balance)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Create" asp-route-id="@item.UserId">AddTransaction</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+            @if (item.Type == FinancialPlanner.Logic.Enums.TypeOfTransaction.Income)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Currency)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td style="color:green">
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Currency)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td style="color:red">
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
@@ -141,3 +182,28 @@ else
 <div class="form-group">
     <a class="btn btn-primary" asp-controller="User" asp-action="Index">Back to users</a>
 </div>
+
+<style>
+    td {
+        color: darkblue;
+        font-style: italic;
+        font-size: 12px;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+
+
+    thead {
+        background-color: silver;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.75ex 0.5ex 0.25ex;
+    }
+
+    th {
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+</style>

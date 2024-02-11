@@ -80,41 +80,78 @@ else
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-@*                 <td>
-                    @Html.DisplayFor(modelItem => item.Currency)
-                </td> *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Balance)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
-                    <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
-                    <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
-                    <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
-                </td>
-            </tr>
+            @if (item.Type == FinancialPlanner.Logic.Enums.TypeOfTransaction.Income)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td style="color:green">
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td style="color:red">
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
+                    </td>
+                </tr>
+            }
+
+
         }
     </tbody>
 </table>
