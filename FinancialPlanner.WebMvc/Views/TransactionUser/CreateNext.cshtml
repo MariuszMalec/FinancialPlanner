@@ -2,6 +2,7 @@
 @using FinancialPlanner.Logic.Interfaces;
 @model FinancialPlanner.Logic.Dtos.TransactionUserDto
 @inject IUserService userService
+@inject ITransactionService transactionService
 
 @{
     ViewData["Title"] = "Create transaction";
@@ -29,6 +30,10 @@
         var getBalance = users.Where(u => u.Id == userId).Select(u => u.Balance).FirstOrDefault();
         balance = Convert.ToDecimal(getBalance);
     }
+    var alltransactions = transactionService.GetAllQueryable().Result;
+    var userTransactions = alltransactions.Where(t => t.UserId == userId).Select(t => t);
+    var model = transactionService.FilterTransactionByMounth(userTransactions, DateTime.Now ).OrderByDescending(t=>t.CreatedAt).ToList().Take(10);
+
 }
 
 @{
@@ -39,110 +44,167 @@
 
 }
 
-<div class="row-md-4 col-xs-3 border-primary mb-3">
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="rows-md-12">
-                <div class="card-header text-white bg-info">
-                    <p class="card-text">
-                        <h5 class="card-title">
-                            Create transaction for @fullName
-                        </h5>
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="https://plus.unsplash.com/premium_photo-1682096455830-c0a319148078?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""
-                     style="object-fit:scale-down;
-                            width:100%;
-                            height:auto;
-                            border: solid 1px #CCC">
-            </div>
-            <div class="col-md-6">
-                <div class="card-body">
+<div class="container-fluid padding">
+    <div class="row">
+        <div class="row padding">
+            <div class="d-flex flex-row flex-nowrap">
+                <div class="row-md-4 col-xs-3 border-primary mb-3">
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="rows-md-12">
+                                <div class="card-header text-white bg-info">
+                                    <p class="card-text">
+                                        <h5 class="card-title">
+                                            Create transaction for @fullName
+                                        </h5>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="https://plus.unsplash.com/premium_photo-1682096455830-c0a319148078?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""
+                                     style="object-fit:scale-down;
+                                            width:100%;
+                                            height:auto;
+                                            border: solid 1px #CCC">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-body">
 
-                    @if (balance < 2400 && balance >= 1000)
-                    {
-                        <p style="color:green" class="card-text">Balance is @balance</p>
-                    }
-                    else if (balance < 1000 && balance >= 300)
-                    {
-                        <p style="color:orange" class="card-text">Balance is @balance</p>
-                    }
-                    else if (balance < 300)
-                    {
-                        <p style="color:red" class="card-text">Balance is @balance</p>
-                    }
-                    else
-                    {
-                        <p class="card-text">Balance is @balance</p>
-                    }
+                                    @if (balance < 2400 && balance >= 1000)
+                                    {
+                                        <p style="color:green" class="card-text">Balance is @balance</p>
+                                    }
+                                    else if (balance < 1000 && balance >= 300)
+                                    {
+                                        <p style="color:orange" class="card-text">Balance is @balance</p>
+                                    }
+                                    else if (balance < 300)
+                                    {
+                                        <p style="color:red" class="card-text">Balance is @balance</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">Balance is @balance</p>
+                                    }
 
-                    <form asp-action="CreateNext">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="Type" class="control-label"></label>
-                            <select onclick="myFunction()" asp-for="Type" id="transactionTypeSelect" asp-items="typeList" class="form-control">
-                                <option selected="selected" value="">Please select</option>
-                            </select>
-                            <span asp-validation-for="Type" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Category" class="control-label"></label>
-                            <select asp-for="Category" id="categorySelect" asp-items="new List<SelectListItem>()" class="form-control">
-                                <option selected="selected" value="">Please select</option>
-                            </select>
-                            <span asp-validation-for="Category" class="text-danger"></span>
-                        </div>
+                                    <form asp-action="CreateNext">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="Type" class="control-label"></label>
+                                            <select onclick="myFunction()" asp-for="Type" id="transactionTypeSelect" asp-items="typeList" class="form-control">
+                                                <option selected="selected" value="">Please select</option>
+                                            </select>
+                                            <span asp-validation-for="Type" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Category" class="control-label"></label>
+                                            <select asp-for="Category" id="categorySelect" asp-items="new List<SelectListItem>()" class="form-control">
+                                                <option selected="selected" value="">Please select</option>
+                                            </select>
+                                            <span asp-validation-for="Category" class="text-danger"></span>
+                                        </div>
 
-                        <div class="form-group">
-                            <label asp-for="Amount" class="control-label"></label>
-                            <input asp-for="Amount" class="form-control" />
-                            <span asp-validation-for="Amount" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Description" class="control-label"></label>
-                            <input asp-for="Description" class="form-control" />
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="CreatedAt" class="control-label"></label>
-                            <input asp-for="CreatedAt" class="form-control" />
-                            <span asp-validation-for="CreatedAt" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="card-footer ">
-                                <p class="card-text">
-                                    <input type="submit" value="Create next" class="button-93" />
-                                </p>
+                                        <div class="form-group">
+                                            <label asp-for="Amount" class="control-label"></label>
+                                            <input asp-for="Amount" class="form-control" />
+                                            <span asp-validation-for="Amount" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Description" class="control-label"></label>
+                                            <input asp-for="Description" class="form-control" />
+                                            <span asp-validation-for="Description" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="CreatedAt" class="control-label"></label>
+                                            <input asp-for="CreatedAt" class="form-control" />
+                                            <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card-footer ">
+                                                <p class="card-text">
+                                                    <input type="submit" value="Create next" class="button-93" />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
+
+                <div class="row-md-4 col-xs-3 border-primary mb-3">
+                    <div class="card mb-3" style="max-width: 640px;">
+                        <div class="row g-0">
+                            <div class="rows-md-12">
+                                <div class="card-header text-white bg-info">
+                                    <p class="card-text">
+                                        <h5 class="card-title">
+                                            Transactions for @fullName
+                                        </h5>
+                                    </p>
+
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Type)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Category)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Amount)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Description)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CreatedAt)
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Type)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Category)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
+
+
+                
+
     </div>
 </div>
-
-
-<div class="row-md-4 col-xs-3 border-primary mb-3">
-    <div class="card mb-3" style="max-width: 540px;">
-
-        <div class="row g-0">
-            <div class="rows-md-12">
-                <div class="card-header text-white bg-info">
-                    <p class="card-text">
-                        <h5 class="card-title">
-                            Create transaction for @fullName
-                        </h5>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-    </div>
- 
- </div>
 
 
 <div>
@@ -183,3 +245,28 @@
         });
     }
 </script>
+
+<style>
+    td {
+        color: darkblue;
+        font-style: italic;
+        font-size: 14px;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+
+
+    thead {
+        background-color: silver;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.75ex 0.5ex 0.25ex;
+    }
+
+    th {
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+</style>
