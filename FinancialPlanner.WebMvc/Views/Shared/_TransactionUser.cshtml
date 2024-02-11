@@ -1,0 +1,89 @@
+﻿@using FinancialPlanner.Logic.Interfaces
+@model FinancialPlanner.Logic.Dtos.TransactionUserDto
+@inject ITransactionService _transactionService
+@inject IUserService userService
+
+@{
+
+    var users = userService.GetAll().Result;
+    var userId = users.Where(u => u.FirstName == "Mariusz").Select(u => u.Id).FirstOrDefault();
+    var user = userService.GetById(userId.ToString()).Result;
+    var fullName = $"{user.FirstName} {user.LastName}";
+    var getBalance = users.Where(u => u.Id == userId).Select(u => u.Balance).FirstOrDefault();
+    var balance = Convert.ToDecimal(getBalance);
+    var alltransactions = _transactionService.GetAllQueryable().Result;
+    var userTransactions = alltransactions.Where(t => t.UserId == userId).Select(t => t);
+    var model = _transactionService.FilterTransactionByMounth(userTransactions, DateTime.Now).OrderByDescending(t => t.CreatedAt).ToList().Take(10);
+
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    td {
+        color: darkblue;
+        font-style: italic;
+        font-size: 14px;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+
+
+    thead {
+        background-color: silver;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.75ex 0.5ex 0.25ex;
+    }
+
+    th {
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+</style>
