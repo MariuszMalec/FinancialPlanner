@@ -73,7 +73,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                     break;
             }
 
-            var model = _mapper.Map<List<TransactionUserDto>>(sorted);
+            var model = _mapper.Map<List<TransactionUserDto>>(sorted).OrderByDescending(x=>x.CreatedAt);
 
             var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);

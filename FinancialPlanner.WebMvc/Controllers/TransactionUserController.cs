@@ -45,7 +45,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             var incomes = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = userTransactionsByMounth.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
             ViewData["MontlyBalance"] = incomes - outcomes;
-            var modelMap = _mapper.Map<List<TransactionUserDto>>(userTransactionsByMounth);
+            var modelMap = _mapper.Map<List<TransactionUserDto>>(userTransactionsByMounth).OrderByDescending(x=>x.CreatedAt);
             _logger.Information("Load user transactions successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
                           View(modelMap) :
@@ -99,7 +99,7 @@ namespace FinancialPlanner.WebMvc.Controllers
             ViewData["Balance"] = incomes - outcomes;
             _logger.Information("Load user transactions by selected month successfully at {registrationDate}", DateTime.Now);
             return _context.Transactions != null ?
-                          View(model) :
+                          View(model.OrderByDescending(x=>x.CreatedAt)) :
                           Problem("Entity set 'ApplicationDbContext.Transactions'  is null.");
         }
 
