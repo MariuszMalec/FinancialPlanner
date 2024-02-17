@@ -6,55 +6,17 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Transaction</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Currency)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Currency)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BalanceAfterTransaction)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BalanceAfterTransaction)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to List</a>
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@Model.Picture" alt="@Model.Picture">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Description.ToUpper()</h5>
+        <p class="card-text">@Model.FirstName @Model.LastName</p>
+        <p class="card-text">@Html.DisplayNameFor(model => model.Category): @Html.DisplayFor(model => model.Category)</p>
+        <p class="card-text text-success">@Html.DisplayNameFor(model => model.Type) : @Html.DisplayFor(model => model.Type) @Model.Amount</p>
+        <p class="card-text text-warning">BALANCE: @Model.Balance</p>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+            <a asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to List</a>
+        </div>
+    </div>
 </div>
