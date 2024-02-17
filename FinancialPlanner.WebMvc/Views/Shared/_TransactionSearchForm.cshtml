@@ -25,35 +25,38 @@
 }
 
 <div class="row">
-    <div class="col">
+    <div class="col" style="border-top-left-radius: 20px; background: #b6ccbc">
         <label class="col-form-label">Type:</label>
         <select name="type" asp-for="Type" id="transactionTypeSelect" asp-items="Html.GetEnumSelectList<TypeOfTransaction>()" class="form-control">
         </select>
     </div>
-    <div class="col">
+    <div class="col" style="border-top-right-radius: 20px; background: #b6ccbc">
         <label class="col-form-label">Category:</label>
         <select name="category" asp-for="Category" id="categorySelect" asp-items="@categoryList" class="form-control">
         </select>
     </div>
 </div>
 <div class="row">
-    <div class="col">
+    <div class="col" style="border-bottom-left-radius: 20px; background: #b6ccbc">
         <label asp-for="DateFrom" class="control-label"></label>
         <input asp-for="DateFrom" class="form-control" />
         <span asp-validation-for="DateFrom" class="text-danger"></span>
     </div>
-    <div class="col">
+    <div class="col" style="border-bottom-right-radius: 20px; background: #b6ccbc">
         <label asp-for="DateTo" class="control-label"></label>
         <input asp-for="DateTo" class="form-control" />
         <span asp-validation-for="DateTo" class="text-danger"></span>
     </div>
 </div>
 
-<label class="col-form-label">Description</label>
-<input style="margin-bottom:18px;" name="description" id="descrition" type="text" class="form-control" value="@Model.Description" />
+<div style="background: #afc9b7">
+    <label class="col-form-label">Description</label>
+    <input style="margin-bottom:18px;" name="description" id="descrition" type="text" class="form-control" value="@Model.Description" />
+</div>
+
 
 <div class="form-group">
-    <input type="submit" value="Search transaction" class="btn btn-secondary" />
+    <input type="submit" value="Search transaction" class="btn btn-primary" />
 </div>
 
 
