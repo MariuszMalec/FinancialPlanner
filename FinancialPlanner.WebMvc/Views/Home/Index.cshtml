@@ -4,7 +4,31 @@
 
 <div class="text-center">
     <h3></h3>
-    <div class="container">
+    <div class="row shadow-lg">
+        <div class="col-sm-6">
+            <img class="card-img-top" src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Card image cap">
+            <div class="card shadow border">
+                <h5 class="card-title">WELCOME</h5>
+                <p style="font-family: cursive; font-size: 14px;" class="card-text">Financial Planner</p>
+                <a class="btn btn-primary" asp-controller="User" asp-action="Index">Go to user list</a>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div style="background-image: url('https://plus.unsplash.com/premium_photo-1668024966086-bd66ba04262f?q=80&w=1792&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" class="card shadow border">
+                <div class="col">
+                    <h5 class="card-title">WELCOME</h5>
+                    <img class="shape-circle-image" alt="Image placeholder" src="./images/mario.jpg">
+                    <div class="shape__name">
+                        <p style="font-family: cursive; font-size: 16px; color: wheat; font-weight: bold;" class="card-text">Author : Mariusz Malec</p>
+                        <a class="btn btn-primary" asp-controller="Transactions" asp-action="Index">Go to transaction list</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@*     <div class="container">
         <div class="row align-items-center vh-25">
             <div class="col-6 mx-auto" style="display: flex; justify-content: center; align-items: center;">
                 <div class="card shadow border">
@@ -28,5 +52,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 </div>

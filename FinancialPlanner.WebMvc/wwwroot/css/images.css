@@ -15,7 +15,9 @@ i .shape__name {
     font-size: 18px;
 }
 .col:hover .shape__name {
-    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: #ff6a00;
+    text-decoration: underline overline;
 }
 .col:hover .shape-circle-image {
     border: 5px solid #2ba837;
