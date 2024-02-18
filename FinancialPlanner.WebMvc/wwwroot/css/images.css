@@ -1,0 +1,29 @@
+﻿.shape-circle-image {
+    width: 150px;
+    height: 150px;
+    border: 5px solid #0d0d0d;
+    border-radius: 50%;
+    background-size: cover;
+    transition: transform 0.5s, box-shadow 0.1s;
+}
+.author-mm {
+    background-image: url("../images/mario.jpg");
+}
+i .shape__name {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 18px;
+}
+.col:hover .shape__name {
+    text-decoration: underline;
+}
+.col:hover .shape-circle-image {
+    border: 5px solid #2ba837;
+    transform: scale(1.05, 1.05);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+p i {
+    color: #0d0d0d;
+}
+
+
