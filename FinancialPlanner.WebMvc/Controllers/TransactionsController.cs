@@ -2,10 +2,12 @@
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Enums;
+using FinancialPlanner.Logic.ExtentionsMethod;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Schema;
 using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -34,47 +36,59 @@ namespace FinancialPlanner.WebMvc.Controllers
             DateTime dateTo, 
             string sortOrder)
         {
-            //ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
-            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
-
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
-            ViewBag.DateSortParm = sortOrder == "CreatedAt" ? "date_desc" : "CreatedAt";
-
-
-            var transactions = await _transactionService.GetAllQueryable();
-
-            transactions = _transactionService.FilterByTypeCategory(transactions, type, category);
-            transactions = _transactionService.FilterByDates(transactions, dateFrom, dateTo);
-            transactions = _transactionService.FilterByDescription(transactions, description);
-
-            var sorted = from s in transactions
-                                 select s;
-            switch (sortOrder)
+            if (ExtentionsMethod.IsAjaxRequest(this.Request))
             {
-                case "Amount":
-                    sorted = sorted.OrderByDescending(s => s.Amount);
-                    break;
-                case "CreatedAt":
-                    sorted = sorted.OrderByDescending(s => s.CreatedAt);
-                    break;
-                case "date_desc":
-                    sorted = sorted.OrderBy(s => s.CreatedAt);
-                    break;
-                default:
-                    sorted = sorted.OrderBy(s => s.Amount);
-                    break;
+                //ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
+                //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+
+                //Delay just for demo purpose
+                Thread.Sleep(3000);
+
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+                ViewBag.DateSortParm = sortOrder == "CreatedAt" ? "date_desc" : "CreatedAt";
+
+
+                var transactions = await _transactionService.GetAllQueryable();
+
+                transactions = _transactionService.FilterByTypeCategory(transactions, type, category);
+                transactions = _transactionService.FilterByDates(transactions, dateFrom, dateTo);
+                transactions = _transactionService.FilterByDescription(transactions, description);
+
+                var sorted = from s in transactions
+                             select s;
+                switch (sortOrder)
+                {
+                    case "Amount":
+                        sorted = sorted.OrderByDescending(s => s.Amount);
+                        break;
+                    case "CreatedAt":
+                        sorted = sorted.OrderByDescending(s => s.CreatedAt);
+                        break;
+                    case "date_desc":
+                        sorted = sorted.OrderBy(s => s.CreatedAt);
+                        break;
+                    default:
+                        sorted = sorted.OrderBy(s => s.Amount);
+                        break;
+                }
+                var model = new TransactionSearchDto()
+                {
+                    Category = category,
+                    Transactions = sorted,
+                    Type = type,
+                    Description = description,
+                    DateFrom = dateFrom,
+                    DateTo = dateTo
+                };
+                _logger.Information("Load all transactions successfully at {registrationDate}", DateTime.Now);
+                //return View(model);
+                return PartialView("_Report",  model);
             }
-            var model = new TransactionSearchDto() {
-                Category = category,
-                Transactions = sorted, 
-                Type = type,
-                Description = description,
-                DateFrom = dateFrom,
-                DateTo = dateTo 
-            };
-            _logger.Information("Load all transactions successfully at {registrationDate}", DateTime.Now);
-            return View(model);
+            else
+            {
+                return View("Report");
+            }
         }
 
         public async Task<IActionResult> GetMonthlyIncomeAndExpenses()

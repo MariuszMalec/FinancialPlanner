@@ -1,0 +1,97 @@
+﻿@model FinancialPlanner.Logic.Dtos.TransactionSearchDto
+@using FinancialPlanner.Logic
+@{
+    ViewData["Title"] = "List of transactions";
+}
+
+<h1>List of transactions</h1>
+
+
+<form asp-action="Index">
+
+    @{
+        await Html.RenderPartialAsync("_TransactionSearchForm");
+    }
+    <div class="container container shadow p-3 mb-5 bg-white rounded">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().User.Email)</label>
+                    </th>
+                    <th>
+                        @Html.ActionLink("CreatedAt", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @* <label>@Html.DisplayNameFor(model => model.Transactions.First().CreatedAt)</label> *@
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Currency)</label>
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Type)</label>
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Category)</label>
+                    </th>
+                    <th>
+                        @Html.ActionLink("Amount", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @* @Html.ActionLink("Amount", "Index", new { sortAmount = ViewData["AmountSortParam"] }) *@
+                        @*<label>@Html.DisplayNameFor(model => model.Transactions.First().Amount)</label>*@
+                    </th>
+                    <th>
+                        <label>@Html.DisplayNameFor(model => model.Transactions.First().BalanceAfterTransaction)</label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.Transactions.First().Description"></label>
+                    </th>
+                    <th>
+                        <label>Actions</label>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Transactions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedAt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Currency)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    More
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br />
+                                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Delete</a><br />
+                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">Details</a><br />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
