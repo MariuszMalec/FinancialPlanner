@@ -15,17 +15,24 @@
         </div>
 
         <div class="col-sm-6">
-            <div style="background-image: url('https://plus.unsplash.com/premium_photo-1668024966086-bd66ba04262f?q=80&w=1792&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" class="card shadow border">
-                <div class="col">
-                    <h5 class="card-title">WELCOME</h5>
-                    <img class="shape-circle-image" alt="Image placeholder" src="./images/mario.jpg">
-                    <div class="shape__name">
-                        <p style="font-family: cursive; font-size: 16px; color: wheat; font-weight: bold;" class="card-text">Author : Mariusz Malec</p>
-                        <a class="btn btn-primary" asp-controller="Transactions" asp-action="Index">Go to transaction list</a>
-                    </div>
+            <img class="card-img-top" src="https://plus.unsplash.com/premium_photo-1668024966086-bd66ba04262f?q=80&w=1792&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" alt="Card image cap">
+            <div class="card shadow border">
+                <h5 class="card-title">WELCOME</h5>
+                <p style="font-family: cursive; font-size: 14px;" class="card-text">Financial Planner</p>
+                <a class="btn btn-primary" asp-controller="Transactions" asp-action="Index">Go to transaction list</a>
+            </div>
+            <div class="col">
+                <div class="shape__name">
+                    <p style="font-family: cursive; font-size: 14px;">
+                        Author : Mariusz Malec
+                    </p>
                 </div>
+            <img class="shape-circle-image" alt="Image placeholder" src="./images/mario.jpg" style="position: relative;
+                    top: -240px; left: 240px;">
+
             </div>
         </div>
+
     </div>
 
 @*     <div class="container">
