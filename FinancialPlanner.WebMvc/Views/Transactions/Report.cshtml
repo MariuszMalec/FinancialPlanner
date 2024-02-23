@@ -3,9 +3,9 @@
 }
 
 <div id="content">
-@*     <button id="spinner" class="btn btn-primary" type="button" onclick="hideSpinner()">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" onclick="hideSpinner()"></span>
-        Loading data from database ...
+    @*     <button id="spinner" class="btn btn-primary" type="button" onclick="hideSpinner()">
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" onclick="hideSpinner()"></span>
+    Loading data from database ...
     </button> *@
     <div class="col-6 mx-auto" style="display: flex; justify-content: center; align-items: center;">
         <div class="card shadow border" style="border-radius: 10px;">
@@ -23,7 +23,7 @@
     <script>
         $(function () {
             $.ajax({
-                url: "/Transactions",
+                url: "/Transactions/GetMonthlyIncomeAndExpenses",
                 success: function (data) { $('#content').html(data); },
                 error: function () { alert(error); },
                 cache: false,

@@ -36,13 +36,9 @@ namespace FinancialPlanner.WebMvc.Controllers
             DateTime dateTo, 
             string sortOrder)
         {
-            if (ExtentionsMethod.IsAjaxRequest(this.Request))
-            {
+
                 //ViewData["AmountSortParam"] = sortAmount == "Amount" ? "amount_desc" : "Amount";
                 //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
-
-                //Delay just for demo purpose
-                Thread.Sleep(3000);
 
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
@@ -82,29 +78,32 @@ namespace FinancialPlanner.WebMvc.Controllers
                     DateTo = dateTo
                 };
                 _logger.Information("Load all transactions successfully at {registrationDate}", DateTime.Now);
+                return View(model);
+        }
+
+        public async Task<IActionResult> GetMonthlyIncomeAndExpenses()
+        {
+            if (ExtentionsMethod.IsAjaxRequest(this.Request))
+            {
+                var transactions = await _transactionService.GetAllQueryable();
+                var model = await _transactionService.FilterByYearBalance(transactions);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                if (model.Count() == 0)
+                {
+                    return NotFound("Transactions not found!");
+                }
+                _logger.Information("Load user expanses by month successfully at {registrationDate}", DateTime.Now);
                 //return View(model);
-                return PartialView("_Report",  model);
+                Thread.Sleep(1500);
+                return PartialView("_Report", model);
             }
             else
             {
                 return View("Report");
             }
-        }
-
-        public async Task<IActionResult> GetMonthlyIncomeAndExpenses()
-        {
-            var transactions = await _transactionService.GetAllQueryable();
-            var model = await  _transactionService.FilterByYearBalance(transactions);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            if (model.Count() == 0)
-            {
-                return NotFound("Transactions not found!");
-            }
-            _logger.Information("Load user expanses by month successfully at {registrationDate}", DateTime.Now);
-            return View(model);
         }
 
         // GET: Transactions/Details/5

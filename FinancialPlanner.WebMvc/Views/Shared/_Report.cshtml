@@ -1,97 +1,110 @@
-﻿@model FinancialPlanner.Logic.Dtos.TransactionSearchDto
-@using FinancialPlanner.Logic
+﻿@model IEnumerable<FinancialPlanner.Logic.Dtos.MonthlyIncomeAndExpenses>
+
 @{
-    ViewData["Title"] = "List of transactions";
+    ViewData["Title"] = "GetMonthlyIncomeAndExpenses";
 }
 
-<h1>List of transactions</h1>
+<h1>GetMonthlyIncomeAndExpenses</h1>
 
-
-<form asp-action="Index">
-
-    @{
-        await Html.RenderPartialAsync("_TransactionSearchForm");
-    }
-    <div class="container container shadow p-3 mb-5 bg-white rounded">
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Transactions.First().User.Email)</label>
-                    </th>
-                    <th>
-                        @Html.ActionLink("CreatedAt", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
-                        @* <label>@Html.DisplayNameFor(model => model.Transactions.First().CreatedAt)</label> *@
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Currency)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Type)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Transactions.First().Category)</label>
-                    </th>
-                    <th>
-                        @Html.ActionLink("Amount", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-                        @* @Html.ActionLink("Amount", "Index", new { sortAmount = ViewData["AmountSortParam"] }) *@
-                        @*<label>@Html.DisplayNameFor(model => model.Transactions.First().Amount)</label>*@
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Transactions.First().BalanceAfterTransaction)</label>
-                    </th>
-                    <th>
-                        <label asp-for="@Model.Transactions.First().Description"></label>
-                    </th>
-                    <th>
-                        <label>Actions</label>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Transactions)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.User.Email)
+<p>
+    @*    <a asp-action="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Month)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Income)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Expenses)
+            </th>
+            <th>
+                <label>(income-outcome)</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var stringMounth = item.Month.ToString("MMMM");
+                    }
+                    @stringMounth
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Income)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Expenses)
+                </td>
+                @{
+                    if (item.IncomeMinusOutCome < 0)
+                    {
+                        <td style="color:red">
+                            @Html.DisplayFor(modelItem => item.IncomeMinusOutCome)
                         </td>
+                    }
+                    else
+                    {
                         <td>
-                            @Html.DisplayFor(modelItem => item.CreatedAt)
+                            @Html.DisplayFor(modelItem => item.IncomeMinusOutCome)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Currency)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Type)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
-                        </td>
-                        <td>
-                            @item.Description
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    More
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br />
-                                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Delete</a><br />
-                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">Details</a><br />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                    }
                 }
-            </tbody>
-        </table>
-    </div>
-</form>
+                @{
+                    if (item.Balance < 0)
+                    {
+                        <td style="color:red">
+                            @Html.DisplayFor(modelItem => item.Balance)
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Balance)
+                        </td>
+                    }
+                }
+                <td>
+                    @*                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    td {
+        font-style: italic;
+        font-size: 14px;
+        border-block-color: darkblue;
+        border-left-color: darkblue;
+        border-right-color: darkblue;
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+
+
+    thead {
+        background-color: lightcoral;
+        border-block-color: darkgreen;
+        border-left-color: darkgreen;
+        border-right-color: darkgreen;
+        border-bottom-color: darkgreen;
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+
+    th {
+        border-width: 0.25ex 0.25ex 0.15ex;
+    }
+</style>
