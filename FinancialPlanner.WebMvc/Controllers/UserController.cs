@@ -73,7 +73,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                     break;
             }
 
-            var model = _mapper.Map<List<TransactionUserDto>>(sorted).OrderByDescending(x=>x.CreatedAt);
+            var model = _mapper.Map<List<TransactionUserDto>>(sorted);
 
             var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
@@ -92,12 +92,24 @@ namespace FinancialPlanner.WebMvc.Controllers
             ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
 
             //TODO jak zrobic inaczej przekazuje raz id tranazakcji a raz id usera!
-            if (userId == null)
+            //wyszukaj id usera jesli nie istnieje to wez usera po id transakcji
+            var allusers = await _userService.GetAll();
+            var existUser = allusers.Select(x => x.Id == userId).FirstOrDefault();
+            if (existUser == false)
             {
-                userId = id;
+                if (userId != null)
+                {
+                    var getTransaction = _transactionService.GetById(id);
+                    userId = getTransaction.Result.UserId;
+                }
+                if (userId == null)
+                {
+                    var getTransaction = _userService.GetById(id);
+                    userId = getTransaction.Result.Id;
+                }
             }
 
-            ViewData["UserId"] = id;
+            ViewData["UserId"] = userId;
 
             var currentUser = await _userService.GetById(userId);
 

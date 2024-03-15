@@ -254,7 +254,9 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             var model = await _transactionService.GetById(id);
             ViewData["FullName"] = $"{model.FirstName} {model.LastName}";
-            ViewData["UserId"] = id;
+            var getUserId = model.UserId;
+            ViewData["UserId"] = getUserId;
+            ViewData["UserTransactionId"] = id;
             if (model == null)
             {
                 _logger.Error("Not found tranasction with {id} at {registrationDate}", id, DateTime.Now);
