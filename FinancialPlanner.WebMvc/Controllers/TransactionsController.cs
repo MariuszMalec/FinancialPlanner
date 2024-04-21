@@ -8,6 +8,7 @@ using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Schema;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -41,7 +42,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
 
                 ViewBag.CurrentSort = sortOrder;
-                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
+                ViewBag.NameSortParm = System.String.IsNullOrEmpty(sortOrder) ? "Amount" : "";
                 ViewBag.DateSortParm = sortOrder == "CreatedAt" ? "date_desc" : "CreatedAt";
 
 
@@ -79,6 +80,7 @@ namespace FinancialPlanner.WebMvc.Controllers
                 };
                 _logger.Information("Load all transactions successfully at {registrationDate}", DateTime.Now);
                 return View(model);
+                //return PartialView("_TransactionSearchForm", model);
         }
 
         public async Task<IActionResult> GetMonthlyIncomeAndExpenses()
