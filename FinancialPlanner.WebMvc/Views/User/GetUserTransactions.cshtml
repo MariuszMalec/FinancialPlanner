@@ -77,12 +77,25 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedAt)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
+  
+
+                    @if (item.Type == FinancialPlanner.Logic.Enums.TypeOfTransaction.Income)
+                    {
+                    <td style="color: green; font-size: large; font-weight: bold">
+                            @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    }
+                    else
+                    {
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    }             
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Balance)
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.BalanceAfterTransaction)
                 </td>
