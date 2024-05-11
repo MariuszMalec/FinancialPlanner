@@ -11,6 +11,7 @@
 @{
     var userId = ViewData["UserId"];
     var balance = Convert.ToDecimal(ViewData["MontlyBalance"]);
+    var monthlybalance = Convert.ToDecimal(ViewData["MontlyBalance"]);
     var fullName = "";
     if (userId != null)
     {
@@ -136,7 +137,7 @@
                                 <div class="card-header text-white bg-info">
                                     <p class="card-text">
                                         <h5 class="card-title">
-                                            Transactions for @fullName
+                                            Transactions for @fullName (@monthlybalance pln)
                                         </h5>
                                     </p>
                                     
