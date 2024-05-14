@@ -1,19 +1,16 @@
+using FinancialPlanner.BlazorServerApp.Data;
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Interfaces;
-using FinancialPlanner.Logic.Middleware;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
-using FinancialPlannerBlazorWeb.Components;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<WeatherForecastService>();
 
 //dodane
 IConfiguration Configuration;
@@ -44,25 +41,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
-//dodane
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-    if (dataContext.Database.IsRelational())
-    {
-
-    }
-    else
-    {
-        throw new NotImplementedException();
-    }
-}
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -70,11 +52,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-app.UseAntiforgery();
 
-//app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseRouting();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 app.Run();

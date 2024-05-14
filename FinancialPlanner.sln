@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.XUnitInteg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.ConsoleApp", "FinancialPlanner.ConsoleApp\FinancialPlanner.ConsoleApp.csproj", "{4279574D-0F3C-42E1-934D-66A53CC37447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlannerBlazorWeb", "FinancialPlannerBlazorWeb\FinancialPlannerBlazorWeb.csproj", "{8409E4E6-F0F7-4A4C-93C7-81EFE94502C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlannerBlazorWeb", "FinancialPlannerBlazorWeb\FinancialPlannerBlazorWeb.csproj", "{8409E4E6-F0F7-4A4C-93C7-81EFE94502C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlanner.BlazorServerApp", "FinancialPlanner.BlazorServerApp\FinancialPlanner.BlazorServerApp.csproj", "{4707E7A7-5CCA-43D9-BD36-1FC50ECCB791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8409E4E6-F0F7-4A4C-93C7-81EFE94502C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8409E4E6-F0F7-4A4C-93C7-81EFE94502C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8409E4E6-F0F7-4A4C-93C7-81EFE94502C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4707E7A7-5CCA-43D9-BD36-1FC50ECCB791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4707E7A7-5CCA-43D9-BD36-1FC50ECCB791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4707E7A7-5CCA-43D9-BD36-1FC50ECCB791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4707E7A7-5CCA-43D9-BD36-1FC50ECCB791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

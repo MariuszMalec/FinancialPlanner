@@ -57,6 +57,12 @@ namespace FinancialPlanner.Logic.Services
             return await _repository.GetAll();
         }
 
+        public IEnumerable<User> GetAllUser()//TODO add for blazor , don't work correctly async function getall?
+        {
+            var users = _context.Users.ToList();
+            return users;
+        }
+
         public async Task<IQueryable<User>> GetAllQueryable()
         {
             //var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
