@@ -104,8 +104,8 @@ namespace FinancialPlanner.WebMvc.Controllers
                 }
                 if (userId == null)
                 {
-                    var getTransaction = _userService.GetById(id);
-                    userId = getTransaction.Result.Id;
+                    var getUser = _userService.GetById(id);
+                    userId = getUser.Result.Id;
                 }
             }
 
