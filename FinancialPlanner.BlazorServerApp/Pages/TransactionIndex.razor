@@ -1,0 +1,137 @@
+﻿@page "/transactionindex"
+@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+@using FinancialPlanner.Logic.Services
+@inject UserService UserService
+@inject IRepository<Transaction> RepoService
+@*@inject HttpClient Http*@
+<h1>Transaction Data</h1>
+<p>Blazor CRUD operation</p>
+<div class="row">
+    <div class="col-md-6">
+        <a href='/user/add' class="btn btn-primary" role="button">
+            <i class="fas fa-user-plus"></i>
+            Add transaction
+        </a>
+    </div>
+    <div class="input-group col">
+        <input type="text" class="form-control" placeholder="Search transactions by description"
+               @bind="SearchString" @bind:event="oninput" @onkeyup="FilterUser" />
+        @if (SearchString.Length > 0)
+        {
+            <div class="input-group-append">
+                <button class="btn btn-danger" @onclick="ResetSearch">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        }
+    </div>
+</div>
+<br />
+@if (userList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped align-middle table-bordered">
+        <thead class="table-success">
+            <tr>
+                <th>Created-At</th>
+                <th>E-mail</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in userList)
+            {
+                <tr>
+                    <td>@user.CreatedAt</td>
+                    <td>@user.User.Email</td>
+                    <td>@user.Description</td>
+                    <td>@user.Type</td>
+                    <td>@user.Category</td>
+                    <td>@user.Amount</td>
+                    <td>
+                        <a href='/user/edit/@user.Id' class="btn btn-outline-dark" role="button">
+                            Edit
+                        </a>
+                        <a href='/user/delete/@user.Id' class="btn btn-outline-danger" role="button">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+@code {
+    protected List<Transaction> userList = new();
+    protected List<Transaction> searchUserData = new();
+    protected Transaction user = new();
+    protected string SearchString { get; set; } = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => GetUser());
+
+        //GetUser();
+
+    }
+    protected void GetUser()
+    {
+
+        //userList = UserService.GetAllUser().ToList();
+
+        userList = RepoService.GetAll().Result.ToList();
+        userList = userList.OrderByDescending(x=>x.CreatedAt).ToList();
+
+        //check if user exist if not take mariusz
+        var existUser = userList.Any(x => x.User != null);
+        if (!existUser)
+        {
+            var users = UserService.GetAllUser().ToList();
+            var getTransactions = users.Where(x => x.Email == "mario@example.com").SelectMany(x => x.Transactions).ToList();
+            userList = getTransactions;
+        }
+
+        // List<Task> tasks = new List<Task>();
+        // Task t = Task.Run(() =>
+        // {
+        //     userList = RepoService.GetAll().Result.ToList();
+        //     searchUserData = userList;
+        // });
+        // tasks.Add(t);
+        // Task.WaitAny(tasks.ToArray());
+
+        searchUserData = userList;
+
+    }
+    protected void FilterUser()
+    {
+        if (!string.IsNullOrEmpty(SearchString))
+        {
+            userList = searchUserData
+                .Where(x=>x.Description != null)
+                .Where(x => x.Description.IndexOf(SearchString, StringComparison.OrdinalIgnoreCase) != -1)
+                .ToList();
+        }
+        else
+        {
+            userList = searchUserData;
+        }
+    }
+    protected void DeleteConfirm(string userID)
+    {
+        user = userList.FirstOrDefault(x => x.Id == userID);
+    }
+    public void ResetSearch()
+    {
+        SearchString = string.Empty;
+        userList = searchUserData;
+    }
+}
