@@ -50,7 +50,7 @@ else
             @foreach (var user in userList)
             {
                 <tr>
-                    <td>@user.CreatedAt</td>
+                    <td>@user.CreatedAt.ToShortDateString()</td>
                     <td>@user.User.Email</td>
                     <td>@user.Description</td>
                     <td>@user.Type</td>
@@ -95,7 +95,10 @@ else
         if (!existUser)
         {
             var users = UserService.GetAllUser().ToList();
-            var getTransactions = users.Where(x => x.Email == "mario@example.com").SelectMany(x => x.Transactions).ToList();
+            var getTransactions = users
+            .Where(x => x.Email == "mario@example.com")
+            .SelectMany(x => x.Transactions)
+            .OrderByDescending(x => x.CreatedAt).ToList();
             userList = getTransactions;
         }
 
