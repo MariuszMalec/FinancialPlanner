@@ -1,0 +1,44 @@
+﻿@namespace FinancialPlannerBlazor.Client.Pages
+
+@page "/users"
+
+@inject IUserService userService
+@inject IRepository<User> repoService
+
+@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+@using FinancialPlannerBlazor.Client.Pages.Components
+
+<div class="row d-flex">
+	<div class="col-3 justify-content-start">
+		<h3>Financial Planner</h3>
+	</div>
+	<div class="col-9 justify-content-end">
+		<div class="btn-group" role="group">
+			<AddUserModal InsertUser="InsertOrUpdateUser" />
+		</div>
+	</div>
+</div>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		users = await userService.GetAll();
+	}
+
+	public IEnumerable<User> users = [];
+
+	private async Task InsertOrUpdateUser(User user)
+	{
+		var newEmployee = await userService.InsertUser(user);
+		if (newEmployee is null) return;
+
+		var existingEmployee = users.FirstOrDefault(e => e.Id == newEmployee.Id);
+		if (existingEmployee is not null)
+		{
+			users.ToList().Remove(existingEmployee);
+		}
+		users.ToList().Add(newEmployee);
+	}
+}

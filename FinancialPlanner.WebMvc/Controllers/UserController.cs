@@ -77,7 +77,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             var incomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Income).Sum(x => x.Amount);
             var outcomes = model.Where(x => x.Type == Logic.Enums.TypeOfTransaction.Outcome).Sum(x => x.Amount);
-            ViewData["MontlyBalance"] = incomes - outcomes;
+            ViewData["WholeBalance"] = incomes - outcomes;
             _logger.Information("Load user transactions successfully at {registrationDate}", DateTime.Now);
             return model != null ?
                           View(model) :

@@ -23,6 +23,8 @@
     else if (Model.DateFrom == default)
         Model.DateFrom = DateTime.Now.AddDays(-7);
 
+    var amounts = Convert.ToDecimal(ViewData["SearchingAmount"]);
+
 }
 
 <div class="row">
@@ -57,7 +59,7 @@
 
 
 <div class="form-group">
-    <input type="submit" value="Search transaction" class="btn btn-primary" />
+    <input type="submit" value="Search transaction" class="btn btn-primary" /> <b style="color:blue;border-width:3px; border-style:solid; border-color:#FF0000;"> Amount : @amounts pln </b>
 </div>
 
 <script>

@@ -1,0 +1,44 @@
+﻿@using BlazorBootstrap
+@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
+
+@rendermode InteractiveServer
+
+@inject IUserService userService
+
+<Button Color="ButtonColor.Primary" @ref="addButton" @onclick="OnShowModalClick">
+	<Icon Name="IconName.Plus"/> Add new user
+</Button>
+
+<Modal @ref="modal" Title="Add user" ShowCloseButton="true">
+	<BodyTemplate>
+		<label>User name</label>
+		<InputText @bind-Value="UserName" />
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="InsertNewUser">Insert</Button>
+	</FooterTemplate>
+</Modal>
+
+@code {
+	[Parameter]
+	public EventCallback<User> InsertUser { get; set; }
+	private Button addButton;
+	private Modal modal = new();
+
+
+	private string UserName { get; set; } = string.Empty;
+
+	private async Task InsertNewUser()
+	{
+		addButton.ShowLoading("Inserting user...");
+		await OnHideModalClick();
+		await InsertUser.InvokeAsync(new());
+		addButton.HideLoading();
+	}
+
+	private async Task OnShowModalClick() => await modal.ShowAsync();
+
+	private async Task OnHideModalClick() => await modal.HideAsync();
+
+}

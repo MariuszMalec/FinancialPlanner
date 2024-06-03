@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FinancialPlanner.Logic.Context;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FinancialPlanner.Logic.ExtentionsMethod
 {
@@ -17,6 +21,13 @@ namespace FinancialPlanner.Logic.ExtentionsMethod
                         StringComparison.OrdinalIgnoreCase);
 
             return false;
+        }
+
+        public static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration config)
+        {
+            var connectionString = config.GetConnectionString("WinPg");
+            services.AddDbContext<PostgresDbContext>(options => options.UseNpgsql(connectionString));
+            return services;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace FinancialPlanner.Logic.Services
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            var all = _context.Set<User>().Include(e=>e.Role);//TODO czy da sie to dodac do repository??
+            var all = _context.Set<User>().Include(e => e.Role);//TODO czy da sie to dodac do repository??
             if (!_context.Users.Any())
             {
                 throw new NotFoundException("Users not found");
@@ -83,6 +83,29 @@ namespace FinancialPlanner.Logic.Services
         {
             return await _repository.GetById(id);
         }
+		public async Task<User> InsertUser(User user)
+		{
+			//TODO dodanie istniejacej roli do uzytkownika
+			var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
+			user.Role = role;
+			var encodePassword = Base64EncodeDecode.Base64Encode("trudnehaslo");
+			user.PasswordHash = encodePassword;
+			//TODO validations in service           
+			if (user.Age == null || user.Balance == null || user.Email == null || user.FirstName == null || user.LastName == null)//uzycie false bez maiddleware, co lepsze!
+			{
+				_logger.LogError($"404! user not created! Blad walidacji!");
+				return new User();
+			}
+
+			var check = UserValidate.Create(user, _context);//TODO uzycie middleware
+			if (check != string.Empty)
+			{
+				_logger.LogError($"404! user not created! Blad walidacji, {check}");
+				throw new BadRequestException($"404! user not created! Blad walidacji, {check}");
+			}
+			await _repository.Insert(user);
+            return user;
+		}
 
         public async Task<bool> Insert(User user)
         {

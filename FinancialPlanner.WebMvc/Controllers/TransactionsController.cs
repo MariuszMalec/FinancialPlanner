@@ -78,6 +78,12 @@ namespace FinancialPlanner.WebMvc.Controllers
                     DateFrom = dateFrom,
                     DateTo = dateTo
                 };
+                
+                if (type == TypeOfTransaction.Outcome)
+                    ViewData["SearchingAmount"] = model.Transactions.Where(x=>x.Type == TypeOfTransaction.Outcome).Select(x=>x.Amount).Sum();
+                if (type == TypeOfTransaction.Income)
+                    ViewData["SearchingAmount"] = model.Transactions.Where(x=>x.Type == TypeOfTransaction.Income).Select(x=>x.Amount).Sum();
+
                 _logger.Information("Load all transactions successfully at {registrationDate}", DateTime.Now);
                 return View(model);
                 //return PartialView("_TransactionSearchForm", model);
