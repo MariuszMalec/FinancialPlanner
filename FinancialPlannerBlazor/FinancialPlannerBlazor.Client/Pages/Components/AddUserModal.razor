@@ -1,4 +1,5 @@
-﻿@using BlazorBootstrap
+﻿@namespace FinancialPlannerBlazor.Client.Pages.Components
+@using BlazorBootstrap
 @using FinancialPlanner.Logic.Interfaces
 @using FinancialPlanner.Logic.Models
 
@@ -12,8 +13,8 @@
 
 <Modal @ref="modal" Title="Add user" ShowCloseButton="true">
 	<BodyTemplate>
-		<label>User name</label>
-		<InputText @bind-Value="UserName" />
+		<label>Last name</label>
+		<InputText @bind-Value="LastName" />
 	</BodyTemplate>
 	<FooterTemplate>
 		<Button Color="ButtonColor.Primary" @onclick="InsertNewUser">Insert</Button>
@@ -27,13 +28,34 @@
 	private Modal modal = new();
 
 
-	private string UserName { get; set; } = string.Empty;
+	private string LastName { get; set; } = string.Empty;
 
 	private async Task InsertNewUser()
 	{
 		addButton.ShowLoading("Inserting user...");
 		await OnHideModalClick();
-		await InsertUser.InvokeAsync(new());
+		await InsertUser.InvokeAsync(
+
+					new User()
+						{
+							Id = Guid.NewGuid().ToString(),
+							FirstName = "Sebastian",
+							LastName = LastName,
+							Age = 40,
+							Balance = 0,
+							Address = "Dabka",
+							Company = "GE",
+							Currency = FinancialPlanner.Logic.Enums.Currency.PLN,
+							Gender = FinancialPlanner.Logic.Enums.Gender.Male,
+							Email = "seba@example.com",
+							IsActive = true,
+							Phone = "",
+							Registered = DateTime.Now,
+							Role = userService.GetAllQueryable().Result.Where(u => u.Role.Name == "User").Select(u=>u.Role).FirstOrDefault(),
+							TransactionId = null
+						}
+		
+		);
 		addButton.HideLoading();
 	}
 

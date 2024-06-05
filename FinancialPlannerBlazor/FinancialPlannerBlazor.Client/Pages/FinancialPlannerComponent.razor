@@ -21,13 +21,37 @@
 	</div>
 </div>
 
+<table class="table table-bordered align-middle">
+	<thead class="table-primary">
+		<tr class="fw-bold text-center d-flex">
+			<td class="col-1">FirstName</td>
+			<td class="col-1">LastName</td>
+			<td class="col-2">Email</td>
+			<td class="col-1">Action</td>
+		</tr>
+	</thead>
+		<tbody>
+	@foreach(var user in users)
+	{
+	<tr class=" d-flex">
+		<td class="col-1">@user.FirstName</td>
+		<td class="col-1">@user.LastName</td>
+		<td class="col-2">@user.Email</td>
+		<td class="col-1"><Button Color="ButtonColor.Danger">Remove</Button></td>
+		
+	</tr>
+	}
+	</tbody>
+
+</table>
+
 @code {
 	protected override async Task OnInitializedAsync()
 	{
-		users = await userService.GetAll();
+		users = (await userService.GetAllQueryable()).ToList(); 
 	}
 
-	public IEnumerable<User> users = [];
+	public List<User> users = [];
 
 	private async Task InsertOrUpdateUser(User user)
 	{
