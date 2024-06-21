@@ -79,11 +79,18 @@
 		users.Add(newUser);
     }
 
-	private async Task RemoveUser(User employee)
+	private async Task RemoveUser(User user)
 	{
-		if (employee is null) return;
-		await repoService.Delete(employee);
-		users.Remove(employee);
+		var errorMessage = UserValidate.Delete(user, _context);//TODO uzycie middleware
+		if (errorMessage is not "")
+		{
+			await JsRuntime.InvokeVoidAsync("alert", $"{errorMessage}"); // Alert
+			return;
+		}
+
+		if (user is null) return;
+		await repoService.Delete(user);
+		users.Remove(user);
 	}
 
 }
