@@ -24,6 +24,7 @@ builder.Services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
 
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITransactionService, TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();

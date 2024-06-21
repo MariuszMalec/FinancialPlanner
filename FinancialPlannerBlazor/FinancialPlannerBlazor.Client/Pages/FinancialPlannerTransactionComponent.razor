@@ -1,0 +1,99 @@
+﻿@namespace FinancialPlannerBlazor.Client.Pages
+
+@page "/transactions"
+
+@rendermode InteractiveServer
+
+@inject ITransactionService transactionService
+@inject IRepository<Transaction> repoService
+@inject ApplicationDbContext _context
+@inject IJSRuntime JsRuntime
+
+@using FinancialPlanner.Logic.Context
+@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+@using FinancialPlanner.Logic.Validation
+@using FinancialPlannerBlazor.Client.Models
+@using FinancialPlannerBlazor.Client.Pages.Components
+
+<div class="row d-flex">
+	<div class="col-3 justify-content-start">
+		<h3>Financial Planner</h3>
+	</div>
+	<div class="col-9 justify-content-end">
+		<div class="btn-group" role="group">
+			<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction" />
+@* 			<RemoveTransactionModal RemoveTransaction="RemoveTransaction" Transactions="transactions"/> *@
+		</div>
+	</div>
+</div>
+
+<table class="table table-bordered align-middle">
+	<thead class="table-primary">
+		<tr class="fw-bold text-center d-flex">
+			<td class="col-1">LastName</td>
+			<td class="col-1">FirstName</td>
+			<td class="col-1">Type</td>
+			<td class="col-1">Category</td>
+			<td class="col-1">BalanceAfterTransaction</td>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var transaction in transactions)
+		{
+			<tr class="d-flex">
+				<td class="col-1">@transaction.User.LastName</td>
+				<td class="col-1">@transaction.User.FirstName</td>
+				<td class="col-1">@transaction.Type</td>
+				<td class="col-1">@transaction.Category</td>
+				<td class="col-1">@transaction.BalanceAfterTransaction</td>
+			</tr>
+		}
+	</tbody>
+
+</table>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		transactions = (await transactionService.GetAllQueryable()).ToList();
+	}
+
+	public List<Transaction> transactions = [];
+
+	private async Task InsertOrUpdateTransaction(Transaction transaction)
+	{
+		// var errorMessage = UserValidate.Create(user, _context);//TODO uzycie middleware
+		// if (errorMessage is not "")
+		// {
+		// 	await JsRuntime.InvokeVoidAsync("alert", $"{errorMessage}"); // Alert
+		// 	return;
+		// }
+
+		// var newUser = await repoService.Insert(user);
+		// if (newUser is null) return;
+
+		// var existingUser = users.FirstOrDefault(e => e.Email == newUser.Email);
+		// if (existingUser is not null)
+		// {
+		// 	users.Remove(existingUser);
+		// }
+		// users.Add(newUser);
+    }
+
+	private async Task RemoveTransaction(Transaction transaction)
+	{
+		// var errorMessage = UserValidate.Delete(user, _context);//TODO uzycie middleware
+		// if (errorMessage is not "")
+		// {
+		// 	await JsRuntime.InvokeVoidAsync("alert", $"{errorMessage}"); // Alert
+		// 	return;
+		// }
+
+		// if (user is null) return;
+		// await repoService.Delete(user);
+		// users.Remove(user);
+	}
+
+}

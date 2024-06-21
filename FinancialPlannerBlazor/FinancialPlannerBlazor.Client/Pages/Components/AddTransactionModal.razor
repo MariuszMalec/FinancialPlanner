@@ -7,15 +7,15 @@
 
 @rendermode InteractiveServer
 
-@inject IUserService userService
-@inject IRepository<User> repoService
+@inject ITransactionService userService
+@inject IRepository<Transaction> repoService
 @inject ApplicationDbContext _context
 
 <Button Color="ButtonColor.Primary" @ref="addButton" @onclick="OnShowModalClick">
-	<Icon Name="IconName.Plus"/> Add new user
+	<Icon Name="IconName.Plus"/> Add new transaction
 </Button>
 
-<Modal @ref="modal" Title="Add user" ShowCloseButton="true">
+<Modal @ref="modal" Title="Add transaction" ShowCloseButton="true">
 	<BodyTemplate>
 
 		<img src="https://images.unsplash.com/photo-1614995008867-32eef7bff38c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""
@@ -37,43 +37,43 @@
 
 	</BodyTemplate>
 	<FooterTemplate>
-		<Button Color="ButtonColor.Primary" @onclick="InsertNewUser">Insert</Button>
+		<Button Color="ButtonColor.Primary" @onclick="InsertNewTransaction">Insert</Button>
 		<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
 	</FooterTemplate>
 </Modal>
 
 @code {
 	[Parameter]
-	public EventCallback<User> InsertUser { get; set; }
+	public EventCallback<Transaction> InsertTransaction { get; set; }
 	private Button addButton;
 	private Modal modal = new();
 
 	private string LastName { get; set; } = string.Empty;
 	private string Email { get; set; } = string.Empty;
 
-	private async Task InsertNewUser()
+	private async Task InsertNewTransaction()
 	{
-		addButton.ShowLoading("Inserting user...");
+		addButton.ShowLoading("Inserting transaction...");
 
-		var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
+		// var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
 
-		await OnHideModalClick();
-		await InsertUser.InvokeAsync(new User() {
-				Id = Guid.NewGuid().ToString(),
-				FirstName = "Test",
-				LastName = LastName,
-				Age = 47,
-				Balance = 0,
-				Address = "Sadowa",
-				Company = "GE",
-				Email = Email,
-				IsActive = true,
-				PasswordHash = "test",
-				Phone = string.Empty,
-				Transactions = new List<Transaction>() { },
-				TransactionId = Guid.NewGuid().ToString(),
-				Role = role
-		});
+		// await OnHideModalClick();
+		// await InsertUser.InvokeAsync(new User() {
+		// 		Id = Guid.NewGuid().ToString(),
+		// 		FirstName = "Test",
+		// 		LastName = LastName,
+		// 		Age = 47,
+		// 		Balance = 0,
+		// 		Address = "Sadowa",
+		// 		Company = "GE",
+		// 		Email = Email,
+		// 		IsActive = true,
+		// 		PasswordHash = "test",
+		// 		Phone = string.Empty,
+		// 		Transactions = new List<Transaction>() { },
+		// 		TransactionId = Guid.NewGuid().ToString(),
+		// 		Role = role
+		// });
 		addButton.HideLoading();
 	}
 
