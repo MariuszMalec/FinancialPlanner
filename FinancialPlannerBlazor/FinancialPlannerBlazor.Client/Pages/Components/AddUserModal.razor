@@ -17,11 +17,16 @@
 
 <Modal @ref="modal" Title="Add user" ShowCloseButton="true">
 	<BodyTemplate>
-		<label>Last name</label>
-		<InputText @bind-Value="LastName" />
-		<br />
-		<label>Email</label>
-		<InputText @bind-Value="Email" />
+
+		<div class="row">
+			<label>Last name:</label>
+			<InputText @bind-Value="LastName" />
+		</div>
+		<div class="row">
+			<label>Email:</label>
+			<InputText @bind-Value="Email" />
+		</div>
+
 
 	</BodyTemplate>
 	<FooterTemplate>
@@ -49,12 +54,12 @@
 		await InsertUser.InvokeAsync(new User() {
 				Id = Guid.NewGuid().ToString(),
 				FirstName = "Test",
-				LastName = "Test",
+				LastName = LastName,
 				Age = 47,
 				Balance = 0,
 				Address = "Sadowa",
 				Company = "GE",
-				Email = "test@example.com",
+				Email = Email,
 				IsActive = true,
 				PasswordHash = "test",
 				Phone = string.Empty,

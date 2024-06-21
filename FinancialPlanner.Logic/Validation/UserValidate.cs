@@ -2,6 +2,7 @@
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Cryptography.X509Certificates;
 
 namespace FinancialPlanner.Logic.Validation
@@ -22,13 +23,21 @@ namespace FinancialPlanner.Logic.Validation
             }
             if (user.Age == null)
             {
-                return "Age can't by null";
+                return "Age can't be null";
             }
-            if (users.FirstOrDefault(e => e.Email == user.Email) is not null)
+            if (user.Email is "")
             {
-				return "User with this email exist yet";
+                return "Email can't be null";
+            }
+			if (!user.Email.Contains("@"))
+			{
+				return "Email is not correct";
 			}
-            return string.Empty;
+			if (user.LastName is "")
+			{
+				return "LastName can't be null";
+			}
+			return string.Empty;
         }
 
         public static string Edit(User user, ApplicationDbContext context)

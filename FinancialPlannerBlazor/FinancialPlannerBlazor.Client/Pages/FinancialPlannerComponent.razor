@@ -33,16 +33,21 @@
 	<thead class="table-primary">
 		<tr class="fw-bold text-center d-flex">
 			<td class="col-1">LastName</td>
+			<td class="col-1">FirstName</td>
+			<td class="col-1">Balance</td>
+			<td class="col-2">Email</td>
+			<td class="col-1">Company</td>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var user in users)
 		{
-			<tr class=" d-flex">
+			<tr class="d-flex">
 				<td class="col-1">@user.LastName</td>
 				<td class="col-1">@user.FirstName</td>
 				<td class="col-1">@user.Balance</td>
 				<td class="col-2">@user.Email</td>
+				<td class="col-1">@user.Company</td>
 				@* <td class="col-1"><Button Color="ButtonColor.Danger">Remove</Button></td> *@
 			</tr>
 		}
