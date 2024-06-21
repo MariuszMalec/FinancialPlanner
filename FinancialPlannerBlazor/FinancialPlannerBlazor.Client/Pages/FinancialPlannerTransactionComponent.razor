@@ -32,22 +32,22 @@
 <table class="table table-bordered align-middle">
 	<thead class="table-primary">
 		<tr class="fw-bold text-center d-flex">
-			<td class="col-1">LastName</td>
-			<td class="col-1">FirstName</td>
+			<td class="col-2">Email</td>
 			<td class="col-1">Type</td>
 			<td class="col-1">Category</td>
-			<td class="col-1">BalanceAfterTransaction</td>
+			<td class="col-3">Description</td>
+			<td class="col-1">Amount</td>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var transaction in transactions)
 		{
 			<tr class="d-flex">
-				<td class="col-1">@transaction.User.LastName</td>
-				<td class="col-1">@transaction.User.FirstName</td>
+				<td class="col-2">@transaction.User.Email</td>				
 				<td class="col-1">@transaction.Type</td>
 				<td class="col-1">@transaction.Category</td>
-				<td class="col-1">@transaction.BalanceAfterTransaction</td>
+				<td class="col-3">@transaction.Description</td>
+				<td class="col-1">@transaction.Amount</td>
 			</tr>
 		}
 	</tbody>
