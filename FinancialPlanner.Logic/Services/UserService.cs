@@ -74,10 +74,15 @@ namespace FinancialPlanner.Logic.Services
             return all;
         }
 
-        public Task<User> GetByEmail(string userEmail)
+        public bool GetByEmail(string userEmail)
         {
-            throw new NotImplementedException();
-        }
+            var existUser = _repository.GetAll().Result.Where(u => u.Email == userEmail).Select(u => u).FirstOrDefault();
+            if (existUser != null)
+            {
+                return true;
+            }
+            return false;
+		}
 
         public async Task<User> GetById(string id)
         {

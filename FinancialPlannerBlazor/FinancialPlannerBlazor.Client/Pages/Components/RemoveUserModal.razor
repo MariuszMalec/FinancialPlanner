@@ -1,0 +1,56 @@
+﻿@namespace FinancialPlannerBlazor.Client.Pages.Components
+@using FinancialPlanner.Logic.Context
+@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+
+@rendermode InteractiveServer
+
+@inject IUserService userService
+@inject IRepository<User> repoService
+@inject ApplicationDbContext _context
+
+<Button @ref="removeButton" Color="ButtonColor.Danger" @onclick="OnShowModalClick">
+	<Icon Name="IconName.Trash" /> Remove user
+</Button>
+
+<Modal @ref="modal" Title="Remove user" ShowCloseButton="true">
+	<BodyTemplate>
+		<label>Employee name</label>
+		<InputSelect class="form-control" TValue="string" @bind-Value="SelectedUser">
+			@foreach (var employ in this.Users)
+			{
+				<option value="@employ.Id">@employ.LastName @employ.FirstName</option>
+			}
+		</InputSelect>
+	</BodyTemplate>
+	<FooterTemplate>
+		<Button Color="ButtonColor.Primary" @onclick="RemoveSelectedEmployee">Remove</Button>
+		<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+	</FooterTemplate>
+</Modal>
+@code {
+	private Modal modal = new();
+	private Button removeButton;
+
+	[Parameter]
+	public List<User> Users { get; set; } = [];
+
+	[Parameter]
+	public EventCallback<User> RemoveUser { get; set; }
+
+	private string SelectedUser { get; set; }
+
+	private async Task RemoveSelectedEmployee()
+	{
+		this.removeButton.ShowLoading("Removing employee...");
+		await OnHideModalClick();
+		var employee = this.Users?.FirstOrDefault(e => e.Id == SelectedUser);
+		if (employee is not null) await RemoveUser.InvokeAsync(employee);
+		this.removeButton.HideLoading();
+	}
+
+	private async Task OnShowModalClick() => await modal.ShowAsync();
+
+	private async Task OnHideModalClick() => await modal.HideAsync();
+}

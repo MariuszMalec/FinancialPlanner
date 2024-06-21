@@ -24,6 +24,10 @@ namespace FinancialPlanner.Logic.Validation
             {
                 return "Age can't by null";
             }
+            if (users.FirstOrDefault(e => e.Email == user.Email) is not null)
+            {
+				return "User with this email exist yet";
+			}
             return string.Empty;
         }
 

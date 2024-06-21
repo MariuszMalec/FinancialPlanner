@@ -1,11 +1,15 @@
 ﻿@namespace FinancialPlannerBlazor.Client.Pages.Components
-@using BlazorBootstrap
+@using FinancialPlanner.Logic.Context
 @using FinancialPlanner.Logic.Interfaces
 @using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+@using FinancialPlannerBlazor.Client.Models
 
 @rendermode InteractiveServer
 
 @inject IUserService userService
+@inject IRepository<User> repoService
+@inject ApplicationDbContext _context
 
 <Button Color="ButtonColor.Primary" @ref="addButton" @onclick="OnShowModalClick">
 	<Icon Name="IconName.Plus"/> Add new user
@@ -15,9 +19,14 @@
 	<BodyTemplate>
 		<label>Last name</label>
 		<InputText @bind-Value="LastName" />
+		<br />
+		<label>Email</label>
+		<InputText @bind-Value="Email" />
+
 	</BodyTemplate>
 	<FooterTemplate>
 		<Button Color="ButtonColor.Primary" @onclick="InsertNewUser">Insert</Button>
+		<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
 	</FooterTemplate>
 </Modal>
 
@@ -27,35 +36,32 @@
 	private Button addButton;
 	private Modal modal = new();
 
-
 	private string LastName { get; set; } = string.Empty;
+	private string Email { get; set; } = string.Empty;
 
 	private async Task InsertNewUser()
 	{
 		addButton.ShowLoading("Inserting user...");
-		await OnHideModalClick();
-		await InsertUser.InvokeAsync(
 
-					new User()
-						{
-							Id = Guid.NewGuid().ToString(),
-							FirstName = "Sebastian",
-							LastName = LastName,
-							Age = 40,
-							Balance = 0,
-							Address = "Dabka",
-							Company = "GE",
-							Currency = FinancialPlanner.Logic.Enums.Currency.PLN,
-							Gender = FinancialPlanner.Logic.Enums.Gender.Male,
-							Email = "seba@example.com",
-							IsActive = true,
-							Phone = "",
-							Registered = DateTime.Now,
-							Role = userService.GetAllQueryable().Result.Where(u => u.Role.Name == "User").Select(u=>u.Role).FirstOrDefault(),
-							TransactionId = null
-						}
-		
-		);
+		var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
+
+		await OnHideModalClick();
+		await InsertUser.InvokeAsync(new User() {
+				Id = Guid.NewGuid().ToString(),
+				FirstName = "Test",
+				LastName = "Test",
+				Age = 47,
+				Balance = 0,
+				Address = "Sadowa",
+				Company = "GE",
+				Email = "test@example.com",
+				IsActive = true,
+				PasswordHash = "test",
+				Phone = string.Empty,
+				Transactions = new List<Transaction>() { },
+				TransactionId = Guid.NewGuid().ToString(),
+				Role = role
+		});
 		addButton.HideLoading();
 	}
 

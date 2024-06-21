@@ -1,0 +1,112 @@
+﻿@page "/user/add"
+@page "/user/edit/{Id}"
+@using FinancialPlanner.Logic
+@using FinancialPlanner.Logic.Enums;
+@using FinancialPlanner.Logic.Entities;
+@using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Repository
+@using FinancialPlanner.Logic.Services;
+@using FinancialPlanner.Logic.Interfaces;
+@inject IRepository<User> UserService
+@inject NavigationManager NavigationManager
+<h1>@Title User</h1>
+<hr />
+<EditForm Model="@user" OnValidSubmit="SaveUser">
+    <DataAnnotationsValidator />
+    <div class="mb-3">   
+        <div class="col-md-4">
+            <label for="IsActive" class="form-label">IsActive</label>
+            <InputCheckbox class="form-check" @bind-Value="user.IsActive" />
+        </div>
+        <ValidationMessage For="@(() => user.IsActive)" />
+    </div>
+@*     <div class="mb-3">
+        <label for="Balance" class="form-label">Balance</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="user.Balance" />
+        </div>
+        <ValidationMessage For="@(() => user.Balance)" />
+    </div> *@
+    <div class="mb-3">
+        <label for="FirstName" class="form-label">FirstName</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="user.FirstName" />
+        </div>
+        <ValidationMessage For="@(() => user.FirstName)" />
+    </div>
+    <div class="mb-3">
+        <label for="LastName" class="form-label">LastName</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="user.LastName" />
+        </div>
+        <ValidationMessage For="@(() => user.LastName)" />
+    </div>
+    <div class="mb-3">
+        <label for="Gender" class="form-label">Gender</label>
+        <InputSelect @bind-Value="user.Gender">
+            @{
+            var genders = Enum.GetNames(typeof(Gender)).ToList();
+            }
+            @foreach (var gender in genders)
+            {
+                <option value="@gender">@gender</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => user.Gender)" />
+    </div>
+    <div class="mb-3">
+        <label for="Company" class="form-label">Company</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="user.Company" />
+        </div>
+        <ValidationMessage For="@(() => user.Company)" />
+    </div>
+    <div class="mb-3">
+        <label for="Phone" class="form-label">Cell No</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="user.Phone" />
+        </div>
+        <ValidationMessage For="@(() => user.Phone)" />
+    </div>
+    <div class="mb-3">
+        <label for="Email" class="form-label">E-mail</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="user.Email" />
+        </div>
+        <ValidationMessage For="@(() => user.Email)" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-light" @onclick="Cancel" value="Cancel">Cancel</button>
+    </div>
+</EditForm>
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    protected string Title = "Add";
+    protected User user = new();
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != null)
+        {
+            Title = "Edit";
+            user = await UserService.GetById(Id);
+        }
+    }
+    protected async Task SaveUser()
+    {
+        if (user.Id != null)
+        {
+            await UserService.Update(user);
+        }
+        else
+        {
+            await UserService.Insert(user);
+        }
+        Cancel();
+    }
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo("/userindex");
+    }
+}

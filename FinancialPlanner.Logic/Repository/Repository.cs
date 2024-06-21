@@ -34,7 +34,7 @@ namespace FinancialPlanner.Logic.Repository
             var entity = await entities.SingleOrDefaultAsync(s => s.Id == id);
             return entity;
         }
-        public async Task Insert(T entity)
+        public async Task<T> Insert(T entity)
         {
             if (entity == null)
             {
@@ -43,6 +43,7 @@ namespace FinancialPlanner.Logic.Repository
             entities.Remove(entity);//TODO aby dodac uzytkownika z rola istniejaca trzeba go wykasowac z bazy!
             entities.Add(entity);
             await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task Update(T entity)

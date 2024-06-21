@@ -8,6 +8,9 @@ using FinancialPlanner.Logic.ExtentionsMethod;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//TODO dodane aby poprawic blad zapisu czasu utc w postgres
+
 builder.Services.AddRazorComponents()
 		.AddInteractiveServerComponents()
 		.AddInteractiveWebAssemblyComponents();

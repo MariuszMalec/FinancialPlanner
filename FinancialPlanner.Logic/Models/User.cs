@@ -14,8 +14,8 @@ namespace FinancialPlanner.Logic.Models
         [DataType(DataType.Currency)]
         [RegularExpression(@"^\d+(.\d{1,2})?$", ErrorMessage = "Provide valid balance")]
         [Column(TypeName = "decimal(18,2)")]//TODO have to be without this error 3000!
-        public decimal Balance { get; set; }
-        public Currency Currency { get; set; }
+        public decimal Balance { get; set; } = decimal.Zero;
+        public Currency Currency { get; set; } = Currency.PLN;
 
         [Required(ErrorMessage = "Please enter age!")]
         public int? Age { get; set; }
@@ -28,16 +28,17 @@ namespace FinancialPlanner.Logic.Models
         [StringLength(25)]
         public string LastName { get; set; }
         [Required]
-        public Gender Gender { get; set; }
+        public Gender Gender { get; set; } = Gender.Genderless;
         public string? Company { get; set; }
 
-        [EmailAddress(ErrorMessage = "Email is not valid.")]
+		[Required]
+		[EmailAddress(ErrorMessage = "Email is not valid.")]
         public string Email { get; set; }
         public string? Phone { get; set; }
         public string? Address { get; set; }
         public virtual Role Role { get; set; }// = new Role() { Id = Guid.NewGuid().ToString(), Name = "User" };
         public string? PasswordHash { get; set; }
-        public DateTime Registered { get; set; }
+        public DateTime Registered { get; set; } = DateTime.Now;
 
         public string? TransactionId { get; set; }
         public IList<Transaction>? Transactions { get; set; }

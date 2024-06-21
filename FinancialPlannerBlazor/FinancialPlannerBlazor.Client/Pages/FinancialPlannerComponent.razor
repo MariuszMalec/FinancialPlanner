@@ -2,12 +2,15 @@
 
 @page "/users"
 
+@rendermode InteractiveServer
+
 @inject IUserService userService
 @inject IRepository<User> repoService
 
 @using FinancialPlanner.Logic.Interfaces
 @using FinancialPlanner.Logic.Models
 @using FinancialPlanner.Logic.Repository
+@using FinancialPlannerBlazor.Client.Models
 @using FinancialPlannerBlazor.Client.Pages.Components
 
 <div class="row d-flex">
@@ -17,6 +20,7 @@
 	<div class="col-9 justify-content-end">
 		<div class="btn-group" role="group">
 			<AddUserModal InsertUser="InsertOrUpdateUser" />
+			<RemoveUserModal RemoveUser="RemoveUser" Users="users"/>
 		</div>
 	</div>
 </div>
@@ -24,23 +28,20 @@
 <table class="table table-bordered align-middle">
 	<thead class="table-primary">
 		<tr class="fw-bold text-center d-flex">
-			<td class="col-1">FirstName</td>
 			<td class="col-1">LastName</td>
-			<td class="col-2">Email</td>
-			<td class="col-1">Action</td>
 		</tr>
 	</thead>
-		<tbody>
-	@foreach(var user in users)
-	{
-	<tr class=" d-flex">
-		<td class="col-1">@user.FirstName</td>
-		<td class="col-1">@user.LastName</td>
-		<td class="col-2">@user.Email</td>
-		<td class="col-1"><Button Color="ButtonColor.Danger">Remove</Button></td>
-		
-	</tr>
-	}
+	<tbody>
+		@foreach (var user in users)
+		{
+			<tr class=" d-flex">
+				<td class="col-1">@user.LastName</td>
+				<td class="col-1">@user.FirstName</td>
+				<td class="col-1">@user.Balance</td>
+				<td class="col-2">@user.Email</td>
+				@* <td class="col-1"><Button Color="ButtonColor.Danger">Remove</Button></td> *@
+			</tr>
+		}
 	</tbody>
 
 </table>
@@ -48,21 +49,30 @@
 @code {
 	protected override async Task OnInitializedAsync()
 	{
-		users = (await userService.GetAllQueryable()).ToList(); 
+		//await Task.Run(() => users = GenerateUsers());
+		users = (await repoService.GetAll()).ToList();
 	}
 
 	public List<User> users = [];
 
 	private async Task InsertOrUpdateUser(User user)
 	{
-		var newEmployee = await userService.InsertUser(user);
-		if (newEmployee is null) return;
+		var newUser = await repoService.Insert(user);
+		if (newUser is null) return;
 
-		var existingEmployee = users.FirstOrDefault(e => e.Id == newEmployee.Id);
-		if (existingEmployee is not null)
+		var existingUser = users.FirstOrDefault(e => e.Email == newUser.Email);
+		if (existingUser is not null)
 		{
-			users.ToList().Remove(existingEmployee);
+			users.Remove(existingUser);
 		}
-		users.ToList().Add(newEmployee);
+		users.Add(newUser);
+    }
+
+	private async Task RemoveUser(User employee)
+	{
+		if (employee is null) return;
+		await repoService.Delete(employee);
+		users.Remove(employee);
 	}
+
 }

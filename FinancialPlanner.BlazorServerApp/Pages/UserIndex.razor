@@ -71,23 +71,25 @@ else
     </table>
 }
 @code {
-    protected List<User> userList = new();
-    protected List<User> searchUserData = new();
+    protected IEnumerable<User>? userList;
+    protected IEnumerable<User>? searchUserData;
     protected User user = new();
     protected string SearchString { get; set; } = string.Empty;
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => GetUser());
+        //await Task.Run(() => GetUser());
 
-        //GetUser();
+        await GetUser();
 
     }
-    protected void GetUser()
+    protected async Task GetUser()
     {
 
         //userList = UserService.GetAllUser().ToList();
 
-        userList = RepoService.GetAll().Result.ToList();
+        //userList = RepoService.GetAll().Result.ToList();
+
+        userList = await RepoService.GetAll();
 
         // List<Task> tasks = new List<Task>();
         // Task t = Task.Run(() =>

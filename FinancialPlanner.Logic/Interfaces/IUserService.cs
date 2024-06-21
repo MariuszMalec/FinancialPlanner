@@ -17,6 +17,6 @@ namespace FinancialPlanner.Logic.Interfaces
 
         Task Update(User user);
 
-        Task<User> GetByEmail(string userEmail);
+        bool GetByEmail(string userEmail);
     }
 }

@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.ConsoleApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlanner.BlazorServerApp", "FinancialPlanner.BlazorServerApp\FinancialPlanner.BlazorServerApp.csproj", "{4707E7A7-5CCA-43D9-BD36-1FC50ECCB791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlannerBlazor", "FinancialPlannerBlazor\FinancialPlannerBlazor\FinancialPlannerBlazor.csproj", "{92844E25-3985-4309-95A3-0DBF164FB794}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlannerBlazor", "FinancialPlannerBlazor\FinancialPlannerBlazor\FinancialPlannerBlazor.csproj", "{92844E25-3985-4309-95A3-0DBF164FB794}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPlannerBlazor.Client", "FinancialPlannerBlazor\FinancialPlannerBlazor.Client\FinancialPlannerBlazor.Client.csproj", "{9B92A8D8-72CB-4324-9078-1A13DAE3B102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialPlannerBlazor.Client", "FinancialPlannerBlazor\FinancialPlannerBlazor.Client\FinancialPlannerBlazor.Client.csproj", "{9B92A8D8-72CB-4324-9078-1A13DAE3B102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

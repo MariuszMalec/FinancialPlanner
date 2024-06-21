@@ -8,7 +8,7 @@ namespace FinancialPlanner.Logic.Repository
         Task<IEnumerable<T>> GetAll();
         IQueryable<T> GetAllQueryable();
         Task<T> GetById(string id);
-        Task Insert(T entity);
+		Task<T?> Insert(T entity);
         Task Update(T entity);
         Task Delete(T entity);
     }
