@@ -12,6 +12,7 @@
 @using FinancialPlanner.Logic.Context
 @using FinancialPlanner.Logic.Interfaces
 @using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Enums
 @using FinancialPlanner.Logic.Repository
 @using FinancialPlanner.Logic.Validation
 @using FinancialPlannerBlazor.Client.Models
@@ -23,7 +24,7 @@
 	</div>
 	<div class="col-9 justify-content-end">
 		<div class="btn-group" role="group">
-			<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction" />
+			<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction"/>
 @* 			<RemoveTransactionModal RemoveTransaction="RemoveTransaction" Transactions="transactions"/> *@
 		</div>
 	</div>
@@ -48,6 +49,31 @@
 				<td class="col-1">@transaction.Category</td>
 				<td class="col-3">@transaction.Description</td>
 				<td class="col-1">@transaction.Amount</td>
+
+					@switch (transaction.Type)
+					{
+						case TypeOfTransaction.Outcome:
+							<td class="col-2" style="background-color: blue;">
+								<div class="d-grid gap-2">
+								<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction" Transaction="transaction" />
+								</div>
+						</td>
+							break;
+						case TypeOfTransaction.Income:
+							<td class="col-2" style="background-color: green;">
+								<div class="d-grid gap-2" >
+								<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction" Transaction="transaction" />
+								</div>
+							</td>
+							break;
+						default:
+							<td class="col-2" style="background-color: saddlebrown;">
+								<div class="d-grid gap-2" >
+								<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction" Transaction="transaction" />
+								</div>
+							</td>
+							break;
+					}			
 			</tr>
 		}
 	</tbody>
@@ -55,6 +81,16 @@
 </table>
 
 @code {
+
+	[Parameter]
+	public Transaction? Transaction { get; set; }
+
+	private Modal modal = new();
+
+	private Button addButton;
+
+	private TypeOfTransaction transactionType { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
 		transactions = (await transactionService.GetAllQueryable()).ToList();
@@ -64,23 +100,16 @@
 
 	private async Task InsertOrUpdateTransaction(Transaction transaction)
 	{
-		// var errorMessage = UserValidate.Create(user, _context);//TODO uzycie middleware
-		// if (errorMessage is not "")
-		// {
-		// 	await JsRuntime.InvokeVoidAsync("alert", $"{errorMessage}"); // Alert
-		// 	return;
-		// }
+		var newEmployee = await repoService.Insert(transaction);
+		if (newEmployee is null) return;
 
-		// var newUser = await repoService.Insert(user);
-		// if (newUser is null) return;
-
-		// var existingUser = users.FirstOrDefault(e => e.Email == newUser.Email);
-		// if (existingUser is not null)
-		// {
-		// 	users.Remove(existingUser);
-		// }
-		// users.Add(newUser);
-    }
+		var existingEmployee = transactions.FirstOrDefault(e => e.Id == newEmployee.Id);
+		if (existingEmployee is not null)
+		{
+			transactions.Remove(existingEmployee);
+		}
+		transactions.Add(newEmployee);
+	}
 
 	private async Task RemoveTransaction(Transaction transaction)
 	{
@@ -95,5 +124,26 @@
 		// await repoService.Delete(user);
 		// users.Remove(user);
 	}
+
+	private ButtonColor GetButtonColor(TypeOfTransaction typeOfTransaction)
+	{
+		switch (typeOfTransaction)
+		{
+			case TypeOfTransaction.Outcome:
+				return ButtonColor.Info;
+			case TypeOfTransaction.Income:
+				return ButtonColor.Success;
+
+			default:
+				return ButtonColor.Secondary;
+		}
+	}
+
+	// private ButtonColor GetButtonColor() => Transaction?.Type switch
+	// {		
+	// 	TypeOfTransaction transactionType when transactionType == TypeOfTransaction.Outcome => ButtonColor.Primary,
+	// 	TypeOfTransaction transactionType when transactionType == TypeOfTransaction.Income => ButtonColor.Info,
+	// 	_ => ButtonColor.Secondary
+	// };
 
 }

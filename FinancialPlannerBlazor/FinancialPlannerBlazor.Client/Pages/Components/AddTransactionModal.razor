@@ -2,6 +2,7 @@
 @using FinancialPlanner.Logic.Context
 @using FinancialPlanner.Logic.Interfaces
 @using FinancialPlanner.Logic.Models
+@using FinancialPlanner.Logic.Enums
 @using FinancialPlanner.Logic.Repository
 @using FinancialPlannerBlazor.Client.Models
 
@@ -26,59 +27,150 @@
 
 
 		<div class="row">
-			<label>Last name:</label>
-			<InputText @bind-Value="LastName" />
-		</div>
-		<div class="row">
 			<label>Email:</label>
-			<InputText @bind-Value="Email" />
+            <InputText @bind-Value="this.Transaction.User.Email"/>
 		</div>
+
+		<select class="form-select" @onchange="OnChangeType">
+            @if (this.Transaction is null)
+            {
+                @foreach (var type in Enum.GetNames(typeof(TypeOfTransaction)))
+                {
+                    <option selected="@(type.ToString() == type)">@type</option>
+                }
+            }
+            else
+            {
+                var selectedType = this.Transaction.Type.ToString();
+                @foreach (var type in Enum.GetNames(typeof(TypeOfTransaction)))
+                {
+                    <option selected="@(type.ToString() == selectedType)">@type</option>
+                }
+            }
+        </select>
+
+        <select class="form-select" @onchange="OnChangeCategory">
+
+            @if (this.Transaction is null)
+            {
+                @foreach (var category in Enum.GetNames(typeof(CategoryOfTransaction)))
+                {
+                    <option selected="@(category.ToString() == category)">@category</option>
+                }
+            }
+            else
+            {
+                var selectedcategory = this.Transaction.Category.ToString();
+                @foreach (var category in Enum.GetNames(typeof(CategoryOfTransaction)))
+                {
+                    <option selected="@(category.ToString() == selectedcategory)">@category</option>
+                }                
+            }   
+		</select>
+
+        <div class="row">
+            <label>Description:</label>
+            @{
+                if (description == string.Empty)
+                    description = this.Transaction.Description;
+            }
+            <InputText @bind-Value="description" />
+        </div>
+
+        <div class="row">
+            <label>Amount:</label>
+            @{
+                if (amount == 0.0m)
+                    amount = this.Transaction.Amount;
+            }
+            <InputNumber TValue="decimal" @bind-Value="amount" />
+        </div>
+
+        <label>CreatedAt</label>
+        <InputDate TValue="DateTime" @bind-Value="this.Transaction.CreatedAt"  />
 
 
 	</BodyTemplate>
 	<FooterTemplate>
-		<Button Color="ButtonColor.Primary" @onclick="InsertNewTransaction">Insert</Button>
-		<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+		@if (Transaction is not null)
+		{
+			<Button class="d-flex" Color="ButtonColor.Danger" @onclick="OnTransactionRemove">Remove</Button>
+		}
+		<Button Color="ButtonColor.Primary" @onclick="InsertOrUpdate">@confirmButtonText</Button>
+			<Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
 	</FooterTemplate>
 </Modal>
 
-@code {
-	[Parameter]
-	public EventCallback<Transaction> InsertTransaction { get; set; }
-	private Button addButton;
-	private Modal modal = new();
+    @code {
+    [Parameter]
+    public Transaction? Transaction { get; set; }
 
-	private string LastName { get; set; } = string.Empty;
-	private string Email { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback<Transaction> InsertTransaction { get; set; }
 
-	private async Task InsertNewTransaction()
-	{
-		addButton.ShowLoading("Inserting transaction...");
+    [Parameter]
+    public EventCallback<Transaction> OnTransactionInsertOrUpdate { get; set; }
 
-		// var role = _context.Roles.Where(r => r.Name == "User").FirstOrDefault();
+    private Modal modal = new();
 
-		// await OnHideModalClick();
-		// await InsertUser.InvokeAsync(new User() {
-		// 		Id = Guid.NewGuid().ToString(),
-		// 		FirstName = "Test",
-		// 		LastName = LastName,
-		// 		Age = 47,
-		// 		Balance = 0,
-		// 		Address = "Sadowa",
-		// 		Company = "GE",
-		// 		Email = Email,
-		// 		IsActive = true,
-		// 		PasswordHash = "test",
-		// 		Phone = string.Empty,
-		// 		Transactions = new List<Transaction>() { },
-		// 		TransactionId = Guid.NewGuid().ToString(),
-		// 		Role = role
-		// });
-		addButton.HideLoading();
-	}
+    private decimal amount { get; set; } = 0.0m;
+    private string description { get; set; } = string.Empty;
+    private string Email { get; set; } = string.Empty;
+    private DateTime createdAt { get; set; } = DateTime.Now;
+    private TypeOfTransaction type = TypeOfTransaction.Outcome;
+    private CategoryOfTransaction category = CategoryOfTransaction.Home;
 
-	private async Task OnShowModalClick() => await modal.ShowAsync();
+    private string confirmButtonText => this.Transaction is null ? "Add" : "Edit";
 
-	private async Task OnHideModalClick() => await modal.HideAsync();
+    private Button addButton;
+
+    private async Task InsertOrUpdate()
+    {
+        Transaction? transaction = null;
+
+        if (Transaction is null)
+        {
+            // Transaction = new Transaction()
+            //     {
+            //         Type = type,
+            //         Category = category;
+            //         Description = description,
+            //         createdAt = createdAt,                  
+            // };
+        }
+        else
+        {
+            Transaction.Type = type;
+            Transaction.Category = category;
+            Transaction.Amount = amount;
+            Transaction.Description = description;
+            Transaction.CreatedAt = createdAt;
+            transaction = Transaction;
+        }
+        await OnTransactionInsertOrUpdate.InvokeAsync(transaction);
+        await modal.HideAsync();
+    }
+
+
+    private Task OnTransactionRemove(MouseEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OnChangeType(ChangeEventArgs e)
+    {
+        Enum.TryParse<TypeOfTransaction>(e.Value!.ToString(), out var selectedType);
+        type = selectedType;
+    }
+
+    private void OnChangeCategory(ChangeEventArgs e)
+    {
+        Enum.TryParse<CategoryOfTransaction>(e.Value!.ToString(), out var selectedCategory);
+        category = selectedCategory;
+    }
+
+    private async Task OnShowModalClick() => await modal.ShowAsync();
+
+    private async Task OnHideModalClick() => await modal.HideAsync();
 
 }

@@ -14,7 +14,7 @@ namespace FinancialPlanner.Logic.Models
 {
     public class Transaction : Entity
     {
-        public Currency Currency { get; set; }
+        public Currency Currency { get; set; } = Currency.PLN;
 
         public TypeOfTransaction Type { get; set; }
 
