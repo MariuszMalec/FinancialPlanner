@@ -24,7 +24,7 @@
 	</div>
 	<div class="col-9 justify-content-end">
 		<div class="btn-group" role="group">
-			<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction"/>
+			<AddTransactionModal InsertTransaction="InsertOrUpdateTransaction" Transactions="transactions" />
 @* 			<RemoveTransactionModal RemoveTransaction="RemoveTransaction" Transactions="transactions"/> *@
 		</div>
 	</div>
@@ -100,15 +100,15 @@
 
 	private async Task InsertOrUpdateTransaction(Transaction transaction)
 	{
-		var newEmployee = await repoService.Insert(transaction);
-		if (newEmployee is null) return;
+		var newTransaction = await repoService.Insert(transaction);
+		if (newTransaction is null) return;
 
-		var existingEmployee = transactions.FirstOrDefault(e => e.Id == newEmployee.Id);
-		if (existingEmployee is not null)
+		var existingTransaction = transactions.FirstOrDefault(e => e.Id == newTransaction.Id);
+		if (existingTransaction is not null)
 		{
-			transactions.Remove(existingEmployee);
+			transactions.Remove(existingTransaction);
 		}
-		transactions.Add(newEmployee);
+		transactions.Add(newTransaction);
 	}
 
 	private async Task RemoveTransaction(Transaction transaction)
