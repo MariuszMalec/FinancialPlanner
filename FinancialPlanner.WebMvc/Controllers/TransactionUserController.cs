@@ -214,7 +214,7 @@ namespace FinancialPlanner.WebMvc.Controllers
         {
             var users = _userService.GetAll().Result;
 
-            var id = users.Select(u => u.Id).FirstOrDefault();        
+            var id = users.Where(u=>u.Email == "mario@example.com").Select(u => u.Id).FirstOrDefault();//TODO fix user!
 
             ViewData["UserId"] = id;
 

@@ -19,10 +19,10 @@ namespace FinancialPlanner.Logic.Dtos
         public Currency Currency { get; set; } = Currency.PLN;
 
         [Display(Name = "Type")]
-        public TypeOfTransaction Type { get; set; }
+        public TypeOfTransaction Type { get; set; } = TypeOfTransaction.Outcome;
 
         [Display(Name = "Category")]
-        public CategoryOfTransaction Category { get; set; }
+        public CategoryOfTransaction Category { get; set; } = CategoryOfTransaction.Food;
         public string? Description { get; set; }
 
         public string? Picture { get; set; }
