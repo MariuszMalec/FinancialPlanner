@@ -123,8 +123,8 @@
     private string description { get; set; } = string.Empty;
     private string Email { get; set; } = string.Empty;
     private DateTime createdAt { get; set; } = DateTime.Now;
-    private TypeOfTransaction type = TypeOfTransaction.Outcome;
-    private CategoryOfTransaction category = CategoryOfTransaction.Home;
+    private TypeOfTransaction type;// = TypeOfTransaction.Outcome;
+    private CategoryOfTransaction category;// = CategoryOfTransaction.Home;
 
     private string confirmButtonText => this.Transaction is null ? "Add" : "Edit";
 
@@ -147,11 +147,29 @@
         else
         {
             Transaction.Type = type;//todo zle przekazuje to!!!!!!!!!!
-            Transaction.Category = category;
+            Transaction.Category = category;//todo zle przekazuje to!!!!!!!!!!
             Transaction.Amount = amount;
             Transaction.Description = description;
             Transaction.CreatedAt = createdAt;
             transaction = Transaction;
+
+            // transaction = new Transaction()
+            // {
+            //     UserId = Transaction.UserId,
+            //     Id = Transaction.Id,
+            //     Type = Transaction.Type,
+            //     Category = Transaction.Category,
+            //     Amount = Transaction.Amount,
+            //     Description = description,
+            //     CreatedAt = Transaction.CreatedAt,
+            //     User = Transaction.User
+            // };
+
+            // transaction.Type = Transaction.Type;
+            // transaction.Category = Transaction.Category;
+            // transaction.Amount = Transaction.Amount;
+            // transaction.Description = Transaction.Description;
+            // transaction.CreatedAt = Transaction.CreatedAt;            
         }
         await InsertTransaction.InvokeAsync(transaction);
         await modal.HideAsync();

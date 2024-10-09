@@ -10,6 +10,7 @@
 @inject IJSRuntime JsRuntime
 
 @using FinancialPlanner.Logic.Context
+@using FinancialPlanner.Logic.Dtos
 @using FinancialPlanner.Logic.Interfaces
 @using FinancialPlanner.Logic.Models
 @using FinancialPlanner.Logic.Enums
@@ -100,15 +101,30 @@
 
 	private async Task InsertOrUpdateTransaction(Transaction transaction)
 	{
-		var newTransaction = await repoService.Insert(transaction);
-		if (newTransaction is null) return;
+		//var newTransaction = await repoService.Insert(transaction);
 
-		var existingTransaction = transactions.FirstOrDefault(e => e.Id == newTransaction.Id);
+		var transactionUserDto = new TransactionUserDto()
+		{
+				UserId = transaction.UserId,
+				Id = transaction.Id,
+				Currency = transaction.Currency,
+				Type = transaction.Type,
+				Category = transaction.Category,
+				Amount = transaction.Amount,
+				Description = transaction.Description,
+				CreatedAt = transaction.CreatedAt,
+		};
+
+
+		await transactionService.Insert(transaction.User.Id, transactionUserDto);
+		//if (newTransaction is null) return;
+
+		var existingTransaction = transactions.FirstOrDefault(e => e.Id == transactionUserDto.Id);
 		if (existingTransaction is not null)
 		{
 			transactions.Remove(existingTransaction);
 		}
-		transactions.Add(newTransaction);
+		transactions.Add(transaction);
 	}
 
 	private async Task RemoveTransaction(Transaction transaction)
