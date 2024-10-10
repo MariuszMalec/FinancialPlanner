@@ -13,7 +13,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserServiceTests
 {
     public class UserServiceTests : IClassFixture<UserSeedDataFixture>
     {
-        private readonly IUserService _sut;
+        private readonly IUserService<User> _sut;
         private readonly Mock<IRepository<User>> _repoMock = new Mock<IRepository<User>>();
         private readonly Mock<ILogger<UserService>> _loggerMock = new Mock<ILogger<UserService>>();
         private readonly Mock<IMapper> _mapperMock = new Mock<IMapper>();

@@ -40,7 +40,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
                 Currency = Logic.Enums.Currency.PLN
             };
 
-            var mockRepo = new Mock<IUserService>();
+            var mockRepo = new Mock<IUserService<User>>();
             mockRepo.Setup(r => r.GetById(id))
                 .ReturnsAsync(user);
 
@@ -57,7 +57,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
         public async void GetUserTransactions_ReturnFalse_WhenUserTransactionsNotExist()//TODO naprawic to
         {
             //Arange
-            var mockRepoUser = new Mock<IUserService>();
+            var mockRepoUser = new Mock<IUserService<User>>();
             mockRepoUser.Setup(r => r.GetAllQueryable().Result)
                 .Returns(GetUsers());
 
@@ -93,7 +93,7 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserControllerTests
         public void Index_ReturnFalse_WhenUsersNotExist()
         {
             //Arange
-            var mockRepo = new Mock<IUserService>();
+            var mockRepo = new Mock<IUserService<User>>();
             mockRepo.Setup(r => r.GetAllQueryable().Result)
                 .Returns(GetUsers());
 
