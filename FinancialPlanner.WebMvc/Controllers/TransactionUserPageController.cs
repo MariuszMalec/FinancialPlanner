@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -7,19 +6,15 @@ using X.PagedList;
 
 namespace FinancialPlanner.WebMvc.Controllers
 {
-    public class TransactionUserPageController : Controller
+	public class TransactionUserPageController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
-        private readonly IUserService _userService;
 
-        public TransactionUserPageController(ApplicationDbContext context, IMapper mapper, ITransactionService transactionService, IUserService userService)
+        public TransactionUserPageController(IMapper mapper, ITransactionService transactionService)
         {
-            _context = context;
             _mapper = mapper;
             _transactionService = transactionService;
-            _userService = userService;
         }
 
         public async Task<IActionResult> Index(int? page, DateTime? selectMounth)

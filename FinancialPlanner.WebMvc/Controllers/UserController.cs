@@ -9,13 +9,13 @@ namespace FinancialPlanner.WebMvc.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IUserService<User> _userService;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
 
         private ILogger _logger;
 
-        public UserController(IUserService userService, IMapper mapper = null, ITransactionService transactionService = null, ILogger logger = null)
+        public UserController(IUserService<User> userService, IMapper mapper = null, ITransactionService transactionService = null, ILogger logger = null)
         {
             _userService = userService;
             _mapper = mapper;

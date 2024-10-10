@@ -17,12 +17,12 @@ namespace FinancialPlanner.Logic.Services
     {
         private static readonly IList<Transaction> _transactions = LoadDataService<Transaction>.ReadTransacionFile();
         private readonly IRepository<Transaction> _repository;
-        private readonly IUserService _userService;
+        private readonly IUserService<User> _userService;
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ITransactionService> _logger;
         private readonly IMapper _mapper;
 
-        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<ITransactionService> logger, IMapper mapper = null, IUserService userService = null)
+        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<ITransactionService> logger, IMapper mapper = null, IUserService<User> userService = null)
         {
             _repository = repository;
             _context = context;

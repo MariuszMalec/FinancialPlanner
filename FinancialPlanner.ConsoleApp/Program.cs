@@ -2,6 +2,7 @@
 using FinancialPlanner.Logic.Context;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +45,7 @@ var host = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
         services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
-        services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IUserService<User>, UserService>();
         services.AddTransient<ITransactionService,TransactionService>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<ConfigurationManager>();

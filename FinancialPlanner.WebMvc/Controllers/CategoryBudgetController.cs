@@ -13,14 +13,12 @@ namespace FinancialPlanner.WebMvc.Controllers
 {
     public class CategoryBudgetController : Controller
     {
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
         private readonly ApplicationDbContext _context;
 
-        public CategoryBudgetController(IUserService userService, IMapper mapper, ITransactionService transactionService, ApplicationDbContext context)
+        public CategoryBudgetController(IMapper mapper, ITransactionService transactionService, ApplicationDbContext context)
         {
-            _userService = userService;
             _mapper = mapper;
             _transactionService = transactionService;
             _context = context;

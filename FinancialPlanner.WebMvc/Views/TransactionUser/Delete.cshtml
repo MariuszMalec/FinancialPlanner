@@ -63,7 +63,7 @@
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a class="btn btn-outline-success" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to transactions</a>
     </form>
 </div>

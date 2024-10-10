@@ -3,7 +3,7 @@
 @using FinancialPlanner.Logic.Models
 @using FinancialPlanner.Logic.Repository
 @using FinancialPlanner.Logic.Services
-@inject UserService UserService
+@inject IUserService<User> UserService
 @inject IRepository<Transaction> RepoService
 @*@inject HttpClient Http*@
 <h1>Transaction Data</h1>
@@ -94,7 +94,7 @@ else
         var existUser = userList.Any(x => x.User != null);
         if (!existUser)
         {
-            var users = UserService.GetAllUser().ToList();
+            var users = UserService.GetAll().Result.ToList();
             var getTransactions = users
             .Where(x => x.Email == "mario@example.com")
             .SelectMany(x => x.Transactions)

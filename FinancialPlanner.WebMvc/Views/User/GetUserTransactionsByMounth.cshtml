@@ -96,10 +96,10 @@ else
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    <a data-toggle="tooltip" data-placement="top" title="Create" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
-                    <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
-                    <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
-                    <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Create" asp-controller="TransactionUser" asp-action="Create" asp-route-id="@item.UserId"><img class="rounded" alt="Image placeholder" src="~/icons/addTransactionX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Edit" asp-controller="TransactionUser" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Details" asp-controller="TransactionUser" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Delete" asp-controller="TransactionUser" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
                 </td>
             </tr>
         }

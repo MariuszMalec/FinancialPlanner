@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FinancialPlanner.Logic.Services
 {
-    public class UserService : IUserService
+    public class UserService : IUserService<User>
     {
         private static readonly List<User> _users = LoadDataService<User>.ReadUserFile();
         private readonly IRepository<User> _repository;

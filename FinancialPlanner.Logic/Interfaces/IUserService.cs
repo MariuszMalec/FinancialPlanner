@@ -2,20 +2,22 @@
 
 namespace FinancialPlanner.Logic.Interfaces
 {
-    public interface IUserService
+    public interface IUserService<T>
     {
-        Task<IEnumerable<User>> GetAll();
+        Task<IEnumerable<T>> GetAll();
 
-        Task<IQueryable<User>> GetAllQueryable();
+        Task<IQueryable<T>> GetAllQueryable();
 
-        Task<bool> Insert(User user);
-		Task<User> InsertUser(User user);
+        IEnumerable<User> GetAllUser();
 
-		Task<User> GetById(string id);
+        Task<bool> Insert(T user);
+		Task<User> InsertUser(T user);
 
-        Task<bool> Delete(User user);
+		Task<T> GetById(string id);
 
-        Task Update(User user);
+        Task<bool> Delete(T user);
+
+        Task Update(T user);
 
         bool GetByEmail(string userEmail);
     }

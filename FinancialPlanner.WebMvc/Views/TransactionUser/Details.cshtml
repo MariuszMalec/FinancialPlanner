@@ -16,7 +16,8 @@
         <p class="card-text text-warning">BALANCE: @Model.Balance</p>
         <div>
             <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-            <a class="btn btn-primary" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to List</a>
+            <a class="btn btn-primary" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to transactions</a>
+            <a style="border: solid;" class="btn btn-info" asp-action="SelectByMonth" asp-route-id=@ViewData["UserId"]>Back to transaction by month</a>
         </div>
     </div>
 </div>

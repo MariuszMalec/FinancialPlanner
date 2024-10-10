@@ -1,8 +1,9 @@
 ﻿@using FinancialPlanner.Logic.Context;
 @using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
 @model IEnumerable<FinancialPlanner.Logic.Dtos.TransactionUserDto>
 @inject ApplicationDbContext _context
-@inject IUserService _userService
+@inject IUserService<User> _userService
 
 @{
     ViewData["Title"] = "Index";

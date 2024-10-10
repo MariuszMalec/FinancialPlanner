@@ -1,7 +1,8 @@
 ﻿@using FinancialPlanner.Logic.Enums;
 @using FinancialPlanner.Logic.Interfaces;
+@using FinancialPlanner.Logic.Models
 @model FinancialPlanner.Logic.Dtos.TransactionUserDto
-@inject IUserService userService
+@inject IUserService<User> userService
 
 @{
     ViewData["Title"] = "Edit transaction";
@@ -86,7 +87,10 @@
                                         </div>
                                         <div class="form-group">
                                             <input type="submit" value="Save" class="btn btn-primary" />
-                                            <a class="btn btn-secondary" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to List</a>
+                                            <div>
+                                                <a style="border: solid;" class="btn btn-info" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@Model.UserId>Back to user transactions</a>
+                                                <a style="border: solid;" class="btn btn-info" asp-action="SelectByMonth" asp-route-id=@ViewData["UserId"]>Back to transaction by month</a>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

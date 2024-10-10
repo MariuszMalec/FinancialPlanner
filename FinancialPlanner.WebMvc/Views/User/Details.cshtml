@@ -4,7 +4,7 @@
 @using Microsoft.EntityFrameworkCore;
 @model FinancialPlanner.Logic.Models.User
 @inject ApplicationDbContext _context
-@inject IUserService _userService;
+@inject IUserService<User> _userService;
 
 @{
     ViewData["Title"] = "Details";

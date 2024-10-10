@@ -4,6 +4,7 @@ using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
 using FinancialPlannerBlazor.Components;
 using FinancialPlanner.Logic.ExtentionsMethod;
+using FinancialPlanner.Logic.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,7 @@ builder.Services.AddEntityFramework(config);//add connection string
 builder.Services.AddDbContext<ApplicationDbContext, PostgresDbContext>();
 
 builder.Services.AddBlazorBootstrap();
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IUserService<User>, UserService>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 

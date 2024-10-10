@@ -1,7 +1,8 @@
 ﻿@using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
 @model FinancialPlanner.Logic.Dtos.TransactionUserDto
 @inject ITransactionService _transactionService
-@inject IUserService userService
+@inject IUserService<User> userService
 
 @{
 

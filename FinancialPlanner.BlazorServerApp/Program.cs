@@ -1,5 +1,5 @@
-using FinancialPlanner.BlazorServerApp.Data;
 using FinancialPlanner.Logic.Context;
+using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 
 //dodane
 IConfiguration Configuration;
@@ -23,10 +22,9 @@ if (!File.Exists("appsettings.json"))
 }
 var logger = new LoggerConfiguration()
       .ReadFrom.Configuration(configuration)//czytanie z appsettings.json
-      .CreateLogger();
+.CreateLogger();
 
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<IUserService<User>, UserService>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ConfigurationManager>();

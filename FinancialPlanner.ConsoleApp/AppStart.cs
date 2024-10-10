@@ -1,4 +1,5 @@
 ﻿using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Services;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,10 +12,10 @@ namespace FinancialPlanner.ConsoleApp
 {
     public class AppStart
     {
-        private readonly IUserService _userService;
+        private readonly IUserService<User> _userService;
         private readonly ITransactionService _transactionService;
 
-        public AppStart(IUserService userService, ITransactionService transactionService)
+        public AppStart(IUserService<User> userService, ITransactionService transactionService)
         {
             _userService = userService;
             _transactionService = transactionService;

@@ -1,7 +1,8 @@
 ﻿@using FinancialPlanner.Logic.Enums
 @using FinancialPlanner.Logic.Interfaces
+@using FinancialPlanner.Logic.Models
 @model FinancialPlanner.Logic.Dtos.IncomeOutcomeDto
-@inject IUserService _userService
+@inject IUserService<User> _userService
 
 @{
     ViewData["Title"] = "Index";

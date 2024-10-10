@@ -1,7 +1,8 @@
 ﻿@using FinancialPlanner.Logic.Enums;
 @using FinancialPlanner.Logic.Interfaces;
+@using FinancialPlanner.Logic.Models
 @model FinancialPlanner.Logic.Dtos.TransactionUserDto
-@inject IUserService userService
+@inject IUserService<User> userService
 
 @{
     ViewData["Title"] = "Create transaction";
@@ -122,7 +123,8 @@
 </div>
 
 <div>
-    <a class="one" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@ViewData["UserId"]>Back to List</a>
+    <a class="one" asp-controller="User" asp-action="GetUserTransactions" asp-route-id=@ViewData["UserId"]>Back to all transaction</a>
+    <a class="one" asp-action="SelectByMonth" asp-route-id=@ViewData["UserId"]>Back to transaction by month</a>
 </div>
 
 @section Scripts {

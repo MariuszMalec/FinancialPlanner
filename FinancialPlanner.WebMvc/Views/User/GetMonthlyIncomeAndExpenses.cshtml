@@ -1,6 +1,7 @@
 ﻿@using FinancialPlanner.Logic.Interfaces;
+@using FinancialPlanner.Logic.Models
 @model IEnumerable<FinancialPlanner.Logic.Dtos.MonthlyIncomeAndExpenses>
-@inject IUserService userService
+@inject IUserService<User> userService
 
 @{
     ViewData["Title"] = "GetMonthlyIncomeAndExpenses";

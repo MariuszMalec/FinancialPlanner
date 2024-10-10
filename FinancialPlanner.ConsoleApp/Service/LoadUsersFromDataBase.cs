@@ -1,11 +1,12 @@
 ﻿using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 
 namespace FinancialPlanner.ConsoleApp.Service
 {
     public static class LoadUsersFromDataBase
     {
-        public static void Get(IUserService userService, SelectTask currentItem)
+        public static void Get(IUserService<User> userService, SelectTask currentItem)
         {
             Console.WriteLine($"{currentItem} ...");
             var users = userService.GetAll().Result.ToList();

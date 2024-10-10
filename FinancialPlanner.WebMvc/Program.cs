@@ -1,6 +1,8 @@
 using FinancialPlanner.Logic.Context;
+using FinancialPlanner.Logic.Dtos;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 using FinancialPlanner.Logic.Repository;
 using FinancialPlanner.Logic.Services;
 using FinancialPlanner.WebMvc.Middleware;
@@ -92,7 +94,7 @@ switch (provider)
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//TODO dodane aby poprawic blad zapisu czasu utc w postgres
 
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IUserService<User>, UserService>();
 builder.Services.AddTransient<ITransactionService,TransactionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ErrorHandlingMiddleware>();

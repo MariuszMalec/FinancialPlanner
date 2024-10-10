@@ -24,7 +24,7 @@ public static class MainMenu
         public const int MinAge = 13;
         public const int MaxAge = 99;
 
-        public static void ShowMainMenu(IUserService userService, ITransactionService transactionService)
+        public static void ShowMainMenu(IUserService<User> userService, ITransactionService transactionService)
         {
             short currentItem = 0;           
             do

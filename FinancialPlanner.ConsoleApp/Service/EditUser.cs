@@ -1,13 +1,14 @@
 ﻿using FinancialPlanner.ConsoleApp.Validators;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 
 namespace FinancialPlanner.ConsoleApp.Service
 {
     public static class EditUser
     {
         public static void Do(
-            IUserService userService, 
+            IUserService<User> userService, 
             SelectTask currentItem, 
             int MinNameLength, 
             int MaxNameLength, int MinAge,

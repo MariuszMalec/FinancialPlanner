@@ -8,7 +8,7 @@ namespace FinancialPlanner.ConsoleApp.Service
 {
     public static class ViewUserFromDataBase
     {
-        public static void Show(IUserService userService, SelectTask currentItem, int MinNameLength, int MaxNameLength)
+        public static void Show(IUserService<User> userService, SelectTask currentItem, int MinNameLength, int MaxNameLength)
         {
             Console.WriteLine($"{currentItem} ...");
             var users = userService.GetAll().Result.ToList();

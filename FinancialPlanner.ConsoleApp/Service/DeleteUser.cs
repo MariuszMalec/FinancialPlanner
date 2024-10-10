@@ -1,12 +1,13 @@
 ﻿using FinancialPlanner.ConsoleApp.Validators;
 using FinancialPlanner.Logic.Enums;
 using FinancialPlanner.Logic.Interfaces;
+using FinancialPlanner.Logic.Models;
 
 namespace FinancialPlanner.ConsoleApp.Service
 {
     public static class DeleteUser
     {
-        public static void Do(IUserService userService, SelectTask currentItem, int MinNameLength, int MaxNameLength)
+        public static void Do(IUserService<User> userService, SelectTask currentItem, int MinNameLength, int MaxNameLength)
         {
             Console.WriteLine($"{currentItem} ...");
             var users = userService.GetAll().Result.ToList();
