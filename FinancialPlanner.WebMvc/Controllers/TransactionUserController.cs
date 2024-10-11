@@ -207,7 +207,7 @@ namespace FinancialPlanner.WebMvc.Controllers
 
             await _transactionService.Insert(id, model);
             _logger.Information("Create transactions successfully at {registrationDate}", DateTime.Now);
-            return RedirectToAction("Index", "User", new { model.Id, model.UserId });
+            return RedirectToAction("SelectByMonth", "TransactionUser", new { model.Id, model.UserId });
         }
 
         public ActionResult CreateNext()
