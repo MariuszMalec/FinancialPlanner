@@ -77,17 +77,20 @@
                             @item.Description
                         </td>
                         <td>
-                            <div class="dropdown">
+@*                             <div class="dropdown">
                                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     More
                                 </a>
-
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br />
                                     <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Delete</a><br />
                                     <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">Details</a><br />
                                 </div>
-                            </div>
+                            </div> *@
+
+                            <a data-toggle="tooltip" data-placement="top" title="Edit" asp-action="Edit" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/editX32.png"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Details" asp-action="Details" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/detailsX32.png"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Delete" asp-action="Delete" asp-route-id="@item.Id"><img class="rounded" alt="Image placeholder" src="~/icons/deleteX32.png"></a>
                         </td>
                     </tr>
                 }
