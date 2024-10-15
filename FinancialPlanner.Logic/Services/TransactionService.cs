@@ -16,22 +16,22 @@ namespace FinancialPlanner.Logic.Services
     public class TransactionService : ITransactionService
     {
         private static readonly IList<Transaction> _transactions = LoadDataService<Transaction>.ReadTransacionFile();
-        private readonly IRepository<Transaction> _repository;
-        private readonly IUserService<User> _userService;
+        private readonly IRepository<Transaction> _repositoryTransaction;
+		private readonly IUserService<User> _userService;
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ITransactionService> _logger;
         private readonly IMapper _mapper;
 
-        public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<ITransactionService> logger, IMapper mapper = null, IUserService<User> userService = null)
-        {
-            _repository = repository;
-            _context = context;
-            _logger = logger;
-            _mapper = mapper;
-            _userService = userService;
-        }
+		public TransactionService(IRepository<Transaction> repository, ApplicationDbContext context, ILogger<ITransactionService> logger, IMapper mapper = null, IUserService<User> userService = null)
+		{
+			_repositoryTransaction = repository;
+			_context = context;
+			_logger = logger;
+			_mapper = mapper;
+			_userService = userService;
+		}
 
-        public async Task<IList<Transaction>> GetAll()
+		public async Task<IList<Transaction>> GetAll()
         {
             var transactions = _context.Transactions.ToList();
             if (!transactions.Any())
@@ -90,7 +90,7 @@ namespace FinancialPlanner.Logic.Services
             };
             //_context.Transactions.Add(transaction);
             //_context.SaveChanges();
-            await _repository.Insert(transaction);
+            await _repositoryTransaction.Insert(transaction);
 
             //zapisac nowy balance w user
             var user = await _userService.GetById(id);
@@ -211,10 +211,12 @@ namespace FinancialPlanner.Logic.Services
             var newAmount = (getAmountFromDataBase - model.Amount);
             var getBalance = _context.Users.Where(u => u.Id == model.UserId).Select(u => u.Balance).FirstOrDefault();
             var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance - newAmount) : (getBalance + newAmount);
+            var getUser = await _userService.GetById(model.UserId);
 
             var transaction = new Transaction()
             {
                 Id = id,
+                User = getUser, 
                 UserId = model.UserId,
                 Currency = model.Currency,
                 Type = model.Type,
@@ -227,11 +229,50 @@ namespace FinancialPlanner.Logic.Services
                 TransactionPicture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x).FirstOrDefault()
             };
             _context.Transactions.Update(transaction);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             var user = await _userService.GetById(model.UserId);
             user.Balance = transaction.BalanceAfterTransaction;
             await _userService.Update(user);
+            _logger.LogInformation("Transaction was edited successful at {registrationDate}", id, DateTime.Now);
+        }
+
+        public async Task Update(string id, Transaction model)//dodane bo nie dziala edit
+        {
+			var getUser = await _repositoryTransaction.GetAllQueryable().Where(x => x.Id == id).Select(x => x.User).FirstOrDefaultAsync();
+
+			var getAmountFromDataBase = _context.Transactions.Where(u => u.Id == model.Id).Select(u => u.Amount).FirstOrDefault();
+            var newAmount = (getAmountFromDataBase - model.Amount);
+            var getBalance = _context.Users.Where(u => u.Id == getUser.Id).Select(u => u.Balance).FirstOrDefault();
+            var getAmount = model.Type == Logic.Enums.TypeOfTransaction.Income ? (getBalance - newAmount) : (getBalance + newAmount);
+
+            var transaction = new Transaction()
+            {
+                Id = id,
+                User = getUser,
+                UserId = getUser.Id,
+                Currency = model.Currency,
+                Type = model.Type,
+                Category = model.Category,
+                Amount = model.Amount,
+                BalanceAfterTransaction = getAmount,
+                Description = model.Description,
+                CreatedAt = model.CreatedAt,
+                Picture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x.Source).FirstOrDefault(),
+                TransactionPicture = _context.TransactionPictures.Where(x => x.Category == model.Category).Select(x => x).FirstOrDefault()
+            };
+            //_context.Transactions.Update(transaction);
+            //await _context.SaveChangesAsync();
+            if (transaction.UserId == null)
+            {
+                _logger.LogError("Transaction was not edited successful at {registrationDate}!", id, DateTime.Now);
+                return;
+            }
+
+            transaction.User.Balance = transaction.BalanceAfterTransaction;
+
+			await _repositoryTransaction.Update(transaction);
+
             _logger.LogInformation("Transaction was edited successful at {registrationDate}", id, DateTime.Now);
         }
     }

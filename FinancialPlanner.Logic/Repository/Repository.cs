@@ -48,12 +48,27 @@ namespace FinancialPlanner.Logic.Repository
 
         public async Task Update(T entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
-            entities.Update(entity);
+
+            entity.CreatedAt = DateTime.UtcNow;
+
+            // Untrack previous entity version
+            var trackedEntity = _context.Set<T>()
+                .SingleOrDefaultAsync(e => e.Id == entity.Id);
+            _context.Entry<T>(await trackedEntity).State = EntityState.Detached;
+
+            // Track new version
+            _context.Set<T>().Attach(entity);
+            _context.Entry<T>(entity).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
+
+
+            //if (entity == null)
+            //{
+            //    throw new ArgumentNullException("entity");
+            //}
+            //entities.Update(entity);
+            //await _context.SaveChangesAsync();
         }
         public async Task Delete(T entity)
         {

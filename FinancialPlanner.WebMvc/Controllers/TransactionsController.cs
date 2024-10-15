@@ -7,8 +7,6 @@ using FinancialPlanner.Logic.Interfaces;
 using FinancialPlanner.Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Schema;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using ILogger = Serilog.ILogger;
 
 namespace FinancialPlanner.WebMvc.Controllers
@@ -149,6 +147,13 @@ namespace FinancialPlanner.WebMvc.Controllers
                 _logger.Error("Not found transaction {id}, {registrationDate}", DateTime.Now);
                 return NotFound();
             }
+
+            var model = await _transactionService.GetById(id);
+            ViewData["FullName"] = $"{model.FirstName} {model.LastName}";
+            var getUserId = model.UserId;
+            ViewData["UserId"] = getUserId;
+            ViewData["UserTransactionId"] = id;
+
             return View(transaction);
         }
 
@@ -157,9 +162,9 @@ namespace FinancialPlanner.WebMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
+        public async Task<IActionResult> Edit(string id, Transaction model) //nie wiem po co to dalem ?[Bind("Currency,Type,Category,Amount,BalanceAfterTransaction,Description,Date,UserId,Id,CreatedAt")] Logic.Models.Transaction transaction)
         {
-            if (id != transaction.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -168,12 +173,11 @@ namespace FinancialPlanner.WebMvc.Controllers
             {
                 try
                 {
-                    _context.Update(transaction);
-                    await _context.SaveChangesAsync();
+                    await _transactionService.Update(id, model);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TransactionExists(transaction.Id))
+                    if (!TransactionExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -185,7 +189,17 @@ namespace FinancialPlanner.WebMvc.Controllers
                 _logger.Information("Edit transaction successfully at {registrationDate}", DateTime.Now);
                 return RedirectToAction(nameof(Index));
             }
-            return View(transaction);
+            return View(model);
+        }
+
+        private static TransactionUserDto MapToTransactionUserDto(Transaction transaction)
+        {
+            return new TransactionUserDto { 
+                Id = transaction.Id ,
+                FirstName =transaction.User.FirstName, 
+                LastName =transaction.User.LastName,
+
+            };
         }
 
         // GET: Transactions/Delete/5
