@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FinancialPlanner.Logic.Models.TransactionPicture>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Transaction picture</h1>
+
+<p>
+    <a class="btn btn-success" asp-action="Create"><img class="rounded" alt="Image placeholder" src="~/icons/createRoleX32.png">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Source)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    <div class="col-md-8">
+                        <img src="@item.Source" alt=""
+                             style="object-fit:scale-down;
+                                width:50%;
+                                height:auto;
+                                border: solid 1px #CCC">
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit"><img class="rounded" alt="Image placeholder" src="~/images/editX32.png"></a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Details"><img class="rounded" alt="Image placeholder" src="~/images/details.png"></a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete"><img class="rounded" alt="Image placeholder" src="~/images/trash-binX32.png"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
