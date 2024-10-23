@@ -11,6 +11,7 @@ namespace FinancialPlanner.Logic.Dtos
 
         public string LastName { get; set; }
 
+        [Range(0, 99999.99)]
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }
 
@@ -23,6 +24,8 @@ namespace FinancialPlanner.Logic.Dtos
 
         [Display(Name = "Category")]
         public CategoryOfTransaction Category { get; set; } = CategoryOfTransaction.Food;
+
+        [StringLength(25)]
         public string? Description { get; set; }
 
         public string? Picture { get; set; }

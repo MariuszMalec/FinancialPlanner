@@ -22,7 +22,7 @@ namespace FinancialPlanner.Logic.Dtos
         public CategoryOfTransaction Category { get; set; }
 
         [Required]
-        [Range(0, double.PositiveInfinity)]
+        [Range(0, 99999.99)]//[Range(0, double.PositiveInfinity)]
         [DataType(DataType.Currency)]
         [RegularExpression(@"^\d+(.\d{1,2})?$")]
         [JsonProperty(PropertyName = "Amount")]
@@ -31,6 +31,7 @@ namespace FinancialPlanner.Logic.Dtos
         [DataType(DataType.Currency)]
         [JsonProperty(PropertyName = "BalanceAfterTransaction")]
         public decimal BalanceAfterTransaction { get; set; }
+        [StringLength(25)]
         public string? Description { get; set; }
 
         public DateTime Date { get; set; }
