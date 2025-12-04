@@ -26,17 +26,48 @@ namespace FinancialPlanner.XUnitIntegratedTests.UserServiceTests
         }
 
         [Fact]
-        public async Task GetAllUsers_ShoudReturnUsers_WhenUsersExist()
+        public async Task GetAllUsers_ShoudReturnUsers_WhenExist()
+        {
+            // Arrange
+            _repoMock.Setup(x => x.GetAll()).ReturnsAsync(GetUsers());
+
+            // Act
+            var result = await _sut.GetAll();
+
+            // Assert
+            result.Should().NotBeEmpty();
+            result.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task GetEmail_ShoudReturnUnicEmail_WhenExist()
+        {
+            // Arrange
+            _repoMock.Setup(x => x.GetAll()).ReturnsAsync(GetUsers());
+            var expextedEmail = "mario@example.com";
+
+            // Act
+            var users = await _sut.GetAll();        
+            var result = users.Where(x => x.Email == expextedEmail).ToList();
+
+            // Assert
+            result.Should().NotBeEmpty();
+            result.Should().HaveCount(1);
+        }
+
+        [Theory]
+        [InlineData("mario@example.com")]
+        public async Task GetEmail_ShoudReturnEmail_WhenExist(string expectedEmail)
         {
             // Arrange
             _repoMock.Setup(x => x.GetAll()).ReturnsAsync(GetUsers());
 
             // Act
             var users = await _sut.GetAll();
+            var result = users.Where(x => x.Email == expectedEmail).Select(x=>x.Email).FirstOrDefault();
 
             // Assert
-            users.Should().NotBeEmpty();
-            users.Should().HaveCount(1);
+            result.Should().Be(expectedEmail);
         }
 
         private IEnumerable<User> GetUsers()
